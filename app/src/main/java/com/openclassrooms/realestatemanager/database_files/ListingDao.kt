@@ -1,9 +1,8 @@
-package com.openclassrooms.realestatemanager.DAOs
+package com.openclassrooms.realestatemanager.database_files
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.openclassrooms.realestatemanager.databases.Listing
 
 @Dao
 interface ListingDao {

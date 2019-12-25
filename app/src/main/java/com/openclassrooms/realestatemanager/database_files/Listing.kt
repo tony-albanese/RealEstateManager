@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.databases
+package com.openclassrooms.realestatemanager.database_files
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
