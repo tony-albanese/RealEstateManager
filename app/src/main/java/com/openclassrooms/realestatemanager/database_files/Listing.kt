@@ -6,7 +6,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "table_listings")
 data class Listing(
-        @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) var id: Long = 0,
-        @ColumnInfo(name = "listing_description") var listingDescription: String = ""
+        @ColumnInfo(name = "id")
+        @PrimaryKey(autoGenerate = true)
+        var id: Long = 0,
+        
+        @ColumnInfo(name = "listing_description")
+        var listingDescription: String = ""
 ) {
 }
