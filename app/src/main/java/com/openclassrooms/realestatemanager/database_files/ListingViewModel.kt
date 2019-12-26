@@ -22,4 +22,8 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     fun insert(listing: Listing) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(listing)
     }
+
+    fun clearDatabase() = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete()
+    }
 }
