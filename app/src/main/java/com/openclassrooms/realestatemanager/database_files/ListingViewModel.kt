@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ListingViewModel(application: Application) : AndroidViewModel(application) {
@@ -12,13 +13,13 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     val listings: LiveData<List<Listing>>
 
     init {
-        val listingDao = RealEstateApplication.database?.listingDao()
-        repository = ListingRepository(listingDao!!)
+        val listingDao = AppDatabase.getDatabase(application).listingDao()
+        repository = ListingRepository(listingDao)
         listings = repository.allListings
     }
 
 
-    fun insert(listing: Listing) = viewModelScope.launch {
+    fun insert(listing: Listing) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(listing)
     }
 }
