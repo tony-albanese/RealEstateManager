@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/navigation_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/mainActivity_dest">
 
+    <activity
+        android:id="@+id/mainActivity_dest"
+        android:name="com.openclassrooms.realestatemanager.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/photoActivity_dest"
+        android:name="com.openclassrooms.realestatemanager.PhotoActivity"
+        android:label="activity_photo"
+        tools:layout="@layout/activity_photo" />
+    <action
+        android:id="@+id/action_global_photoActivity_dest"
+        app:destination="@id/photoActivity_dest"
+        app:popUpTo="@id/navigation_graph" />
 </navigation>
