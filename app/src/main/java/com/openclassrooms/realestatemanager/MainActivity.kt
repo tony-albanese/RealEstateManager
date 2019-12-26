@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
             val textBody = et_message_input.text.toString()
             var listing = Listing(textBody)
             listingViewModel.insert(listing)
+            et_message_input.text?.clear()
         }
 
     }
