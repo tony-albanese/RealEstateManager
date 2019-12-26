@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(findViewById(R.id.app_toolbar))
 
         val recyclerView = findViewById<RecyclerView>(R.id.message_recycler_view)
         val adapter = ListingAdapter()
@@ -43,5 +47,20 @@ class MainActivity : AppCompatActivity() {
             et_message_input.text?.clear()
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_delete_all -> {
+                listingViewModel.clearDatabase()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }
