@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -58,6 +59,13 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_delete_all -> {
                 listingViewModel.clearDatabase()
+                return true
+            }
+
+            R.id.menu_nav_to_photo_activity -> {
+                val intent = Intent(this, PhotoActivity::class.java)
+                startActivity(intent)
+                finish()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
