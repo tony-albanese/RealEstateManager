@@ -9,4 +9,8 @@ class ListingRepository(
         listingDao.insertListing(listing)
     }
 
+    suspend fun delete() {
+        listingDao.deleteAllListings()
+    }
+
 }
