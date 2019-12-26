@@ -8,4 +8,9 @@
         android:title="Clear All"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_nav_to_photo_activity"
+        android:title="Photos"
+        app:showAsAction="ifRoom" />
+
 </menu>
