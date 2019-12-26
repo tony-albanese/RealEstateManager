@@ -13,4 +13,7 @@ interface ListingDao {
 
     @Insert
     fun insertListing(listing: Listing)
+
+    @Query("DELETE FROM table_listings")
+    fun deleteAllListings()
 }
