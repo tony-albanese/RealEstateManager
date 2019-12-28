@@ -4,14 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.database_files.Listing
 
 class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
 
     private var listings = emptyList<Listing>()
+
     inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val listingItemView = itemView.findViewById<TextView>(R.id.tv_listing_text)
+
+        fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
+                object : ItemDetailsLookup.ItemDetails<Long>() {
+                    override fun getPosition(): Int = adapterPosition
+                    override fun getSelectionKey(): Long? = itemId
+                }
     }
 
 
