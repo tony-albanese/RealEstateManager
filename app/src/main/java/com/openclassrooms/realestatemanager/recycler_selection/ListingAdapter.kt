@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing
@@ -12,6 +13,7 @@ import com.openclassrooms.realestatemanager.database_files.Listing
 class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
 
     private var listings = emptyList<Listing>()
+    private var tracker: SelectionTracker<Long>? = null
 
     init {
         setHasStableIds(true)
@@ -49,5 +51,9 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
     override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
         val current = listings[position]
         holder.listingItemView.text = current.listingDescription
+    }
+
+    fun setTracker(tracker: SelectionTracker<Long>?) {
+        this.tracker = tracker
     }
 }
