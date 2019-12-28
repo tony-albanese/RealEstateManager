@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager
+package com.openclassrooms.realestatemanager.recycler_selection
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.widget.RecyclerView
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing
 
 class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {

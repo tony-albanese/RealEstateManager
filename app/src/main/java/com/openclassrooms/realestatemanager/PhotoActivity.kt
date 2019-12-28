@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
+import com.openclassrooms.realestatemanager.recycler_selection.ListingAdapter
 
 class PhotoActivity : AppCompatActivity() {
 
