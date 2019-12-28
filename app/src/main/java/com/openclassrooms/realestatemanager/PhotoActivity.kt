@@ -46,6 +46,6 @@ class PhotoActivity : AppCompatActivity() {
                 SelectionPredicates.createSelectAnything()
         ).build()
 
-        adapter.setTracker(tracker)
+        adapter.setTracker(tracker!!)
     }
 }

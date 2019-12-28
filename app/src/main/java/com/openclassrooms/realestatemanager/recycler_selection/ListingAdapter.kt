@@ -1,9 +1,12 @@
 package com.openclassrooms.realestatemanager.recycler_selection
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +54,20 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
     override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
         val current = listings[position]
         holder.listingItemView.text = current.listingDescription
+
+        val parent = holder.listingItemView.parent as ConstraintLayout
+
+
+        //TODO: Add a null check on tracker.
+        if (tracker!!.isSelected(position.toLong())) {
+            parent.background = ColorDrawable(
+                    Color.parseColor("#80deea")
+            )
+        } else {
+            parent.background = ColorDrawable(Color.WHITE)
+        }
+
+
     }
 
     fun setTracker(tracker: SelectionTracker<Long>?) {
