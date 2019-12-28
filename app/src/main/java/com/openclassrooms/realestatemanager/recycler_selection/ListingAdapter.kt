@@ -37,6 +37,10 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
         return listings.size
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     internal fun setListings(listings: List<Listing>) {
         this.listings = listings
         notifyDataSetChanged()
