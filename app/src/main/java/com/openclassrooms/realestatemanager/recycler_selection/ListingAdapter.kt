@@ -13,6 +13,10 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
 
     private var listings = emptyList<Listing>()
 
+    init {
+        setHasStableIds(true)
+    }
+
     inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val listingItemView = itemView.findViewById<TextView>(R.id.tv_listing_text)
 
