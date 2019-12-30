@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.recycler_selection
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
+import com.openclassrooms.realestatemanager.CUSTOM_TAG
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing
 
@@ -27,8 +29,15 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
 
         fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
                 object : ItemDetailsLookup.ItemDetails<Long>() {
-                    override fun getPosition(): Int = adapterPosition
-                    override fun getSelectionKey(): Long? = itemId
+                    override fun getPosition(): Int {
+                        Log.i(CUSTOM_TAG, "get Item details called (position)")
+                        return adapterPosition
+                    }
+
+                    override fun getSelectionKey(): Long? {
+                        Log.i(CUSTOM_TAG, "get Item details called (itemId)")
+                        return itemId
+                    }
                 }
     }
 
@@ -43,6 +52,7 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
     }
 
     override fun getItemId(position: Int): Long {
+        Log.i(CUSTOM_TAG, "getItemId called")
         return position.toLong()
     }
 
@@ -52,6 +62,7 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
     }
 
     override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
+        Log.i(CUSTOM_TAG, "onBindViewHolde called")
         val current = listings[position]
         holder.listingItemView.text = current.listingDescription
 
@@ -60,17 +71,20 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
 
         //TODO: Add a null check on tracker.
         if (tracker!!.isSelected(position.toLong())) {
+            Log.i(CUSTOM_TAG, "tracker selected")
             parent.background = ColorDrawable(
                     Color.parseColor("#80deea")
             )
         } else {
             parent.background = ColorDrawable(Color.WHITE)
+            Log.i(CUSTOM_TAG, "tracker not selected")
         }
 
 
     }
 
     fun setTracker(tracker: SelectionTracker<Long>?) {
+        Log.i(CUSTOM_TAG, "set tracker called)")
         this.tracker = tracker
     }
 }
