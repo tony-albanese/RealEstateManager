@@ -1,7 +1,5 @@
 package com.openclassrooms.realestatemanager.recycler_selection
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -72,11 +70,9 @@ class ListingAdapter : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() 
         //TODO: Add a null check on tracker.
         if (tracker!!.isSelected(position.toLong())) {
             Log.i(CUSTOM_TAG, "tracker selected")
-            parent.background = ColorDrawable(
-                    Color.parseColor("#80deea")
-            )
+            parent.isActivated = true
         } else {
-            parent.background = ColorDrawable(Color.WHITE)
+            parent.isActivated = false
             Log.i(CUSTOM_TAG, "tracker not selected")
         }
 
