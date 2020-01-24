@@ -11,7 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PhotoActivity"></activity>
+        <activity
+            android:name=".MasterDetail.ListingListActivity"
+            android:label="@string/title_listing_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".MasterDetail.ListingDetailActivity"
+            android:label="@string/title_listing_detail"
+            android:parentActivityName=".MasterDetail.ListingListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.openclassrooms.realestatemanager.MasterDetail.ListingListActivity" />
+        </activity>
+        <activity android:name=".PhotoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
