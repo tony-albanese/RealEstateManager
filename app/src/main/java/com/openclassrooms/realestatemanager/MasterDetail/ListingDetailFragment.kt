@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.openclassrooms.realestatemanager.MasterDetail.Listing.DummyContent
 import com.openclassrooms.realestatemanager.R
@@ -12,9 +13,7 @@ import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingDao
 import com.openclassrooms.realestatemanager.database_files.ListingRepository
 import kotlinx.android.synthetic.main.activity_listing_detail.*
-import kotlinx.android.synthetic.main.listing_detail.view.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 /**
  * A fragment representing a single Listing detail screen.
@@ -31,11 +30,14 @@ class ListingDetailFragment : Fragment() {
     private var listingItemToDisplay: Listing? = null;
     lateinit var repository: ListingRepository
     lateinit var listingDao: ListingDao
+    lateinit var detailsTextView: TextView
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    var listingId: Long? = null
 
-    }
+    val job = Job()
+    val uiScope = CoroutineScope(Dispatchers.Main + job)
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         listingDao = AppDatabase.getDatabase(activity!!.application).listingDao()
@@ -46,7 +48,8 @@ class ListingDetailFragment : Fragment() {
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
 
-                listingItemToDisplay = getListingFromDatabase(it.getLong(ARG_ITEM_ID))
+                listingId = it.getLong(ARG_ITEM_ID)
+                //initializeListingObject(it.getLong(ARG_ITEM_ID))
                 item = DummyContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
                 activity?.toolbar_layout?.title = item?.content
             }
@@ -57,9 +60,13 @@ class ListingDetailFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.listing_detail, container, false)
 
+        detailsTextView = rootView.findViewById(R.id.listing_detail)
+        initializeListingObject(listingId)
+        /*
         listingItemToDisplay.let {
             rootView.listing_detail.text = it?.listingDescription ?: "No listing desc."
         }
+         */
 
         return rootView
     }
@@ -72,17 +79,26 @@ class ListingDetailFragment : Fragment() {
         const val ARG_ITEM_ID = "item_id"
     }
 
-    //TODO: Fix the runBlocking.
-    fun getListingFromDatabase(id: Long): Listing? {
-        var listing: Listing? = null
-        runBlocking {
-            val databseListingJob = async { repository.getListingById(id) }
+    suspend fun getListingFromDatabase(id: Long): Listing? {
 
-            runBlocking {
-                listing = databseListingJob.await()
-            }
+        return withContext(Dispatchers.IO) {
+
+            var listing = listingDao.getListingById(id)
+            listing
         }
-        return listing
 
     }
+
+
+    fun initializeListingObject(id: Long?) {
+
+        uiScope.launch {
+            listingItemToDisplay = id?.let { getListingFromDatabase(it) }
+            detailsTextView.text = listingItemToDisplay?.listingDescription ?: "Something is null"
+        }
+
+
+    }
+
+
 }

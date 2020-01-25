@@ -18,6 +18,6 @@ interface ListingDao {
     fun deleteAllListings()
 
 
-    @Query("SELECT * FROM table_listings WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM table_listings WHERE id = :id")
     fun getListingById(id: Long): Listing
 }
