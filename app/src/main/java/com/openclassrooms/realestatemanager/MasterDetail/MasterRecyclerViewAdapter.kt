@@ -66,4 +66,9 @@ class MasterRecyclerViewAdapter(
             setOnClickListener(onClickListener)
         }
     }
+
+    internal fun setListings(listings: List<Listing>) {
+        this.listings = listings
+        notifyDataSetChanged()
+    }
 }
