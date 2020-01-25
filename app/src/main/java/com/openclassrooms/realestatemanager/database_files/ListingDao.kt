@@ -16,4 +16,8 @@ interface ListingDao {
 
     @Query("DELETE FROM table_listings")
     fun deleteAllListings()
+
+
+    @Query("SELECT * FROM table_listings WHERE id = :id LIMIT 1")
+    fun getListingById(id: Long): Listing
 }

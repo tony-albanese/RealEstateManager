@@ -26,4 +26,9 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     fun clearDatabase() = viewModelScope.launch(Dispatchers.IO) {
         repository.delete()
     }
+
+    fun getListingById(id: Long) = viewModelScope.launch(Dispatchers.IO) {
+        repository.getListingById(id)
+        //TODO: How to get return value out of the coroutine scope.
+    }
 }

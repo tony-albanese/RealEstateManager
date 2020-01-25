@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.openclassrooms.realestatemanager.MasterDetail.Listing.DummyContent
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
+import com.openclassrooms.realestatemanager.database_files.ListingRepository
 import kotlinx.android.synthetic.main.activity_listing_detail.*
 import kotlinx.android.synthetic.main.listing_detail.view.*
 
@@ -24,7 +26,14 @@ class ListingDetailFragment : Fragment() {
      */
     private var item: DummyContent.DummyItem? = null
     private var listingItemToDisplay: Listing? = null;
+    private val repository: ListingRepository
 
+
+    init {
+        val listingDao = AppDatabase.getDatabase(activity!!.application).listingDao()
+        repository = ListingRepository(listingDao)
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,6 +42,7 @@ class ListingDetailFragment : Fragment() {
                 // Load the dummy content specified by the fragment
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
+
                 item = DummyContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
                 activity?.toolbar_layout?.title = item?.content
             }
@@ -58,4 +68,6 @@ class ListingDetailFragment : Fragment() {
          */
         const val ARG_ITEM_ID = "item_id"
     }
+
+
 }

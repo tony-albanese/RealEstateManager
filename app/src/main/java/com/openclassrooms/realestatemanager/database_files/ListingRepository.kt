@@ -13,4 +13,8 @@ class ListingRepository(
         listingDao.deleteAllListings()
     }
 
+    suspend fun getListingById(id: Long): Listing {
+        return listingDao.getListingById(id)
+    }
+
 }
