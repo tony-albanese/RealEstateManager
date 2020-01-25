@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.openclassrooms.realestatemanager.MasterDetail.Listing.DummyContent
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.android.synthetic.main.activity_listing_detail.*
 import kotlinx.android.synthetic.main.listing_detail.view.*
 
@@ -22,6 +23,7 @@ class ListingDetailFragment : Fragment() {
      * The dummy content this fragment is presenting.
      */
     private var item: DummyContent.DummyItem? = null
+    private var listingItemToDisplay: Listing? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
