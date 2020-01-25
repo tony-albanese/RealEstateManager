@@ -7,10 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.MasterDetail.Listing.DummyContent
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import kotlinx.android.synthetic.main.activity_listing_list.*
 import kotlinx.android.synthetic.main.listing_list.*
 import kotlinx.android.synthetic.main.listing_list_content.view.*
@@ -30,10 +34,14 @@ class ListingListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    lateinit var viewModel: ListingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing_list)
+
+        val store = viewModelStore
+        viewModel = ViewModelProvider(store, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
 
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -51,8 +59,20 @@ class ListingListActivity : AppCompatActivity() {
             twoPane = true
         }
 
-        setupRecyclerView(listing_list)
+        val adapter = MasterRecyclerViewAdapter(this, twoPane)
+
+        viewModel.listings.observe(this, Observer {
+            it?.let {
+                adapter.setListings(it)
+            }
+        })
+
+        val recyclerView = findViewById<RecyclerView>(R.id.listing_list)
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
     }
+
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
         recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
