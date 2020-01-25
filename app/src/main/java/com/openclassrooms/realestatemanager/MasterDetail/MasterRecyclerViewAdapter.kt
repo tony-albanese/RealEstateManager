@@ -2,11 +2,14 @@ package com.openclassrooms.realestatemanager.MasterDetail
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing
+import kotlinx.android.synthetic.main.listing_list_content.view.*
 
 class MasterRecyclerViewAdapter(
         private val parentActivity: ListingListActivity,
@@ -38,11 +41,15 @@ class MasterRecyclerViewAdapter(
         }
     }
     inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val idView: TextView = itemView.id_text
+        val contentView: TextView = itemView.content
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListingViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.listing_list_content, parent, false)
+        return ListingViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -50,6 +57,13 @@ class MasterRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val listingItem = listings[position]
+        holder.idView.text = listingItem.id.toString()
+        holder.contentView.text = listingItem.listingDescription
+
+        with(holder.itemView) {
+            tag = listingItem
+            setOnClickListener(onClickListener)
+        }
     }
 }
