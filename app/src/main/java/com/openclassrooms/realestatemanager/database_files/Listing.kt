@@ -9,6 +9,9 @@ data class Listing(
         @ColumnInfo(name = "listing_description")
         var listingDescription: String = "",
 
+        @ColumnInfo(name = "listing_price")
+        var listingPrice: String = "",
+
         @ColumnInfo(name = "id")
         @PrimaryKey(autoGenerate = true)
         var id: Long = 0
