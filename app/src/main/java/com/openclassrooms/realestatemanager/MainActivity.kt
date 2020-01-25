@@ -14,6 +14,7 @@ import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.openclassrooms.realestatemanager.MasterDetail.ListingListActivity
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.recycler_selection.ListingAdapter
@@ -61,10 +62,12 @@ class MainActivity : AppCompatActivity() {
 
         val button = findViewById<MaterialButton>(R.id.btn_upload)
         button.setOnClickListener {
-            val textBody = et_message_input.text.toString()
-            var listing = Listing(textBody)
+            val listingDescription = et_input_description.text.toString()
+            val listingPrice = et_input_price.text.toString()
+            var listing = Listing(listingDescription, listingPrice)
             listingViewModel.insert(listing)
-            et_message_input.text?.clear()
+            et_input_description.text?.clear()
+            et_input_price.text?.clear()
         }
 
     }
@@ -83,6 +86,13 @@ class MainActivity : AppCompatActivity() {
 
             R.id.menu_nav_to_photo_activity -> {
                 val intent = Intent(this, PhotoActivity::class.java)
+                startActivity(intent)
+                finish()
+                return true
+            }
+
+            R.id.menu_navigate_to_master -> {
+                val intent = Intent(this, ListingListActivity::class.java)
                 startActivity(intent)
                 finish()
                 return true
