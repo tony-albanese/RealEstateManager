@@ -59,7 +59,7 @@ class MasterRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
         val listingItem = listings[position]
         holder.idView.text = listingItem.id.toString()
-        holder.contentView.text = listingItem.listingDescription
+        holder.contentView.text = listingItem.listingPrice
 
         with(holder.itemView) {
             tag = listingItem
