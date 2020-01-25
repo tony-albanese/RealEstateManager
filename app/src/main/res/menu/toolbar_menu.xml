@@ -13,4 +13,9 @@
         android:title="Photos"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_navigate_to_master"
+        android:title="Go to Master/Detail"
+        app:showAsAction="never" />
+
 </menu>
