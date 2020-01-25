@@ -52,7 +52,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:hint="Send some text"
+        android:hint="Listing description"
         app:layout_constraintBottom_toTopOf="@+id/btn_upload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -60,8 +60,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_input_description"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Description" />
+            android:layout_height="match_parent" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +72,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:hint="Send some text"
+        android:hint="Enter the Price"
         app:layout_constraintBottom_toTopOf="@+id/et_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,8 +81,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:id="@+id/et_input_price"
-            android:layout_height="match_parent"
-            android:hint="Price" />
+            android:layout_height="match_parent" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
