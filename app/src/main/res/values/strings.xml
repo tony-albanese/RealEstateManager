@@ -2,4 +2,15 @@
     <string name="app_name">Real Estate Manager</string>
 
     <string name="create_listing_title">New Listing</string>
+
+    <string-array name="listing_type_array">
+        <item>House</item>
+        <item>Apartment</item>
+        <item>Condo</item>
+        <item>Loft</item>
+        <item>Retail Space</item>
+        <item>Warehouse</item>
+        <item>Penthouse</item>
+        <item>Commercial Space</item>
+    </string-array>
 </resources>
