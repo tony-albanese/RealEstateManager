@@ -18,7 +18,7 @@ interface ListingDao {
     fun getListings(): List<Listing>
 
     @Insert
-    fun insertListing(listing: Listing)
+    fun insertListing(listing: Listing): Long
 
     @Query("DELETE FROM table_listings")
     fun deleteAllListings()
