@@ -1,8 +1,10 @@
 package com.openclassrooms.realestatemanager
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
@@ -31,5 +33,20 @@ class MainActivity : AppCompatActivity() {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_item_add_listing -> {
+                val intent = Intent(this, EditListingActivity::class.java)
+                startActivity(intent)
+                finish()
+                return true
+            }
+            else -> {
+                return true
+
+            }
+        }
     }
 }
