@@ -12,9 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_activity_login"></activity>
+        <activity
             android:name=".MasterDetail.ListingListActivity"
             android:label="@string/title_listing_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MasterDetail.ListingDetailActivity"
             android:label="@string/title_listing_detail"
