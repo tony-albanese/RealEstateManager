@@ -8,10 +8,12 @@
         android:layout_height="wrap_content"
         android:text="@string/create_listing_title" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <ScrollView
         android:id="@+id/listing_form_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <include layout="@layout/listing_form_input_layout"
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
