@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.database_files
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -8,7 +9,7 @@ import androidx.room.Query
 interface ListingDao {
 
     @Query("SELECT * FROM table_listings")
-    fun getAllListings(): List<Listing>
+    fun getAllListings(): LiveData<List<Listing>>
 
     @Insert
     fun insertListing(listing: Listing)
