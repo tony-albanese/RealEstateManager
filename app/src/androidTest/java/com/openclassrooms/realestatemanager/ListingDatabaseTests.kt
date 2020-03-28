@@ -5,9 +5,11 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingDao
 import org.junit.After
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
@@ -31,4 +33,30 @@ class ListingDatabaseTests {
         db.close()
     }
 
+    @Test
+    @Throws(Exception::class)
+    fun writeAndReadListingById() {
+        val listing = Listing()
+        listing.listingDescription = "description"
+        listingDao.insertListing(listing)
+
+        val listings = listingDao.getListings()
+        assert(listings.isNotEmpty())
+    }
+
+    //TODO Need to test live data.
+
+
+    @Test
+    @Throws(Exception::class)
+    fun testDeleteDatabase() {
+        val listing1 = Listing()
+        val listing2 = Listing()
+        listingDao.insertListing(listing1)
+        listingDao.insertListing(listing2)
+
+        listingDao.deleteAllListings()
+        val listings = listingDao.getListings()
+        assert(listings.isEmpty())
+    }
 }
