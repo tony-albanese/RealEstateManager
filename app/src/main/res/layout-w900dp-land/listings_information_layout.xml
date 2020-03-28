@@ -8,6 +8,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="@color/recycler_view_color"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_above="@+id/rv_listings"
@@ -22,6 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
+        android:background="@color/landscape_detail_color"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
