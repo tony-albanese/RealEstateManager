@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
@@ -23,5 +25,11 @@ class MainActivity : AppCompatActivity() {
                 AppDatabase::class.java,
                 "listing-db")
                 .build()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        return true
     }
 }
