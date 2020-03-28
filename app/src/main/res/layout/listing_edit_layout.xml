@@ -3,4 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_listing_title" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/listing_form_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
