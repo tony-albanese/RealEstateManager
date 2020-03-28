@@ -46,6 +46,25 @@ class ListingDatabaseTests {
 
     //TODO Need to test live data.
 
+    @Test
+    @Throws(Exception::class)
+    fun testCreatingIdUponInsert() {
+        val listing1 = Listing()
+        listing1.listingDescription = "description"
+        val id = listingDao.insertListing(listing1)
+        assert(!id.equals(0))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testInsertAndRetrieveListing() {
+        val listing = Listing()
+        listing.listingDescription = "description"
+        val id = listingDao.insertListing(listing)
+        val retrievedListing = listingDao.getListingById(id)
+        assert(retrievedListing.listingDescription.equals(listing.listingDescription))
+    }
+
 
     @Test
     @Throws(Exception::class)
