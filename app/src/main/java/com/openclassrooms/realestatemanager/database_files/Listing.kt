@@ -19,5 +19,6 @@ data class Listing(
         @ColumnInfo(name = "listing_agent_id") var listingAgentId: Long = 0
 
         //TODO: Still need a way to record POIs.
+        //TODO: Still need to geocode.
 ) {
 }
