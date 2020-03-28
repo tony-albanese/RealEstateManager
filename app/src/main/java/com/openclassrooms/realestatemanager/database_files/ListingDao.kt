@@ -11,6 +11,12 @@ interface ListingDao {
     @Query("SELECT * FROM table_listings")
     fun getAllListings(): LiveData<List<Listing>>
 
+    /*
+    Added this function for testing purposes. It does not return live data.
+     */
+    @Query("SELECT * FROM table_listings")
+    fun getListings(): List<Listing>
+
     @Insert
     fun insertListing(listing: Listing)
 
