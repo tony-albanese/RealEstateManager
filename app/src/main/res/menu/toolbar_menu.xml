@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_item_add_listing"
+        android:icon="@drawable/ic_action_add_listing"
+        app:showAsAction="ifRoom"
+        android:title="Add Listing"
+        />
+    <item
+        android:id="@+id/menu_item_edit_listing"
+        android:icon="@drawable/ic_action_edit_listing"
+        app:showAsAction="ifRoom"
+        android:title="Edit Listing"
+        />
+    <item
+        android:id="@+id/menu_item_search_listings"
+        android:icon="@drawable/ic_action_search_listings"
+        app:showAsAction="ifRoom"
+        android:title="Search Listing"
+        />
 
 </menu>
