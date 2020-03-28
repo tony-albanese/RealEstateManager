@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import kotlinx.android.synthetic.main.listings_activity_layout.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,6 +15,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.listings_activity_layout)
+
+        setSupportActionBar(toolbar)
+        toolbar.title = title
 
         database = Room.databaseBuilder(this,
                 AppDatabase::class.java,
