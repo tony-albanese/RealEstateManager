@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <!--This is the base layout for all of the detailed information for a listing.
+    It will be the same on all devices. The grid layout will change. -->
     <TextView
         android:id="@+id/tv_description_title"
         android:layout_width="0dp"
