@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import kotlinx.android.synthetic.main.listings_activity_layout.*
+import kotlinx.android.synthetic.main.listings_information_layout.*
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var fab: FloatingActionButton
     companion object {
         var database: AppDatabase? = null
     }
@@ -23,10 +27,20 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
+        fab = findViewById(R.id.fab_test)
+
         database = Room.databaseBuilder(this,
                 AppDatabase::class.java,
                 "listing-db")
                 .build()
+
+        fab.setOnClickListener {
+            if (listing_info_landscape_frame_layout != null) {
+                Toast.makeText(this, "LARGE", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "SMALL", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
