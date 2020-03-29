@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/root_layout_color"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <LinearLayout
+        android:background="@color/landscape_detail_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
+            android:background="@color/generic_background_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Surface area" />
 
         <TextView
+            android:background="@color/generic_background_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Total Rooms" />
 
         <TextView
+            android:background="@color/generic_background_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Number of bathrooms" />
@@ -32,11 +37,13 @@
     </LinearLayout>
 
     <TextView
+        android:background="@color/generic_background_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Location" />
 
     <ImageView
+        android:background="@color/generic_background_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/placeholder_image" />
