@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_listing_type_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Select Listing Type"
+        android:textSize="20sp" />
+
 
     <!--Spinner for listing type. -->
     <androidx.appcompat.widget.AppCompatSpinner
@@ -69,7 +77,8 @@
     <androidx.appcompat.widget.AppCompatSeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="30" />
+        android:max="20"
+        android:progress="5" />
 
 
     <!--Set the number of bedrooms. -->
@@ -81,7 +90,8 @@
     <androidx.appcompat.widget.AppCompatSeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="30" />
+        android:max="10"
+        android:progress="2" />
 
     <!--Set the number of bathrooms. -->
     <com.google.android.material.textview.MaterialTextView
@@ -92,7 +102,44 @@
     <androidx.appcompat.widget.AppCompatSeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="30" />
+        android:max="20"
+        android:progress="2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Listing Date"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/tv_listing_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Listing data goes here." />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sell Date"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_selling_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sell date goes here" />
+
+    <TextView
+        android:id="@+id/tv_market_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Available for sale" />
+
+    <Switch
+        android:id="@+id/swithc_on_market"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>
