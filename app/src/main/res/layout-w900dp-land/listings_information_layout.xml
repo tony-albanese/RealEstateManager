@@ -23,6 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
+        android:id="@+id/listing_info_landscape_frame_layout"
         android:background="@color/landscape_detail_color"
         android:layout_width="0dp"
         android:layout_height="0dp"
