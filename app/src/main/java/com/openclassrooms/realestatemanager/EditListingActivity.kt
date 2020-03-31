@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.listing_edit_layout.*
 
 class EditListingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.listing_edit_layout)
+
+        edit_listing_toolbar.title = "Edit Listing"
+        setSupportActionBar(edit_listing_toolbar)
 
         val spinner = findViewById<Spinner>(R.id.spinner_listing_type)
 
