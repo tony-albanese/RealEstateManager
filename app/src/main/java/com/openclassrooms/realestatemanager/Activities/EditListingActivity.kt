@@ -70,13 +70,14 @@ class EditListingActivity : AppCompatActivity() {
         spinner.setSelection(viewModel.getSpinnerPosition())
         seekbar_total_rooms.progress = viewModel.getNumberOfRooms()
         seekbar_bedrooms.progress = viewModel.getBedrooms()
-
+        seekbar_bathrooms.progress = (viewModel.getBathrooms() * 2).toInt()
     }
 
     fun saveUI() {
         viewModel.saveSpinnerPosition(spinner_listing_type.selectedItemPosition)
         viewModel.saveNumberOfRooms(seekbar_total_rooms.progress)
         viewModel.saveNumberOfBedroom(seekbar_bedrooms.progress)
+        viewModel.saveNumberOfBathrooms((seekbar_bathrooms.progress / 2).toDouble())
     }
 
 }
