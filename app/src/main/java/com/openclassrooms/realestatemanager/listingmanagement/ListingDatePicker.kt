@@ -1,4 +1,24 @@
 package com.openclassrooms.realestatemanager.listingmanagement
 
-class ListingDatePicker {
+import android.app.DatePickerDialog
+import android.app.Dialog
+import android.content.Context
+import android.os.Bundle
+import android.widget.DatePicker
+import androidx.fragment.app.DialogFragment
+import java.util.*
+
+class ListingDatePicker(val c: Context, val calendar: Calendar) : DialogFragment(), DatePickerDialog.OnDateSetListener {
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return DatePickerDialog(c,
+                this,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+    }
+
+    override fun onDateSet(picker: DatePicker?, year: Int, month: Int, day: Int) {
+
+    }
 }
