@@ -54,7 +54,7 @@ class EditListingActivity : AppCompatActivity() {
     }
 
     fun loadUI() {
-        et_listing_street_address.setText(viewModel.address)
+        et_listing_street_address.setText(viewModel.streetAddress)
     }
 
 }
