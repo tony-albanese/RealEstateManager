@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -28,5 +30,11 @@ class EditListingActivity : AppCompatActivity() {
             // Apply the adapter to the spinner
             spinner.adapter = adapter
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.edit_listing_menu, menu)
+        return true
     }
 }
