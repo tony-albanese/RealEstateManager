@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="recycler_view_color">#F4EA7F</color>
+    <color name="landscape_detail_color">#82F17E</color>
+    <color name="portrait_detail_color">#7EAAF1</color>
+    <color name="root_layout_color">#7EAAF1</color>
+    <color name="generic_background_color">#C4C4A6</color>
 </resources>
