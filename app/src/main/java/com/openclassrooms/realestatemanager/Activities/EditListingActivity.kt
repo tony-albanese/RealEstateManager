@@ -5,18 +5,22 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.listingmanagement.ListingDatePicker
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModelFactory
 import kotlinx.android.synthetic.main.listing_edit_layout.*
 import kotlinx.android.synthetic.main.listing_form_input_layout.*
+import java.util.*
 
 class EditListingActivity : AppCompatActivity() {
 
     lateinit var viewModel: ListingEditViewModel
     lateinit var spinner: Spinner
+    lateinit var textView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +31,7 @@ class EditListingActivity : AppCompatActivity() {
 
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
 
+        textView = findViewById(R.id.tv_listing_date)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
                 this,
@@ -46,6 +51,11 @@ class EditListingActivity : AppCompatActivity() {
         Load the UI
          */
         loadUI()
+
+        tv_listing_date.setOnClickListener {
+            val datePicker = ListingDatePicker(this, Calendar.getInstance(), textView, setDateCallback)
+            datePicker.show(supportFragmentManager, "datPicker")
+        }
 
     }
 
@@ -79,5 +89,12 @@ class EditListingActivity : AppCompatActivity() {
         viewModel.saveNumberOfBedroom(seekbar_bedrooms.progress)
         viewModel.saveNumberOfBathrooms((seekbar_bathrooms.progress / 2).toDouble())
     }
-
+    
+    /*
+    This is the function that will be called when the date has been set.
+    It will be used to set the selling date.
+     */
+    val setDateCallback: (TextView, String) -> Unit = { textView: TextView, s: String ->
+        textView.text = s
+    }
 }
