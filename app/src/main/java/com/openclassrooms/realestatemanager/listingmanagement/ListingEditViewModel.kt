@@ -19,12 +19,19 @@ class ListingEditViewModel(
     val SPINNER_POSITION_KEY: String = "spinner_position_key"
     val TOTAL_ROOMS_KEY: String = "total_rooms_key"
     val BEDROOMS_KEY: String = "bedrooms_key"
+    val BATHROOMS_KEY: String = "bathrooms_key"
+    val FOR_SALE_KEY: String = "for_sale_key"
+    val IS_PUBLISHED_KEY: String = "is_published_key"
 
     var streetAddress: String
     var zipCode: String
     var city: String
     var salesPrice: String
+    var isForSale: Boolean
+    var isPublished: Boolean
+
     val repository: ListingRepository
+
 
     init {
 
@@ -33,6 +40,9 @@ class ListingEditViewModel(
         zipCode = handle["et_listing_city"] ?: ""
         city = handle["et_listing_zipcode"] ?: ""
         salesPrice = handle["et_listing_sales_price"] ?: ""
+
+        isForSale = handle.get(FOR_SALE_KEY) ?: true
+        isPublished = handle.get(IS_PUBLISHED_KEY) ?: true
 
 
         val listingDao = AppDatabase.getDatabase(application).listingDao()
@@ -65,4 +75,11 @@ class ListingEditViewModel(
         return handle.get(BEDROOMS_KEY) ?: 0
     }
 
+    fun saveNumberOfBathrooms(bathrooms: Double) {
+        handle.set(BATHROOMS_KEY, bathrooms)
+    }
+
+    fun getBathrooms(): Double {
+        return handle.get(BATHROOMS_KEY) ?: 1.5
+    }
 }
