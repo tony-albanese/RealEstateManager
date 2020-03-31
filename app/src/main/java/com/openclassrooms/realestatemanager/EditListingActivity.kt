@@ -6,9 +6,9 @@ import android.view.MenuInflater
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
+import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModelFactory
 import kotlinx.android.synthetic.main.listing_edit_layout.*
 import kotlinx.android.synthetic.main.listing_form_input_layout.*
 
@@ -37,7 +37,8 @@ class EditListingActivity : AppCompatActivity() {
             spinner.adapter = adapter
         }
 
-        viewModel = ViewModelProvider(this, SavedStateViewModelFactory(application, this))
+        val viewModelFactory = ListingEditViewModelFactory(application, this, null)
+        viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ListingEditViewModel::class.java)
         /*
         Load the UI
