@@ -16,13 +16,22 @@ class ListingEditViewModel(
         private val handle: SavedStateHandle
 ) : ViewModel() {
 
+
     var address: String
     val repository: ListingRepository
 
     init {
+
+
         address = handle["tv_listing_street_address"] ?: ""
+
+
         val listingDao = AppDatabase.getDatabase(application).listingDao()
         repository = ListingRepository(listingDao)
+    }
+
+    fun saveSpinnerPostion(position: Int) {
+        //handle.set()
     }
 
 }
