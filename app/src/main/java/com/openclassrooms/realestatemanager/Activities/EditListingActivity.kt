@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager
+package com.openclassrooms.realestatemanager.Activities
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModelFactory
 import kotlinx.android.synthetic.main.listing_edit_layout.*
