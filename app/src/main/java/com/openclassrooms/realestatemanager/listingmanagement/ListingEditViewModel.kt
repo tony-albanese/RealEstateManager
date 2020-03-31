@@ -12,7 +12,10 @@ class ListingEditViewModel(
         private val handle: SavedStateHandle
 ) : ViewModel() {
 
-    fun loadData() {
-        
+    var address: String
+
+    init {
+        address = handle["tv_listing_street_address"] ?: ""
     }
+
 }
