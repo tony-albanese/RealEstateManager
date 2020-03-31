@@ -40,6 +40,7 @@
         android:hint="City">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_listing_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -52,6 +53,7 @@
         android:hint="Zipcode">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_listing_zipcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
