@@ -38,7 +38,7 @@ class ListingEditViewModel(
     }
 
 
-    fun setSpinnerPostion(position: Int) {
+    fun setSpinnerPosition(position: Int) {
         handle.set(SPINNER_POSITION_KEY, position)
     }
 
