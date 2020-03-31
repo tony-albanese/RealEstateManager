@@ -82,4 +82,20 @@ class ListingEditViewModel(
     fun getBathrooms(): Double {
         return handle.get(BATHROOMS_KEY) ?: 1.5
     }
+
+    fun saveForSaleState(isForSale: Boolean) {
+        handle.set(FOR_SALE_KEY, isForSale)
+    }
+
+    fun getForSaleState(): Boolean {
+        return handle.get(FOR_SALE_KEY) ?: true
+    }
+
+    fun saveIsPublishedState(isPublished: Boolean) {
+        handle.set(IS_PUBLISHED_KEY, isPublished)
+    }
+
+    fun getIsPublishedState(): Boolean {
+        return handle.get(IS_PUBLISHED_KEY) ?: true
+    }
 }
