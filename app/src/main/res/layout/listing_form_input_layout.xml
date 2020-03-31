@@ -106,6 +106,7 @@
         android:text="Number of Bathrooms" />
 
     <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seekbar_bathrooms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="20"
@@ -143,7 +144,7 @@
         android:text="Available for sale" />
 
     <Switch
-        android:id="@+id/swithc_on_market"
+        android:id="@+id/switch_for_sale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
