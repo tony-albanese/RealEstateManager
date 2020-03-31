@@ -6,9 +6,15 @@ import android.view.MenuInflater
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.SavedStateViewModelFactory
+import androidx.lifecycle.ViewModelProvider
+import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
 import kotlinx.android.synthetic.main.listing_edit_layout.*
+import kotlinx.android.synthetic.main.listing_form_input_layout.*
 
 class EditListingActivity : AppCompatActivity() {
+
+    lateinit var viewModel: ListingEditViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +36,14 @@ class EditListingActivity : AppCompatActivity() {
             // Apply the adapter to the spinner
             spinner.adapter = adapter
         }
+
+        viewModel = ViewModelProvider(this, SavedStateViewModelFactory(application, this))
+                .get(ListingEditViewModel::class.java)
+        /*
+        Load the UI
+         */
+        loadUI()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -37,4 +51,9 @@ class EditListingActivity : AppCompatActivity() {
         inflater.inflate(R.menu.edit_listing_menu, menu)
         return true
     }
+
+    fun loadUI() {
+        tv_listing_street_address.setText(viewModel.address)
+    }
+    
 }
