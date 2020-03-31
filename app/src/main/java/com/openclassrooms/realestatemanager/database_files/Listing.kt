@@ -17,7 +17,8 @@ data class Listing(
         @ColumnInfo(name = "listing_date") var listingDate: String = "",
         @ColumnInfo(name = "listing_sale_date") var listingSaleDate: String = "",
         @ColumnInfo(name = "listing_agent_id") var listingAgentId: Long = 0,
-        @ColumnInfo(name = "listing_agent_name") var listingAgentName: String = ""
+        @ColumnInfo(name = "listing_agent_name") var listingAgentName: String = "",
+        @ColumnInfo(name = "listing_is_published") var listingIsPublished: Boolean = false
 
         //TODO: Still need a way to record POIs.
         //TODO: Still need to geocode.
