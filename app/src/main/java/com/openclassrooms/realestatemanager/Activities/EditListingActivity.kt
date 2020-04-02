@@ -120,7 +120,7 @@ class EditListingActivity : AppCompatActivity() {
     TODO: Implement this method.
      */
 
-    fun initiateExitAcitivitySequence() {
-        
+    fun initiateExitActivitySequence() {
+
     }
 }
