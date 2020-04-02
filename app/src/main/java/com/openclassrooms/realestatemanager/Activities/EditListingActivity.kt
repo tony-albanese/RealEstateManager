@@ -147,12 +147,10 @@ class EditListingActivity : AppCompatActivity() {
 
     TODO: Implement this method.
      */
-
     fun initiateExitActivitySequence() {
-        val dialogBuilder = CustomDialogBuilder(this)
+        val dialogBuilder = CustomDialogBuilder(this, MainActivity::class.java)
         dialogBuilder.buildWarningDialog()
                 .create()
                 .show()
     }
-
 }
