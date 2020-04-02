@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.listing_edit_layout.*
 import kotlinx.android.synthetic.main.listing_form_input_layout.*
 import java.util.*
 
-class EditListingActivity : AppCompatActivity() {
+class EditListingActivity : AppCompatActivity(), CustomDialogBuilder.OnSaveButtonClickCallback {
 
     lateinit var viewModel: ListingEditViewModel
     lateinit var spinner: Spinner
@@ -40,6 +41,12 @@ class EditListingActivity : AppCompatActivity() {
 
         btn_cancel_listing.setOnClickListener {
             initiateExitActivitySequence()
+        }
+
+        btn_save_listing.setOnClickListener {
+            val builder = CustomDialogBuilder(this, MainActivity::class.java)
+            builder.createSaveListingDialog()
+                    .show()
         }
 
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
@@ -152,5 +159,9 @@ class EditListingActivity : AppCompatActivity() {
         dialogBuilder.buildWarningDialog()
                 .create()
                 .show()
+    }
+
+    override fun onSaveButtonClick() {
+        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
     }
 }
