@@ -27,6 +27,10 @@ class ListingEditViewModel(
     var zipCode: String
     var city: String
     var salesPrice: String
+
+    var listingDate: String
+    var sellingDate: String
+
     var isForSale: Boolean
     var isPublished: Boolean
 
@@ -40,6 +44,9 @@ class ListingEditViewModel(
         zipCode = handle["et_listing_city"] ?: ""
         city = handle["et_listing_zipcode"] ?: ""
         salesPrice = handle["et_listing_sales_price"] ?: ""
+
+        listingDate = handle["tv_listing_date"] ?: ""
+        sellingDate = handle["tv_selling_date"] ?: ""
 
         isForSale = handle.get(FOR_SALE_KEY) ?: true
         isPublished = handle.get(IS_PUBLISHED_KEY) ?: true
