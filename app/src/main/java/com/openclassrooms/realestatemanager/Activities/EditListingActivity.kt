@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.Activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
 import com.openclassrooms.realestatemanager.listingmanagement.ListingDatePicker
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModelFactory
@@ -35,7 +35,11 @@ class EditListingActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         edit_listing_toolbar.setNavigationOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            initiateExitActivitySequence()
+        }
+
+        btn_cancel_listing.setOnClickListener {
+            initiateExitActivitySequence()
         }
 
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
@@ -71,6 +75,7 @@ class EditListingActivity : AppCompatActivity() {
             val datePicker = ListingDatePicker(this, Calendar.getInstance(), sellingDateTextView, setDateCallback)
             datePicker.show(supportFragmentManager, "sellingDatePicker")
         }
+
 
     }
 
@@ -144,6 +149,10 @@ class EditListingActivity : AppCompatActivity() {
      */
 
     fun initiateExitActivitySequence() {
-
+        val dialogBuilder = CustomDialogBuilder(this)
+        dialogBuilder.buildWarningDialog()
+                .create()
+                .show()
     }
+
 }
