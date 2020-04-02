@@ -54,7 +54,12 @@ class EditListingActivity : AppCompatActivity() {
 
         tv_listing_date.setOnClickListener {
             val datePicker = ListingDatePicker(this, Calendar.getInstance(), textView, setDateCallback)
-            datePicker.show(supportFragmentManager, "datPicker")
+            datePicker.show(supportFragmentManager, "listingDatePicker")
+        }
+
+        tv_selling_date.setOnClickListener {
+            val datePicker = ListingDatePicker(this, Calendar.getInstance(), textView, setDateCallback)
+            datePicker.show(supportFragmentManager, "sellingDatePicker")
         }
 
     }
@@ -89,7 +94,7 @@ class EditListingActivity : AppCompatActivity() {
         viewModel.saveNumberOfBedroom(seekbar_bedrooms.progress)
         viewModel.saveNumberOfBathrooms((seekbar_bathrooms.progress / 2).toDouble())
     }
-    
+
     /*
     This is the function that will be called when the date has been set.
     It will be used to set the selling date.
