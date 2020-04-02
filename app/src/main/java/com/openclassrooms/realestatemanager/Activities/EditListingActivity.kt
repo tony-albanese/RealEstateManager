@@ -112,4 +112,15 @@ class EditListingActivity : AppCompatActivity() {
     val setDateCallback: (TextView, String) -> Unit = { textView: TextView, s: String ->
         textView.text = s
     }
+
+    /*
+    This method will initiate the sequence to exit the Activity when the user clicks, save, cancel,
+    delete, or save.
+
+    TODO: Implement this method.
+     */
+
+    fun initiateExitAcitivitySequence() {
+        
+    }
 }
