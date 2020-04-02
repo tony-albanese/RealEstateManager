@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -29,6 +30,13 @@ class EditListingActivity : AppCompatActivity() {
 
         edit_listing_toolbar.title = "Edit Listing"
         setSupportActionBar(edit_listing_toolbar)
+
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        edit_listing_toolbar.setNavigationOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
 
