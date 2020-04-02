@@ -12,9 +12,15 @@ class CustomDialogBuilder(
 ) {
 
     val builder: AlertDialog.Builder
+    internal var myCallback: OnSaveButtonClickCallback
 
     init {
         builder = AlertDialog.Builder(context)
+        myCallback = context as OnSaveButtonClickCallback
+    }
+
+    interface OnSaveButtonClickCallback {
+        fun onSaveButtonClick()
     }
 
     fun buildWarningDialog(): AlertDialog.Builder {
@@ -35,5 +41,14 @@ class CustomDialogBuilder(
             val intent = Intent(context, launchClass)
             context.startActivity(intent)
         }
+    }
+
+    fun createSaveListingDialog(): AlertDialog.Builder {
+        return builder.setTitle("Save Listing")
+                .setMessage("Save the current listing?")
+                .setNegativeButton("No", null)
+                .setPositiveButton("Save", DialogInterface.OnClickListener { dialogInterface, i ->
+                    myCallback
+                })
     }
 }
