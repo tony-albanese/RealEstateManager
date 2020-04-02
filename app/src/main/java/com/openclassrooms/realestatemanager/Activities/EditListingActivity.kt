@@ -116,10 +116,16 @@ class EditListingActivity : AppCompatActivity() {
 
         //The values for the EditTexts are set by the ViewModel.
 
-        
+        //Save the number of Rooms
         viewModel.saveNumberOfRooms(seekbar_total_rooms.progress)
         viewModel.saveNumberOfBedroom(seekbar_bedrooms.progress)
         viewModel.saveNumberOfBathrooms((seekbar_bathrooms.progress / 2).toDouble())
+
+        //The listing date and selling date are automatically handled by the view model.
+
+        //Save the state of the switches.
+        viewModel.saveForSaleState(switch_for_sale.isChecked)
+        viewModel.saveIsPublishedState(switch_is_published.isChecked)
     }
 
     /*
