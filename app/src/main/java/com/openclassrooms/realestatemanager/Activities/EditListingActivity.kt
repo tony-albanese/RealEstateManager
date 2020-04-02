@@ -20,7 +20,8 @@ class EditListingActivity : AppCompatActivity() {
 
     lateinit var viewModel: ListingEditViewModel
     lateinit var spinner: Spinner
-    lateinit var textView: TextView
+    lateinit var sellingDateTextView: TextView
+    lateinit var listingDateTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +32,8 @@ class EditListingActivity : AppCompatActivity() {
 
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
 
-        textView = findViewById(R.id.tv_listing_date)
+        listingDateTextView = findViewById(R.id.tv_listing_date)
+        sellingDateTextView = findViewById(R.id.tv_selling_date)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
                 this,
@@ -53,12 +55,12 @@ class EditListingActivity : AppCompatActivity() {
         loadUI()
 
         tv_listing_date.setOnClickListener {
-            val datePicker = ListingDatePicker(this, Calendar.getInstance(), textView, setDateCallback)
+            val datePicker = ListingDatePicker(this, Calendar.getInstance(), listingDateTextView, setDateCallback)
             datePicker.show(supportFragmentManager, "listingDatePicker")
         }
 
         tv_selling_date.setOnClickListener {
-            val datePicker = ListingDatePicker(this, Calendar.getInstance(), textView, setDateCallback)
+            val datePicker = ListingDatePicker(this, Calendar.getInstance(), sellingDateTextView, setDateCallback)
             datePicker.show(supportFragmentManager, "sellingDatePicker")
         }
 
