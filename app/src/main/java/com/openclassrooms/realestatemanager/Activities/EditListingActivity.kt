@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.listing_edit_layout.*
 import kotlinx.android.synthetic.main.listing_form_input_layout.*
 import java.util.*
 
-class EditListingActivity : AppCompatActivity(), CustomDialogBuilder.OnSaveButtonClickCallback {
+class EditListingActivity : AppCompatActivity() {
 
     lateinit var viewModel: ListingEditViewModel
     lateinit var spinner: Spinner
@@ -44,7 +45,7 @@ class EditListingActivity : AppCompatActivity(), CustomDialogBuilder.OnSaveButto
         }
 
         btn_save_listing.setOnClickListener {
-            val builder = CustomDialogBuilder(this, MainActivity::class.java)
+            val builder = CustomDialogBuilder(this, MainActivity::class.java, createPositiveButtonClickListener())
             builder.createSaveListingDialog()
                     .show()
         }
@@ -155,13 +156,15 @@ class EditListingActivity : AppCompatActivity(), CustomDialogBuilder.OnSaveButto
     TODO: Implement this method.
      */
     fun initiateExitActivitySequence() {
-        val dialogBuilder = CustomDialogBuilder(this, MainActivity::class.java)
+        val dialogBuilder = CustomDialogBuilder(this, MainActivity::class.java, createPositiveButtonClickListener())
         dialogBuilder.buildWarningDialog()
                 .create()
                 .show()
     }
 
-    override fun onSaveButtonClick() {
-        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
+    fun createPositiveButtonClickListener(): DialogInterface.OnClickListener {
+        return DialogInterface.OnClickListener { dialogInterface, i ->
+            Toast.makeText(this, "Save!!!", Toast.LENGTH_SHORT).show()
+        }
     }
 }
