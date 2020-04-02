@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import com.openclassrooms.realestatemanager.Utilities.DateUtilities
 import java.util.*
 
 class ListingDatePicker(val c: Context, val calendar: Calendar, val tv: TextView, val callback: (TextView, String) -> Unit) : DialogFragment(), DatePickerDialog.OnDateSetListener {
@@ -19,10 +20,10 @@ class ListingDatePicker(val c: Context, val calendar: Calendar, val tv: TextView
                 calendar.get(Calendar.DAY_OF_MONTH))
     }
 
-    /*
-    TODO: Format the date properly and update the textview.
-     */
+    
     override fun onDateSet(picker: DatePicker?, year: Int, month: Int, day: Int) {
-        callback(tv, "Picker callback called.")
+        calendar.set(year, month, day)
+        val dateString = DateUtilities.getDateString(calendar)
+        callback(tv, dateString)
     }
 }
