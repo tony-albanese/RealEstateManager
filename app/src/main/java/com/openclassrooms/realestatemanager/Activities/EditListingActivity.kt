@@ -84,12 +84,6 @@ class EditListingActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.edit_listing_menu, menu)
-        return true
-    }
-
     override fun onPause() {
         super.onPause()
         saveUI()
@@ -155,7 +149,7 @@ class EditListingActivity : AppCompatActivity() {
         dialogBuilder.buildWarningDialog(confirmDiscardChangesClickListener())
                 .show()
     }
-    
+
     /*
     This code will be executed if the user agrees to leave the activity and discard changes
     to the form.
@@ -173,4 +167,12 @@ class EditListingActivity : AppCompatActivity() {
             Toast.makeText(this, "Listing deleted", Toast.LENGTH_SHORT).show()
         }
     }
+
+    //Here's where the menu code will go.
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.edit_listing_menu, menu)
+        return true
+    }
+
 }
