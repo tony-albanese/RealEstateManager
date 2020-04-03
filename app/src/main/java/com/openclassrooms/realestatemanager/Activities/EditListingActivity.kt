@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
@@ -175,4 +176,16 @@ class EditListingActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //return super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.menu_item_delete_listing -> {
+                val dialogBuilder = CustomDialogBuilder(this)
+                dialogBuilder.buildDeleteListingWarningDialog(confirmListingDeleteClickListener())
+                        ?.show()
+                return true
+            }
+            else -> return true
+        }
+    }
 }
