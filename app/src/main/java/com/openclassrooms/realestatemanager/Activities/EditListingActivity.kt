@@ -155,17 +155,7 @@ class EditListingActivity : AppCompatActivity() {
         dialogBuilder.buildWarningDialog(confirmDiscardChangesClickListener())
                 .show()
     }
-
-    /*
-    This is the click listener that will be called when the user hits the OK button to confirm
-    saving changes to form after being warned.
-     */
-    fun confirmSaveButtonClickListener(): DialogInterface.OnClickListener {
-        return DialogInterface.OnClickListener { dialogInterface, i ->
-            Toast.makeText(this, "Save!!!", Toast.LENGTH_SHORT).show()
-        }
-    }
-
+    
     /*
     This code will be executed if the user agrees to leave the activity and discard changes
     to the form.
@@ -175,6 +165,12 @@ class EditListingActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+    fun confirmListingDeleteClickListener(): DialogInterface.OnClickListener {
+        return DialogInterface.OnClickListener { dialogInterface, i ->
+            Toast.makeText(this, "Listing deleted", Toast.LENGTH_SHORT).show()
         }
     }
 }
