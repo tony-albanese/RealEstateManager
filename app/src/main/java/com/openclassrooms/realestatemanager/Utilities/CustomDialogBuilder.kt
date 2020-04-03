@@ -21,5 +21,11 @@ class CustomDialogBuilder(
                 .setPositiveButton("Yes", onYesButtonClickListener)
     }
 
-    
+    fun buildDeleteListingWarningDialog(onYesButtonClickListener: DialogInterface.OnClickListener): AlertDialog.Builder? {
+        return builder.setTitle("Warning")
+                .setMessage("Delete listing? This action cannot be undone")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Yes", onYesButtonClickListener)
+        
+    }
 }
