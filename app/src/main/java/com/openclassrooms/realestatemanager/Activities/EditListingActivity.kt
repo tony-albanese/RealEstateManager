@@ -45,7 +45,7 @@ class EditListingActivity : AppCompatActivity() {
         }
 
         btn_save_listing.setOnClickListener {
-            
+
         }
 
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
@@ -154,7 +154,7 @@ class EditListingActivity : AppCompatActivity() {
     TODO: Implement this method.
      */
     fun initiateExitActivitySequence() {
-        val dialogBuilder = CustomDialogBuilder(this, MainActivity::class.java, saveButtonClickListener())
+        val dialogBuilder = CustomDialogBuilder(this)
         dialogBuilder.buildWarningDialog()
                 .create()
                 .show()
