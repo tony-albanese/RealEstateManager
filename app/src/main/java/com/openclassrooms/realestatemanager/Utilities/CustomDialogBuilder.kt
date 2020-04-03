@@ -20,11 +20,6 @@ class CustomDialogBuilder(
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Yes", onYesButtonClickListener)
     }
+
     
-    fun createSaveListingDialog(onYesButtonClickListener: DialogInterface.OnClickListener): AlertDialog.Builder {
-        return builder.setTitle("Save Listing")
-                .setMessage("Save the current listing?")
-                .setNegativeButton("No", null)
-                .setPositiveButton("Save", onYesButtonClickListener)
-    }
 }
