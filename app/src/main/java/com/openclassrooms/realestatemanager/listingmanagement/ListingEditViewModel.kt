@@ -13,7 +13,8 @@ a listing.
 
 class ListingEditViewModel(
         private val application: Application,
-        private val handle: SavedStateHandle
+        private val handle: SavedStateHandle,
+        val listingId: Long
 ) : ViewModel() {
 
     val SPINNER_POSITION_KEY: String = "spinner_position_key"

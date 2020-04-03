@@ -14,6 +14,7 @@ passed to it.
 class ListingEditViewModelFactory(
         val application: Application,
         val owner: SavedStateRegistryOwner,
+        val id: Long,
         defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
     override fun <T : ViewModel> create(
@@ -21,7 +22,7 @@ class ListingEditViewModelFactory(
             modelClass: Class<T>,
             handle: SavedStateHandle
     ): T {
-        return ListingEditViewModel(application, handle) as T
+        return ListingEditViewModel(application, handle, id) as T
     }
 
 }
