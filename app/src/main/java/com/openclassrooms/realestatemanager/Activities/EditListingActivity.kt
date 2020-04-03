@@ -45,9 +45,7 @@ class EditListingActivity : AppCompatActivity() {
         }
 
         btn_save_listing.setOnClickListener {
-            val builder = CustomDialogBuilder(this, MainActivity::class.java, saveButtonClickListener())
-            builder.createSaveListingDialog()
-                    .show()
+            
         }
 
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
