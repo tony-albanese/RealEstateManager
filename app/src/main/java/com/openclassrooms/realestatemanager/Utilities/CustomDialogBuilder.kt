@@ -1,15 +1,12 @@
 package com.openclassrooms.realestatemanager.Utilities
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 
 class CustomDialogBuilder(
-        val context: Context,
-        val launchClass: Class<out Activity>,
-        val listener: DialogInterface.OnClickListener
+        val context: Context
 ) {
 
     val builder: AlertDialog.Builder
@@ -18,11 +15,11 @@ class CustomDialogBuilder(
         builder = AlertDialog.Builder(context)
     }
 
-    fun buildWarningDialog(): AlertDialog.Builder {
+    fun buildWarningDialog(onYesButtonClickListener: DialogInterface.OnClickListener): AlertDialog.Builder {
         return builder.setTitle("Warning")
                 .setMessage("Are you sure? Unsaved changes will be discarded")
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Yes", createPositiveButtonListener())
+                .setPositiveButton("Yes", onYesButtonClickListener)
     }
 
     /*
@@ -36,10 +33,10 @@ class CustomDialogBuilder(
         }
     }
 
-    fun createSaveListingDialog(): AlertDialog.Builder {
+    fun createSaveListingDialog(onYesButtonClickListener: DialogInterface.OnClickListener): AlertDialog.Builder {
         return builder.setTitle("Save Listing")
                 .setMessage("Save the current listing?")
                 .setNegativeButton("No", null)
-                .setPositiveButton("Save", listener)
+                .setPositiveButton("Save", onYesButtonClickListener)
     }
 }
