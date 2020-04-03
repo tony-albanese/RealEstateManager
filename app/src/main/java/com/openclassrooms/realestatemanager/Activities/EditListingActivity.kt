@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.Activities
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -171,4 +172,15 @@ class EditListingActivity : AppCompatActivity() {
     }
 
 
+    /*
+    This code will be executed if the user agrees to leave the activity and discard changes
+    to the form.
+     */
+    fun confirmDiscardChangesClickListener(): DialogInterface.OnClickListener {
+        return DialogInterface.OnClickListener { dialogInterface, i ->
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
 }
