@@ -45,7 +45,7 @@ class EditListingActivity : AppCompatActivity() {
         }
 
         btn_save_listing.setOnClickListener {
-            val builder = CustomDialogBuilder(this, MainActivity::class.java, createPositiveButtonClickListener())
+            val builder = CustomDialogBuilder(this, MainActivity::class.java, saveButtonClickListener())
             builder.createSaveListingDialog()
                     .show()
         }
@@ -156,15 +156,21 @@ class EditListingActivity : AppCompatActivity() {
     TODO: Implement this method.
      */
     fun initiateExitActivitySequence() {
-        val dialogBuilder = CustomDialogBuilder(this, MainActivity::class.java, createPositiveButtonClickListener())
+        val dialogBuilder = CustomDialogBuilder(this, MainActivity::class.java, saveButtonClickListener())
         dialogBuilder.buildWarningDialog()
                 .create()
                 .show()
     }
 
-    fun createPositiveButtonClickListener(): DialogInterface.OnClickListener {
+    /*
+    This is the click listener that will be called when the user hits the OK button to confirm
+    saving changes to form after being warned.
+     */
+    fun confirmSaveButtonClickListener(): DialogInterface.OnClickListener {
         return DialogInterface.OnClickListener { dialogInterface, i ->
             Toast.makeText(this, "Save!!!", Toast.LENGTH_SHORT).show()
         }
     }
+
+
 }
