@@ -69,10 +69,7 @@ class EditListingActivity : AppCompatActivity() {
         val viewModelFactory = ListingEditViewModelFactory(application, this, null)
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ListingEditViewModel::class.java)
-        /*
-        Load the UI
-         */
-        loadUI()
+    
 
         tv_listing_date.setOnClickListener {
             val datePicker = ListingDatePicker(this, Calendar.getInstance(), listingDateTextView, setDateCallback)
@@ -85,52 +82,6 @@ class EditListingActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        saveUI()
-    }
-
-    fun loadUI() {
-        //Load the Address components
-        spinner.setSelection(viewModel.getSpinnerPosition())
-        et_listing_street_address.setText(viewModel.streetAddress)
-        et_listing_city.setText(viewModel.city)
-        et_listing_zipcode.setText(viewModel.zipCode)
-
-        //Load the sales price.
-        et_listing_sales_price.setText(viewModel.salesPrice)
-
-        //Load the rooms data.
-        seekbar_total_rooms.progress = viewModel.getNumberOfRooms()
-        seekbar_bedrooms.progress = viewModel.getBedrooms()
-        seekbar_bathrooms.progress = (viewModel.getBathrooms() * 2).toInt()
-
-        //Load the listing date and selling date.
-        tv_selling_date.text = viewModel.sellingDate
-        tv_listing_date.text = viewModel.listingDate
-
-        //Load switch states.
-        switch_for_sale.isChecked = viewModel.getForSaleState()
-        switch_is_published.isChecked = viewModel.getIsPublishedState()
-    }
-
-    fun saveUI() {
-        //Save the spinner for listing type.
-        viewModel.saveSpinnerPosition(spinner_listing_type.selectedItemPosition)
-
-        //The values for the EditTexts are set by the ViewModel.
-
-        //Save the number of Rooms
-        viewModel.saveNumberOfRooms(seekbar_total_rooms.progress)
-        viewModel.saveNumberOfBedroom(seekbar_bedrooms.progress)
-        viewModel.saveNumberOfBathrooms((seekbar_bathrooms.progress / 2).toDouble())
-
-        //The listing date and selling date are automatically handled by the view model.
-
-        //Save the state of the switches.
-        viewModel.saveForSaleState(switch_for_sale.isChecked)
-        viewModel.saveIsPublishedState(switch_is_published.isChecked)
-    }
 
     /*
     This is the function that will be called when the date has been set.
