@@ -82,8 +82,6 @@ class EditListingActivity : AppCompatActivity() {
             val datePicker = ListingDatePicker(this, Calendar.getInstance(), sellingDateTextView, setDateCallback)
             datePicker.show(supportFragmentManager, "sellingDatePicker")
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -96,7 +94,6 @@ class EditListingActivity : AppCompatActivity() {
         super.onPause()
         saveUI()
     }
-
 
     fun loadUI() {
         //Load the Address components
@@ -151,13 +148,11 @@ class EditListingActivity : AppCompatActivity() {
     /*
     This method will initiate the sequence to exit the Activity when the user clicks, save, cancel,
     delete, or save.
-
     TODO: Implement this method.
      */
     fun initiateExitActivitySequence() {
         val dialogBuilder = CustomDialogBuilder(this)
-        dialogBuilder.buildWarningDialog()
-                .create()
+        dialogBuilder.buildWarningDialog(confirmDiscardChangesClickListener())
                 .show()
     }
 
@@ -170,7 +165,6 @@ class EditListingActivity : AppCompatActivity() {
             Toast.makeText(this, "Save!!!", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     /*
     This code will be executed if the user agrees to leave the activity and discard changes
