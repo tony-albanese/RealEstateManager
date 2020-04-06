@@ -66,7 +66,7 @@ class EditListingActivity : AppCompatActivity() {
             spinner.adapter = adapter
         }
 
-        val viewModelFactory = ListingEditViewModelFactory(application, this, null)
+        val viewModelFactory = ListingEditViewModelFactory(application, this, 0, null)
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ListingEditViewModel::class.java)
     
