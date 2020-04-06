@@ -84,6 +84,20 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tv_listing_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listing Area" />
+
+        <!-- TODO need to link the value to the viewModel and convert type. -->
+        <EditText
+            android:id="@+id/et_listing_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+
         <!--Set the total number of rooms. -->
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
