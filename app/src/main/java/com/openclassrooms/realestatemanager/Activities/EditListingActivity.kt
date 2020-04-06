@@ -72,6 +72,8 @@ class EditListingActivity : AppCompatActivity() {
         val viewModelFactory = ListingEditViewModelFactory(application, this, 0, null)
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ListingEditViewModel::class.java)
+
+        binding.listingEditViewModel = viewModel
     
 
         tv_listing_date.setOnClickListener {
