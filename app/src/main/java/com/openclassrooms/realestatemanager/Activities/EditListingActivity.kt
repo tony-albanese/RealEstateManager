@@ -11,9 +11,11 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
+import com.openclassrooms.realestatemanager.databinding.ListingEditLayoutBinding
 import com.openclassrooms.realestatemanager.listingmanagement.ListingDatePicker
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModelFactory
@@ -30,8 +32,9 @@ class EditListingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.listing_edit_layout)
+        //setContentView(R.layout.listing_edit_layout)
 
+        val binding: ListingEditLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_edit_layout)
         edit_listing_toolbar.title = "Edit Listing"
         setSupportActionBar(edit_listing_toolbar)
 
