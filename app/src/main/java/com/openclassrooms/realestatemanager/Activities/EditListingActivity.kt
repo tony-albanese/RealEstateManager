@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +22,7 @@ import kotlinx.android.synthetic.main.listing_edit_layout.*
 import kotlinx.android.synthetic.main.listing_form_input_layout.*
 import java.util.*
 
-class EditListingActivity : AppCompatActivity() {
+class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
     lateinit var viewModel: ListingEditViewModel
     lateinit var spinner: Spinner
@@ -74,8 +73,10 @@ class EditListingActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             spinner.adapter = adapter
+            spinner.setSelection(adapter.getPosition(viewModel.currentListing.value?.toString()))
         }
 
+        spinner.onItemSelectedListener = this
 
         tv_listing_date.setOnClickListener {
             val datePicker = ListingDatePicker(this, Calendar.getInstance(), listingDateTextView, setDateCallback)
@@ -144,5 +145,15 @@ class EditListingActivity : AppCompatActivity() {
             }
             else -> return true
         }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+        viewModel.currentListing.value?.listingType = parent?.getItemAtPosition(position).toString()
+        Toast.makeText(this, viewModel.currentListing.value?.listingType
+                ?: "Nothing", Toast.LENGTH_SHORT).show()
     }
 }
