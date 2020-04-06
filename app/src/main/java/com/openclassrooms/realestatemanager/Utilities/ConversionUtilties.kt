@@ -15,6 +15,5 @@ class ConversionUtilities {
         return value.format(amount.toLong())
     }
 
-    
 
 }
