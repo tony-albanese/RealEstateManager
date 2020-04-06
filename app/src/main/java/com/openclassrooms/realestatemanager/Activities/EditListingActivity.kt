@@ -35,6 +35,13 @@ class EditListingActivity : AppCompatActivity() {
         //setContentView(R.layout.listing_edit_layout)
 
         val binding: ListingEditLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_edit_layout)
+        val viewModelFactory = ListingEditViewModelFactory(application, this, 0, null)
+        viewModel = ViewModelProvider(this, viewModelFactory)
+                .get(ListingEditViewModel::class.java)
+
+        binding.listingEditViewModel = viewModel
+        binding.lifecycleOwner = this
+
         edit_listing_toolbar.title = "Edit Listing"
         setSupportActionBar(edit_listing_toolbar)
 
@@ -69,12 +76,6 @@ class EditListingActivity : AppCompatActivity() {
             spinner.adapter = adapter
         }
 
-        val viewModelFactory = ListingEditViewModelFactory(application, this, 0, null)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-                .get(ListingEditViewModel::class.java)
-
-        binding.listingEditViewModel = viewModel
-    
 
         tv_listing_date.setOnClickListener {
             val datePicker = ListingDatePicker(this, Calendar.getInstance(), listingDateTextView, setDateCallback)
