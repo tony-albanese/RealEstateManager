@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel" />
@@ -21,8 +20,8 @@
             android:text="Select Listing Type"
             android:textSize="20sp" />
 
-
         <!--Spinner for listing type. -->
+        <!--TODO: Implement save when value is changed. -->
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner_listing_type"
             android:layout_width="wrap_content"
@@ -39,7 +38,7 @@
                 android:id="@+id/et_listing_street_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.testBindingVariable}" />
+                android:text="@={viewModel.currentListing.listingStreetAddress}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,6 +50,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_city"
+                android:text="@={viewModel.currentListing.listingCity}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -64,6 +64,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_zipcode"
+                android:text="@={viewModel.currentListing.listingZipCode}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -77,6 +78,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_sales_price"
+                android:text="Set this!"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -93,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="20"
-            android:progress="5" />
+            android:progress="@={viewModel.currentListing.numberOfRooms}" />
 
 
         <!--Set the number of bedrooms. -->
@@ -107,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="10"
-            android:progress="2" />
+            android:progress="@={viewModel.currentListing.numberOfBedrooms}" />
 
         <!--Set the number of bathrooms. -->
         <com.google.android.material.textview.MaterialTextView
@@ -115,6 +117,7 @@
             android:layout_height="wrap_content"
             android:text="Number of Bathrooms" />
 
+        <!--TODO: Impement function to convert this. -->
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekbar_bathrooms"
             android:layout_width="match_parent"
@@ -133,7 +136,7 @@
             android:id="@+id/tv_listing_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Listing data goes here." />
+            android:text="@={viewModel.currentListing.listingDate}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -145,7 +148,7 @@
             android:id="@+id/tv_selling_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sell date goes here" />
+            android:text="@={viewModel.currentListing.listingSaleDate}" />
 
         <TextView
             android:id="@+id/tv_market_available"
@@ -155,6 +158,7 @@
 
         <Switch
             android:id="@+id/switch_for_sale"
+            android:checked="@={viewModel.currentListing.available}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -165,6 +169,7 @@
 
         <Switch
             android:id="@+id/switch_is_published"
+            android:checked="@={viewModel.currentListing.listingIsPublished}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
