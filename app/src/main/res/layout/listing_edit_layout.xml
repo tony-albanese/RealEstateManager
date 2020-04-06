@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?><!--This layout serves as the root layout for the activity that edits listing information. -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="listingEditViewModel"
             type="com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel" />
@@ -46,7 +46,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_listing_appbar_layout">
 
-            <include layout="@layout/listing_form_input_layout" />
+            <include
+                layout="@layout/listing_form_input_layout"
+                bind:viewModel="@{listingEditViewModel}" />
 
         </ScrollView>
 
