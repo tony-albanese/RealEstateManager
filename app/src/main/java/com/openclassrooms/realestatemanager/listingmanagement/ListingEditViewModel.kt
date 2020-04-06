@@ -19,8 +19,7 @@ class ListingEditViewModel(
         val listingId: Long
 ) : ViewModel() {
 
-
-    val testBindingVariable: String = "This is a test value."
+    
     val repository: ListingRepository
 
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
@@ -31,7 +30,10 @@ class ListingEditViewModel(
 
         //TODO: Get the current listing from the repository and cast it in a MutableLiveData object.
         currentListing = MutableLiveData(Listing())
+        currentListing.value?.listingDate = "10/11/2422"
+        currentListing.value?.listingSaleDate = "10/22/2022"
     }
+
 
 }
 
