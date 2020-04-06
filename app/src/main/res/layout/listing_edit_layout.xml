@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="listingEditViewModel"
+            type="com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
