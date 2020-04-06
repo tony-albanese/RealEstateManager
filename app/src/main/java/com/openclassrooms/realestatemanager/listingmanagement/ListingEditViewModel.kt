@@ -22,6 +22,7 @@ class ListingEditViewModel(
 
     val testBindingVariable: String = "This is a test value."
     val repository: ListingRepository
+
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
     init {
