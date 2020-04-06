@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.listingmanagement
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
@@ -21,33 +22,17 @@ class ListingEditViewModel(
 
     val testBindingVariable: String = "This is a test value."
     val repository: ListingRepository
-
-    val listing: Listing //This is the member variable that will be exposed to the outside world.
+    val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
     init {
         val listingDao = AppDatabase.getDatabase(application).listingDao()
         repository = ListingRepository(listingDao)
 
-        when (listingId) {
-            0.toLong() -> {
-                listing = createNewListing()
-            }
-            else -> {
-                listing = createNewListing().apply {
-                    
-                }
-            }
-        }
-    }
-
-    fun getCurrentListing() {
-
-    }
-
-    fun createNewListing(): Listing {
-        return Listing().apply {
-
-        }
+        //TODO: Get the current listing from the repository and cast it in a MutableLiveData object.
+        currentListing = MutableLiveData(Listing())
     }
 
 }
+
+
+
