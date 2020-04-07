@@ -26,4 +26,13 @@ class UtiltiesTests {
         val isEqual = expectedAmount.compareTo(convertedAmount) == 0
         assertEquals(expectedAmount, convertedAmount)
     }
+
+    @Test
+    fun testStringToIntCurrencyConversion() {
+        val conversionUtilities = ConversionUtilities()
+        val testString = "$2,002"
+        val priceAsInt = conversionUtilities.formatCurrencyToInteger(testString)
+        val expectedInteger = 2002
+        assertEquals(expectedInteger, priceAsInt)
+    }
 }
