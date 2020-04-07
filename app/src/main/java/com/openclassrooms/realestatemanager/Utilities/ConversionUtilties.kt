@@ -15,5 +15,10 @@ class ConversionUtilities {
         return value.format(amount.toLong())
     }
 
-
+    fun formatCurrencyToInteger(amount: String): Int {
+        val convertedAmount = amount.filter {
+            it.isDigit()
+        }
+        return convertedAmount.toInt()
+    }
 }
