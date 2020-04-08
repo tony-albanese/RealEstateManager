@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.listingmanagement
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
@@ -15,7 +14,6 @@ a listing.
 
 class ListingEditViewModel(
         private val application: Application,
-        private val handle: SavedStateHandle,
         val listingId: Long
 ) : ViewModel() {
 
