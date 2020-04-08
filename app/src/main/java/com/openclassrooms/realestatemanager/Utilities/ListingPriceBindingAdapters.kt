@@ -12,20 +12,17 @@ object ListingPriceBindingAdapters {
     val TAG: String = "BindingAdapter"
 
     @BindingAdapter("listing_price")
-    fun setIntValueAsCurrencyString(et: EditText, value: Int) {
-        et.text.clear()
-        et.setText("$" + value.toString())
+    fun setListingPrice(et: EditText, value: String) {
         Log.i(TAG, "Binding adapter int to String called")
+        et.text.clear()
+        et.setText(value)
     }
 
     @InverseBindingAdapter(attribute = "listing_price")
-    fun getIntegerValueFromCurrency(et: EditText): Int {
+    fun getListingPrice(et: EditText): String {
         Log.i(TAG, "Binding adpater string to int called")
         val etText = et.text.toString()
-        val convertedAmount = etText.filter {
-            it.isDigit()
-        }
-        return convertedAmount.toInt()
+        return etText
     }
 
     @BindingAdapter("listing_priceAttrChanged")
@@ -36,7 +33,6 @@ object ListingPriceBindingAdapters {
         Log.i(TAG, "setListener called")
 
         et.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
-
             if (hasFocus) {
 
             } else {
