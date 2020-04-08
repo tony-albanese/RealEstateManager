@@ -35,8 +35,4 @@ class ListingEditViewModel(
         currentListing.value?.listingPrice = 3000
     }
 
-
 }
-
-
-
