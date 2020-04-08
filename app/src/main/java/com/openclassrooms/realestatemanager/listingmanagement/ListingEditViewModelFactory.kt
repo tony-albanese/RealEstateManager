@@ -22,7 +22,7 @@ class ListingEditViewModelFactory(
             modelClass: Class<T>,
             handle: SavedStateHandle
     ): T {
-        return ListingEditViewModel(application, handle, id) as T
+        return ListingEditViewModel(application, id) as T
     }
 
 }
