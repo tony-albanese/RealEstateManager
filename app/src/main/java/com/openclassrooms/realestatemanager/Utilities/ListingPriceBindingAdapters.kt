@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import androidx.databinding.InverseMethod
 
 object ListingPriceBindingAdapters {
 
@@ -25,8 +26,9 @@ object ListingPriceBindingAdapters {
         return etText
     }
 
+
     @BindingAdapter("listing_priceAttrChanged")
-    fun setListeners(
+    fun setListener(
             et: EditText,
             attrChange: InverseBindingListener
     ) {
@@ -43,6 +45,32 @@ object ListingPriceBindingAdapters {
                 attrChange.onChange()
             }
 
+        }
+    }
+}
+
+object ListingPriceConverters {
+
+    @InverseMethod("priceStringToInteger")
+    @JvmStatic
+    fun intToPriceString(value: Int): String {
+        return "$ " + value.toString()
+    }
+
+    @JvmStatic
+    fun priceStringToInteger(value: String): Int {
+
+        if (value.isNullOrEmpty()) {
+            return 0
+        }
+
+        return try {
+            val integerValue = value.filter {
+                it.isDigit()
+            }
+            return integerValue.toInt()
+        } catch (e: NumberFormatException) {
+            return 0
         }
     }
 }
