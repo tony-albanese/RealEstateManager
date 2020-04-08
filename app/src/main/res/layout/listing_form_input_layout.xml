@@ -5,6 +5,9 @@
 
         <import type="com.openclassrooms.realestatemanager.Utilities.ListingPriceConverters" />
 
+        <variable
+            name="locale"
+            type="java.util.Locale" />
 
         <variable
             name="viewModel"

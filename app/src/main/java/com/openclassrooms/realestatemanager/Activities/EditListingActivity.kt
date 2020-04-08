@@ -31,7 +31,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.listing_edit_layout)
+
+        val locale = Locale("EN", "US")
 
         val binding: ListingEditLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_edit_layout)
         val viewModelFactory = ListingEditViewModelFactory(application, this, 0, null)
@@ -39,6 +40,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
                 .get(ListingEditViewModel::class.java)
 
         binding.listingEditViewModel = viewModel
+        binding.locale = locale
         binding.lifecycleOwner = this
 
         edit_listing_toolbar.title = "Edit Listing"

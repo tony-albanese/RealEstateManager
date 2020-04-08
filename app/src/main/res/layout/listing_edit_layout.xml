@@ -7,6 +7,10 @@
         <variable
             name="listingEditViewModel"
             type="com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel" />
+
+        <variable
+            name="locale"
+            type="java.util.Locale" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,6 +52,7 @@
 
             <include
                 layout="@layout/listing_form_input_layout"
+                bind:locale="@{locale}"
                 bind:viewModel="@{listingEditViewModel}" />
 
         </ScrollView>
