@@ -49,7 +49,7 @@
         <!--Input city. -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:hint="City">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +63,7 @@
         <!--Input zipcode. -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:hint="Zipcode">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -78,7 +78,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/et_input_layout_sales_price"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:hint="Listing Price">
 
             <com.google.android.material.textfield.TextInputEditText
