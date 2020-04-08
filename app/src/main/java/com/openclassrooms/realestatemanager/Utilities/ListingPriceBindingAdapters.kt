@@ -12,15 +12,17 @@ object ListingPriceBindingAdapters {
 
     val TAG: String = "PriceConversion"
 
-    @BindingAdapter("listing_price")
+    @BindingAdapter("listingPrice")
     @JvmStatic
     fun setListingPrice(et: EditText, value: String) {
         Log.i(TAG, "Binding adapter int to String called")
-        et.text.clear()
-        et.setText(value)
+        if (et.text.toString() != value) {
+            et.setText(value)
+        }
+
     }
 
-    @InverseBindingAdapter(attribute = "listing_price")
+    @InverseBindingAdapter(attribute = "listingPrice")
     @JvmStatic
     fun getListingPrice(et: EditText): String {
         Log.i(TAG, "Binding adpater string to int called")
@@ -29,7 +31,7 @@ object ListingPriceBindingAdapters {
     }
 
 
-    @BindingAdapter("listing_priceAttrChanged")
+    @BindingAdapter("listingPriceAttrChanged")
     @JvmStatic
     fun setListener(
             et: EditText,
@@ -38,11 +40,15 @@ object ListingPriceBindingAdapters {
         Log.i(TAG, "setListener called")
         et.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                
+
             } else {
                 if (et.text.toString().isNullOrBlank() || et.text.toString().isBlank()) {
                     et.setText("$0")
                 }
+                val currentText = et.text.toString()
+                Log.i(TAG, "Current text: " + currentText)
+                //TODO This is where the string needs to be formatted and set.
+                et.setText(currentText + "$$$")
                 attrChange.onChange()
             }
 
