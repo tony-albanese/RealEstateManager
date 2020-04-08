@@ -2,6 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
+        <import type="com.openclassrooms.realestatemanager.Utilities.ListingPriceConverters" />
+
+
         <variable
             name="viewModel"
             type="com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel" />
@@ -72,13 +76,13 @@
 
         <!--Input Price -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_input_layout_sales_price"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Listing Price">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_sales_price"
-                listing_price="@={viewModel.currentListing.listingPrice}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
