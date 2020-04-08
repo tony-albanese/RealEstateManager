@@ -7,42 +7,46 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 
-val TAG: String = "BindingAdapter"
-@BindingAdapter("listing_price")
-fun setIntValueAsCurrencyString(et: EditText, value: Int) {
-    et.text.clear()
-    et.setText("$" + value.toString())
-    Log.i(TAG, "Binding adapter int to String called")
-}
+object ListingPriceBindingAdapters {
 
-@InverseBindingAdapter(attribute = "listing_price")
-fun getIntegerValueFromCurrency(et: EditText): Int {
-    Log.i(TAG, "Binding adpater string to int called")
-    val etText = et.text.toString()
-    val convertedAmount = etText.filter {
-        it.isDigit()
+    val TAG: String = "BindingAdapter"
+
+    @BindingAdapter("listing_price")
+    fun setIntValueAsCurrencyString(et: EditText, value: Int) {
+        et.text.clear()
+        et.setText("$" + value.toString())
+        Log.i(TAG, "Binding adapter int to String called")
     }
-    return convertedAmount.toInt()
-}
 
-@BindingAdapter("listing_priceAttrChanged")
-fun setListeners(
-        et: EditText,
-        attrChange: InverseBindingListener
-) {
-    Log.i(TAG, "setListener called")
+    @InverseBindingAdapter(attribute = "listing_price")
+    fun getIntegerValueFromCurrency(et: EditText): Int {
+        Log.i(TAG, "Binding adpater string to int called")
+        val etText = et.text.toString()
+        val convertedAmount = etText.filter {
+            it.isDigit()
+        }
+        return convertedAmount.toInt()
+    }
 
-    et.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
+    @BindingAdapter("listing_priceAttrChanged")
+    fun setListeners(
+            et: EditText,
+            attrChange: InverseBindingListener
+    ) {
+        Log.i(TAG, "setListener called")
 
-        if (hasFocus) {
+        et.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
 
-        } else {
-            if (et.text.toString().isNullOrBlank() || et.text.toString().isBlank()) {
-                et.setText("0")
+            if (hasFocus) {
+
+            } else {
+                if (et.text.toString().isNullOrBlank() || et.text.toString().isBlank()) {
+                    et.setText("0")
+                    attrChange.onChange()
+                }
                 attrChange.onChange()
             }
-            attrChange.onChange()
-        }
 
+        }
     }
 }
