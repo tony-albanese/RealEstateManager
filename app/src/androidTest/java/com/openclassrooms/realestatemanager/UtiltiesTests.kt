@@ -19,19 +19,17 @@ class UtiltiesTests {
 
     @Test
     fun testIntToStringConversion() {
-        val conversionUtilities = ConversionUtilities()
         val expectedAmount: String = "$1,000"
 
-        val convertedAmount = conversionUtilities.formatCurrencyIntToString(1000, locale)
+        val convertedAmount = ConversionUtilities.formatCurrencyIntToString(1000, locale)
         val isEqual = expectedAmount.compareTo(convertedAmount) == 0
         assertEquals(expectedAmount, convertedAmount)
     }
 
     @Test
     fun testStringToIntCurrencyConversion() {
-        val conversionUtilities = ConversionUtilities()
         val testString = "$2,002"
-        val priceAsInt = conversionUtilities.formatCurrencyToInteger(testString)
+        val priceAsInt = ConversionUtilities.formatCurrencyToInteger(testString)
         val expectedInteger = 2002
         assertEquals(expectedInteger, priceAsInt)
     }
