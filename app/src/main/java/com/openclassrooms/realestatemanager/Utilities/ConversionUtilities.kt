@@ -3,7 +3,7 @@ package com.openclassrooms.realestatemanager.Utilities
 import java.text.NumberFormat
 import java.util.*
 
-class ConversionUtilities {
+object ConversionUtilities {
 
     fun formatCurrencyIntToString(amount: Int, locale: Locale): String {
         val value = locale.let { locale: Locale ->
