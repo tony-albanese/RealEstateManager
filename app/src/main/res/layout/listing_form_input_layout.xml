@@ -78,7 +78,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_sales_price"
-                android:text="Set this!"
+                listing_price="@={viewModel.currentListing.listingPrice}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
