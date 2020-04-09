@@ -21,4 +21,9 @@ object ConversionUtilities {
         }
         return convertedAmount.toInt()
     }
+
+    fun reformatCurrencyString(unformattedCurrencyString: String, locale: Locale): String {
+        val newDigits = this.formatCurrencyToInteger(unformattedCurrencyString)
+        return this.formatCurrencyIntToString(newDigits, locale)
+    }
 }
