@@ -139,7 +139,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Number of Bathrooms" />
-        
+
+        <!--TODO: Need to set the bathrooms. Converter too. -->
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekbar_bathrooms"
             android:layout_width="match_parent"
