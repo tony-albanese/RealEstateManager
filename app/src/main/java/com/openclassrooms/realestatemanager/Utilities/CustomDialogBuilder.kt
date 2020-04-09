@@ -3,6 +3,9 @@ package com.openclassrooms.realestatemanager.Utilities
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.openclassrooms.realestatemanager.Activities.MainActivity
 
 class CustomDialogBuilder(
         val context: Context
@@ -27,5 +30,17 @@ class CustomDialogBuilder(
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Yes", onYesButtonClickListener)
         
+    }
+
+    fun buildSuccessDialogBuilder(): MaterialAlertDialogBuilder {
+        return MaterialAlertDialogBuilder(context)
+                .setTitle("Save Listing")
+                .setMessage("Listing Saved!")
+                .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+                    dialogInterface.dismiss()
+                })
+
     }
 }
