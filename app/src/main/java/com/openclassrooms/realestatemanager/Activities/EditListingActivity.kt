@@ -30,6 +30,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     lateinit var sellingDateTextView: TextView
     lateinit var listingDateTextView: TextView
     lateinit var salePriceEditText: EditText
+    lateinit var listingAreaEditText: EditText
 
     lateinit var locale: Locale
 
@@ -50,6 +51,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         //Initialize variables.
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
         salePriceEditText = findViewById(R.id.et_listing_sales_price)
+        listingAreaEditText = findViewById(R.id.et_listing_area)
         listingDateTextView = findViewById(R.id.tv_listing_date)
         sellingDateTextView = findViewById(R.id.tv_selling_date)
 
@@ -109,7 +111,16 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
                     viewModel.updateListingPrice(ConversionUtilities.formatCurrencyToInteger(currentText))
                 }
             }
+        }
+        listingAreaEditText.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
+            val areaTextView = view as TextView
+            if (hasFocus) {
 
+            } else {
+                if (areaTextView.text.isNullOrBlank()) {
+                    areaTextView.setText("0")
+                }
+            }
         }
     }
 
