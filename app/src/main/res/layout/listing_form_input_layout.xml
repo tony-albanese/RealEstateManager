@@ -5,7 +5,7 @@
 
         <import type="com.openclassrooms.realestatemanager.Utilities.ListingPriceConverters" />
 
-        <import type="com.openclassrooms.realestatemanager.Utilities.NumberBathroomConverters" />
+        <import type="com.openclassrooms.realestatemanager.Utilities.ListingDataTypeConverters" />
 
         <variable
             name="locale"
@@ -141,7 +141,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Number of Bathrooms" />
-        
+
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekbar_bathrooms"
             android:layout_width="match_parent"

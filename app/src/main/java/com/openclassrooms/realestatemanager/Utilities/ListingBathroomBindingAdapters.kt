@@ -2,7 +2,7 @@ package com.openclassrooms.realestatemanager.Utilities
 
 import androidx.databinding.InverseMethod
 
-object NumberBathroomConverters {
+object ListingDataTypeConverters {
 
     @InverseMethod("bathroomsToProgress")
     @JvmStatic
