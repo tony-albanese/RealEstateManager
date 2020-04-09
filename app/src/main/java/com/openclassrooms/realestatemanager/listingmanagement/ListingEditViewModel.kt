@@ -30,7 +30,11 @@ class ListingEditViewModel(
         currentListing = MutableLiveData(Listing())
         currentListing.value?.listingDate = "10/11/2422"
         currentListing.value?.listingSaleDate = "10/22/2022"
-        currentListing.value?.listingPrice = 3000
+        currentListing.value?.listingPrice = 300000
+    }
+
+    fun updateListingPrice(newValue: Int) {
+        currentListing.value?.listingPrice = newValue
     }
 
 }
