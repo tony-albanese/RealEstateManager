@@ -5,6 +5,8 @@
 
         <import type="com.openclassrooms.realestatemanager.Utilities.ListingPriceConverters" />
 
+        <import type="com.openclassrooms.realestatemanager.Utilities.NumberBathroomConverters" />
+
         <variable
             name="locale"
             type="java.util.Locale" />
@@ -139,14 +141,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Number of Bathrooms" />
-
-        <!--TODO: Need to set the bathrooms. Converter too. -->
+        
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekbar_bathrooms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="20"
-            android:progress="2" />
+            android:progress="@={NumberBathroomConverters.bathroomsToProgress(viewModel.currentListing.numberBathrooms)}" />
 
         <TextView
             android:layout_width="wrap_content"
