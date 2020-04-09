@@ -83,7 +83,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         }
 
         btn_save_listing.setOnClickListener {
-
+            val data = viewModel.currentListing.value.toString()
+            System.out.println(data)
         }
 
 
@@ -100,7 +101,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         salePriceEditText.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             val editText = view as EditText
             if (hasFocus) {
-                
+
             } else {
                 val currentText = editText.text.toString()
                 if (!currentText.isNullOrEmpty()) {
