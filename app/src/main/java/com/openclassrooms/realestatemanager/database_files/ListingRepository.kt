@@ -5,8 +5,8 @@ class ListingRepository(
 ) {
     val allListings = listingDao.getAllListings()
 
-    suspend fun insert(listing: Listing) {
-        listingDao.insertListing(listing)
+    suspend fun insert(listing: Listing): Long {
+        return listingDao.insertListing(listing)
     }
 
     suspend fun delete() {
