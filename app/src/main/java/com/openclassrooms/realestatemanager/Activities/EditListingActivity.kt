@@ -86,6 +86,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
         btn_save_listing.setOnClickListener {
             val data = viewModel.currentListing.value.toString()
+            val successDialogBuilder = CustomDialogBuilder(this)
+            viewModel.saveListingToDatabase(successDialogBuilder.buildSuccessDialogBuilder())
             System.out.println(data)
         }
 
