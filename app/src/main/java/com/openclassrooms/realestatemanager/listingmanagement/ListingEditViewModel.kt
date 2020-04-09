@@ -1,8 +1,11 @@
 package com.openclassrooms.realestatemanager.listingmanagement
 
+import android.app.AlertDialog
 import android.app.Application
+import android.content.DialogInterface
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingRepository
@@ -36,6 +39,10 @@ class ListingEditViewModel(
 
     fun updateListingPrice(newValue: Int) {
         currentListing.value?.listingPrice = newValue
+    }
+
+    fun saveListingToDatabase(builder: MaterialAlertDialogBuilder){
+        builder.show()
     }
 
 }
