@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
 import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
 import com.openclassrooms.realestatemanager.databinding.ListingEditLayoutBinding
 import com.openclassrooms.realestatemanager.listingmanagement.ListingDatePicker
@@ -30,11 +31,13 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     lateinit var listingDateTextView: TextView
     lateinit var salePriceEditText: EditText
 
+    lateinit var locale: Locale
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Setup DataBinding.
-        val locale = Locale("EN", "US")
+        locale = Locale("EN", "US")
         val binding: ListingEditLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_edit_layout)
         val viewModelFactory = ListingEditViewModelFactory(application, this, 0, null)
         viewModel = ViewModelProvider(this, viewModelFactory)
@@ -46,7 +49,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
         //Initialize variables.
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
-        salePriceEditText = findViewById(R.id.et_input_layout_sales_price)
+        salePriceEditText = findViewById(R.id.et_listing_sales_price)
         listingDateTextView = findViewById(R.id.tv_listing_date)
         sellingDateTextView = findViewById(R.id.tv_selling_date)
 
@@ -92,6 +95,20 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         tv_selling_date.setOnClickListener {
             val datePicker = ListingDatePicker(this, Calendar.getInstance(), sellingDateTextView, setDateCallback)
             datePicker.show(supportFragmentManager, "sellingDatePicker")
+        }
+
+        salePriceEditText.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
+            val editText = view as EditText
+            if (hasFocus) {
+                
+            } else {
+                val currentText = editText.text.toString()
+                if (!currentText.isNullOrEmpty()) {
+                    editText.setText(ConversionUtilities.reformatCurrencyString(currentText, locale))
+                    viewModel.updateListingPrice(ConversionUtilities.formatCurrencyToInteger(currentText))
+                }
+            }
+
         }
     }
 
