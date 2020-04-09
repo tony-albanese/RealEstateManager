@@ -28,12 +28,13 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     lateinit var spinner: Spinner
     lateinit var sellingDateTextView: TextView
     lateinit var listingDateTextView: TextView
+    lateinit var salePriceEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Setup DataBinding.
         val locale = Locale("EN", "US")
-
         val binding: ListingEditLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_edit_layout)
         val viewModelFactory = ListingEditViewModelFactory(application, this, 0, null)
         viewModel = ViewModelProvider(this, viewModelFactory)
@@ -43,28 +44,18 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         binding.locale = locale
         binding.lifecycleOwner = this
 
+        //Initialize variables.
+        spinner = findViewById<Spinner>(R.id.spinner_listing_type)
+        salePriceEditText = findViewById(R.id.et_input_layout_sales_price)
+        listingDateTextView = findViewById(R.id.tv_listing_date)
+        sellingDateTextView = findViewById(R.id.tv_selling_date)
+
+        //Setup the action bar.
         edit_listing_toolbar.title = "Edit Listing"
         setSupportActionBar(edit_listing_toolbar)
-
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        edit_listing_toolbar.setNavigationOnClickListener {
-            initiateExitActivitySequence()
-        }
-
-        btn_cancel_listing.setOnClickListener {
-            initiateExitActivitySequence()
-        }
-
-        btn_save_listing.setOnClickListener {
-
-        }
-
-        spinner = findViewById<Spinner>(R.id.spinner_listing_type)
-
-        listingDateTextView = findViewById(R.id.tv_listing_date)
-        sellingDateTextView = findViewById(R.id.tv_selling_date)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
                 this,
@@ -78,7 +69,20 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
             spinner.setSelection(adapter.getPosition(viewModel.currentListing.value?.toString()))
         }
 
+        //Set up the listeners.
         spinner.onItemSelectedListener = this
+        edit_listing_toolbar.setNavigationOnClickListener {
+            initiateExitActivitySequence()
+        }
+
+        btn_cancel_listing.setOnClickListener {
+            initiateExitActivitySequence()
+        }
+
+        btn_save_listing.setOnClickListener {
+
+        }
+
 
         tv_listing_date.setOnClickListener {
             val datePicker = ListingDatePicker(this, Calendar.getInstance(), listingDateTextView, setDateCallback)
