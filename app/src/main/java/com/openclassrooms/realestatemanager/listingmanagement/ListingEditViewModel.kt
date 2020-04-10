@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.openclassrooms.realestatemanager.Utilities.DateUtilities
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingRepository
@@ -33,15 +32,11 @@ class ListingEditViewModel(
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
     init {
+        System.out.println(listingId)
         val listingDao = AppDatabase.getDatabase(application).listingDao()
         repository = ListingRepository(listingDao)
-
-        //TODO: Get the current listing from the repository and cast it in a MutableLiveData object.
         currentListing = MutableLiveData(Listing())
-        currentListing.value?.listingDate = DateUtilities.getDateString(calendar)
-        currentListing.value?.listingSaleDate = DateUtilities.getDateString(calendar)
-        currentListing.value?.listingPrice = 300000
-        currentListing.value?.numberBathrooms = 1.5
+        initializeListing()
     }
 
     fun updateListingPrice(newValue: Int) {
@@ -72,4 +67,12 @@ class ListingEditViewModel(
         }
     }
 
+    fun initializeListing() {
+        if (!listingId.equals(0.toLong())) {
+            viewModelScope.launch {
+                val listing = repository.getListingById(listingId)
+                currentListing.value = listing
+            }
+        }
+    }
 }
