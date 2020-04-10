@@ -75,6 +75,17 @@ object FormValidatorUtilities {
                         editText.setError("Zip Code is wrong")
                     }
                 }
+
+                R.id.et_listing_sales_price -> {
+                    val editText = view as TextInputEditText
+                    val price = editText.text.toString()
+                    val priceAsInteger = price.filter {
+                        it.isDigit()
+                    }.toInt()
+                    if (priceAsInteger.equals(0)) {
+                        editText.setError("Listing price is 0.")
+                    }
+                }
             }
         }
 
