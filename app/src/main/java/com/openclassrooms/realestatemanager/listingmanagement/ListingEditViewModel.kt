@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.openclassrooms.realestatemanager.Utilities.DateUtilities
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingRepository
@@ -37,8 +38,8 @@ class ListingEditViewModel(
 
         //TODO: Get the current listing from the repository and cast it in a MutableLiveData object.
         currentListing = MutableLiveData(Listing())
-        currentListing.value?.listingDate = "10/11/2422"
-        currentListing.value?.listingSaleDate = "10/22/2022"
+        currentListing.value?.listingDate = DateUtilities.getDateString(calendar)
+        currentListing.value?.listingSaleDate = DateUtilities.getDateString(calendar)
         currentListing.value?.listingPrice = 300000
         currentListing.value?.numberBathrooms = 1.5
     }
