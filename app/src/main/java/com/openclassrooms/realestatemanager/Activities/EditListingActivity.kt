@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.AddressTextWatcher
 import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
 import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
 import com.openclassrooms.realestatemanager.databinding.ListingEditLayoutBinding
@@ -27,10 +28,12 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
     lateinit var viewModel: ListingEditViewModel
     lateinit var spinner: Spinner
+    lateinit var saveButton: Button
     lateinit var sellingDateTextView: TextView
     lateinit var listingDateTextView: TextView
     lateinit var salePriceEditText: EditText
     lateinit var listingAreaEditText: EditText
+    lateinit var addressEditText: EditText
 
     lateinit var locale: Locale
 
@@ -54,6 +57,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         listingAreaEditText = findViewById(R.id.et_listing_area)
         listingDateTextView = findViewById(R.id.tv_listing_date)
         sellingDateTextView = findViewById(R.id.tv_selling_date)
+        addressEditText = findViewById(R.id.et_listing_street_address)
+        saveButton = findViewById(R.id.btn_save_listing)
 
         //Setup the action bar.
         edit_listing_toolbar.title = "Edit Listing"
@@ -84,7 +89,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
             initiateExitActivitySequence()
         }
 
-        btn_save_listing.setOnClickListener {
+        saveButton.setOnClickListener {
             val data = viewModel.currentListing.value.toString()
             val successDialogBuilder = CustomDialogBuilder(this)
             viewModel.saveListingToDatabase(successDialogBuilder.buildSuccessDialogBuilder())
@@ -124,6 +129,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
                 }
             }
         }
+
+        addressEditText.addTextChangedListener(AddressTextWatcher(saveButton))
     }
 
 
