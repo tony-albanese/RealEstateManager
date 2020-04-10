@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.AddressTextWatcher
 import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
@@ -47,10 +48,13 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
         calendar = Calendar.getInstance()
 
+        val intent = intent
+        val passedListingId = intent.getLongExtra(LISTING_ID_KEY, 0)
+
         //Setup DataBinding.
         locale = Locale("EN", "US")
         val binding: ListingEditLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_edit_layout)
-        val viewModelFactory = ListingEditViewModelFactory(application, this, calendar, 0, null)
+        val viewModelFactory = ListingEditViewModelFactory(application, this, calendar, passedListingId, null)
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ListingEditViewModel::class.java)
 
