@@ -54,7 +54,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         binding.listingEditViewModel = viewModel
         binding.locale = locale
         binding.lifecycleOwner = this
-        
+
         //Initialize variables.
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
         salePriceEditText = findViewById(R.id.et_listing_sales_price)
@@ -217,5 +217,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         viewHashMap.put(et_listing_city.id, et_listing_city)
         viewHashMap.put(et_listing_zipcode.id, et_listing_zipcode)
         viewHashMap.put(et_listing_area.id, et_listing_area)
+        viewHashMap.put(et_listing_sales_price.id, et_listing_sales_price)
+        viewHashMap.put(addressEditText.id, addressEditText)
     }
 }
