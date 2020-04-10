@@ -48,13 +48,13 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
         calendar = Calendar.getInstance()
 
-        val intent = intent
-        val passedListingId = intent.getLongExtra(LISTING_ID_KEY, 0)
+        val intent: Intent? = intent
+        val passedListingId: Long? = intent?.getLongExtra(LISTING_ID_KEY, 0) ?: 0
 
         //Setup DataBinding.
         locale = Locale("EN", "US")
         val binding: ListingEditLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_edit_layout)
-        val viewModelFactory = ListingEditViewModelFactory(application, this, calendar, passedListingId, null)
+        val viewModelFactory = ListingEditViewModelFactory(application, this, calendar, passedListingId!!, null)
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ListingEditViewModel::class.java)
 
