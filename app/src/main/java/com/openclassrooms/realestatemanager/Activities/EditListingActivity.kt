@@ -16,6 +16,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.AddressTextWatcher
 import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
 import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
+import com.openclassrooms.realestatemanager.Utilities.FormValidatorUtilities
 import com.openclassrooms.realestatemanager.databinding.ListingEditLayoutBinding
 import com.openclassrooms.realestatemanager.listingmanagement.ListingDatePicker
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
@@ -23,6 +24,7 @@ import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewMod
 import kotlinx.android.synthetic.main.listing_edit_layout.*
 import kotlinx.android.synthetic.main.listing_form_input_layout.*
 import java.util.*
+import kotlin.collections.HashMap
 
 class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
@@ -34,6 +36,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     lateinit var salePriceEditText: EditText
     lateinit var listingAreaEditText: EditText
     lateinit var addressEditText: EditText
+
+    val viewHashMap = HashMap<Int, View>()
 
     lateinit var locale: Locale
 
@@ -50,7 +54,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         binding.listingEditViewModel = viewModel
         binding.locale = locale
         binding.lifecycleOwner = this
-
+        
         //Initialize variables.
         spinner = findViewById<Spinner>(R.id.spinner_listing_type)
         salePriceEditText = findViewById(R.id.et_listing_sales_price)
@@ -59,6 +63,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         sellingDateTextView = findViewById(R.id.tv_selling_date)
         addressEditText = findViewById(R.id.et_listing_street_address)
         saveButton = findViewById(R.id.btn_save_listing)
+
+        initializeViewHashMap()
 
         //Setup the action bar.
         edit_listing_toolbar.title = "Edit Listing"
@@ -131,6 +137,13 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         }
 
         addressEditText.addTextChangedListener(AddressTextWatcher(saveButton))
+
+        switch_is_published.setOnCheckedChangeListener { compoundButton, isChecked ->
+            viewModel.currentListing.value?.listingIsPublished = isChecked
+            if (isChecked) {
+                FormValidatorUtilities.validateForm(viewHashMap)
+            }
+        }
     }
 
 
@@ -197,7 +210,12 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         viewModel.currentListing.value?.listingType = parent?.getItemAtPosition(position).toString()
-        Toast.makeText(this, viewModel.currentListing.value?.listingType
-                ?: "Nothing", Toast.LENGTH_SHORT).show()
+    }
+
+    fun initializeViewHashMap() {
+        viewHashMap.put(et_listing_area.id, et_listing_area)
+        viewHashMap.put(et_listing_city.id, et_listing_city)
+        viewHashMap.put(et_listing_zipcode.id, et_listing_zipcode)
+        viewHashMap.put(et_listing_area.id, et_listing_area)
     }
 }
