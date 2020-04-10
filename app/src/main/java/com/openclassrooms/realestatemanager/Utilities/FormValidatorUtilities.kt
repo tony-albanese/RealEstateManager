@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.core.view.get
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.openclassrooms.realestatemanager.R
+import java.util.regex.Pattern
 
 object FormValidatorUtilities {
 
@@ -54,9 +56,37 @@ object FormValidatorUtilities {
             }
         }
 
+        viewMap.forEach { (i, view) ->
+            when (i) {
+                R.id.et_listing_area -> {
+                    val editText = view as EditText
+                    val textIsNumeric = this.expressionContainsOnlyNumerals(editText.text.toString())
+
+                    if (!textIsNumeric) {
+                        editText.setBackgroundColor(Color.RED)
+                    }
+                }
+
+                R.id.et_listing_zipcode -> {
+                    val editText = view as TextInputEditText
+                    val zipCode = editText.text.toString()
+                    val correctLength = (zipCode.length >= 5 && zipCode.length <= 10)
+                    if (!correctLength) {
+                        editText.setError("Zip Code is wrong")
+                    }
+                }
+            }
+        }
 
     }
 
+
+    fun expressionContainsOnlyNumerals(testString: String): Boolean {
+
+        val regExString = "^[0-9]*\$"
+        val pattern = Pattern.compile(regExString)
+        return pattern.matcher(testString).matches()
+    }
 }
 
 class AddressTextWatcher(val view: View) : TextWatcher {
