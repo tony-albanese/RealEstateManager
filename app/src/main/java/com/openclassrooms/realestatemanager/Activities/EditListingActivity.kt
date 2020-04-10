@@ -36,6 +36,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     lateinit var salePriceEditText: EditText
     lateinit var listingAreaEditText: EditText
     lateinit var addressEditText: EditText
+    lateinit var calendar: Calendar
 
     val viewHashMap = HashMap<Int, View>()
 
@@ -44,10 +45,12 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        calendar = Calendar.getInstance()
+
         //Setup DataBinding.
         locale = Locale("EN", "US")
         val binding: ListingEditLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_edit_layout)
-        val viewModelFactory = ListingEditViewModelFactory(application, this, 0, null)
+        val viewModelFactory = ListingEditViewModelFactory(application, this, calendar, 0, null)
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ListingEditViewModel::class.java)
 
@@ -145,7 +148,6 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
             }
         }
     }
-
 
     /*
     This is the function that will be called when the date has been set.

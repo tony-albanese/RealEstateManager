@@ -12,6 +12,7 @@ import com.openclassrooms.realestatemanager.database_files.ListingRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 /*
@@ -21,6 +22,7 @@ a listing.
 
 class ListingEditViewModel(
         private val application: Application,
+        val calendar: Calendar,
         val listingId: Long
 ) : ViewModel(), CoroutineScope {
 
