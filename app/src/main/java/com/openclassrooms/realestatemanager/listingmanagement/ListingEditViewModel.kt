@@ -25,7 +25,6 @@ class ListingEditViewModel(
         val calendar: Calendar,
         val listingId: Long
 ) : ViewModel(), CoroutineScope {
-
     
     val repository: ListingRepository
 
@@ -73,6 +72,8 @@ class ListingEditViewModel(
                 val listing = repository.getListingById(listingId)
                 currentListing.value = listing
             }
+        } else {
+            //TODO: Set the initial dates for listing and selling.
         }
     }
 }
