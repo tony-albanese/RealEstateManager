@@ -17,10 +17,7 @@ import com.openclassrooms.realestatemanager.database_files.ListingRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
+import java.io.*
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -102,8 +99,9 @@ class ListingEditViewModel(
             val gson = Gson()
             val listingString = gson.toJson(this.currentListing.value)
             objectOutputStream.writeObject(listingString)
-            objectOutputStream.close()
+            objectOutputStream.flush()
             fileOutputStream.close()
+            objectOutputStream.close()
         } catch (e: FileNotFoundException) {
             Log.i("FILE-IO", "File not found saving.")
         } catch (e: IOException) {
@@ -124,6 +122,10 @@ class ListingEditViewModel(
             return Gson().fromJson<Listing>(listingJson, listingType)
         } catch (e: FileNotFoundException) {
             Log.i("FILE-IO", "File not found.")
+            return null
+        } catch (e: EOFException) {
+            e.printStackTrace()
+            Log.i("FILE-IO", e.message ?: "Something wrong with EOF.")
             return null
         }
     }
