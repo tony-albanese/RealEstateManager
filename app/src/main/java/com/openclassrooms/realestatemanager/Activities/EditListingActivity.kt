@@ -130,6 +130,9 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
                 if (!currentText.isNullOrEmpty()) {
                     editText.setText(ConversionUtilities.reformatCurrencyString(currentText, locale))
                     viewModel.updateListingPrice(ConversionUtilities.formatCurrencyToInteger(currentText))
+                } else {
+                    editText.setText(ConversionUtilities.reformatCurrencyString("0", locale))
+                    viewModel.updateListingPrice(0)
                 }
             }
         }
@@ -138,7 +141,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
             if (hasFocus) {
 
             } else {
-                if (areaTextView.text.isNullOrBlank()) {
+                if (areaTextView.text.isNullOrBlank() || areaTextView.text.isEmpty()) {
                     areaTextView.setText("0")
                 }
             }
