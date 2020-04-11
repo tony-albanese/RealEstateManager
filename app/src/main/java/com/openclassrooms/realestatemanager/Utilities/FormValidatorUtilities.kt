@@ -6,9 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.view.get
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.openclassrooms.realestatemanager.R
 import java.util.regex.Pattern
 
@@ -24,7 +22,6 @@ object FormValidatorUtilities {
                     if (text.isBlank()) {
                         materialEditText.setError("This is blank.")
                     }
-
                 }
                 is EditText -> {
                     val editText = view as EditText
@@ -41,15 +38,7 @@ object FormValidatorUtilities {
                     }
 
                 }
-                is TextInputLayout -> {
-                    val layout = view as TextInputLayout
-                    val materialEditText = layout.get(0) as TextInputEditText
-                    val text = materialEditText?.text?.toString()?.trim() ?: ""
-                    if (text.isBlank()) {
-                        materialEditText.setError("This is blank.")
-                    }
 
-                }
                 else -> {
 
                 }
@@ -79,12 +68,15 @@ object FormValidatorUtilities {
                 R.id.et_listing_sales_price -> {
                     val editText = view as TextInputEditText
                     val price = editText.text.toString()
-                    val priceAsInteger = price.filter {
-                        it.isDigit()
-                    }.toInt()
-                    if (priceAsInteger.equals(0)) {
-                        editText.setError("Listing price is 0.")
+                    if (!price.isNullOrBlank() && !price.isNullOrEmpty()) {
+                        val priceAsInteger = price.filter {
+                            it.isDigit()
+                        }.toInt()
+                        if (priceAsInteger.equals(0)) {
+                            editText.setError("Listing price is 0.")
+                        }
                     }
+
                 }
             }
         }
