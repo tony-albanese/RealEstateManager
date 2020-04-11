@@ -157,11 +157,11 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
         if (viewModel.saveToFile && saveListingToFile) {
             viewModel.saveListingToFile()
         }
+        super.onStop()
     }
 
     /*
@@ -189,6 +189,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
      */
     fun confirmDiscardChangesClickListener(): DialogInterface.OnClickListener {
         return DialogInterface.OnClickListener { dialogInterface, i ->
+            viewModel.deleteListingFile()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
