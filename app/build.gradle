@@ -64,6 +64,8 @@ dependencies {
     //Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:2.2.5"
 
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     //Unit test libraries
     testImplementation 'junit:junit:4.12'
