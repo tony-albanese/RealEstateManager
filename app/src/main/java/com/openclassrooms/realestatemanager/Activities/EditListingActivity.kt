@@ -155,7 +155,9 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
     override fun onDestroy() {
         super.onDestroy()
-
+        if (viewModel.saveListingToFile) {
+            viewModel.saveListingToFile()
+        }
     }
 
     /*
