@@ -17,10 +17,10 @@ class CustomDialogBuilder(
         builder = AlertDialog.Builder(context)
     }
 
-    fun buildWarningDialog(onYesButtonClickListener: DialogInterface.OnClickListener): AlertDialog.Builder {
+    fun buildWarningDialog(onYesButtonClickListener: DialogInterface.OnClickListener, onNoButtonClickListener: DialogInterface.OnClickListener): AlertDialog.Builder {
         return builder.setTitle("Warning")
                 .setMessage("Are you sure? Unsaved changes will be discarded")
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", onNoButtonClickListener)
                 .setPositiveButton("Yes", onYesButtonClickListener)
     }
 
