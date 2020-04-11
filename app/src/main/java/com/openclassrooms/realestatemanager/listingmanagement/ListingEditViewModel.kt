@@ -36,7 +36,7 @@ class ListingEditViewModel(
 ) : ViewModel(), CoroutineScope {
 
     val repository: ListingRepository
-    var saveListingToFile: Boolean = true
+    var saveToFile: Boolean = true
 
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
@@ -56,11 +56,11 @@ class ListingEditViewModel(
         viewModelScope.launch {
             val returnedID = repository.insert(currentListing.value!!)
             if (!returnedID.equals(0)) {
-                saveListingToFile = false
+                saveToFile = false
                 deleteListingFile()
                 builder.show()
             } else {
-                saveListingToFile = true
+                saveToFile = true
                 builder.setMessage("Something went wrong.")
                         .setPositiveButton("OK", createPositiveErrorButtonLisenter())
                         .show()
@@ -84,9 +84,6 @@ class ListingEditViewModel(
                 currentListing.value = listing
             }
         } else {
-            currentListing.value?.listingSaleDate = DateUtilities.getDateString(calendar)
-            currentListing.value?.listingDate = DateUtilities.getDateString(calendar)
-            /*
             val listing = loadListingFromFile()
             if (listing != null) {
                 currentListing.value = listing
@@ -94,8 +91,6 @@ class ListingEditViewModel(
                 currentListing.value?.listingSaleDate = DateUtilities.getDateString(calendar)
                 currentListing.value?.listingDate = DateUtilities.getDateString(calendar)
             }
-
-             */
         }
     }
 

@@ -159,7 +159,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (viewModel.saveListingToFile && saveListingToFile) {
+        if (viewModel.saveToFile && saveListingToFile) {
             viewModel.saveListingToFile()
         }
     }
@@ -175,7 +175,6 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     /*
     This method will initiate the sequence to exit the Activity when the user clicks, save, cancel,
     delete, or save.
-    TODO: Implement this method.
      */
     fun initiateExitActivitySequence() {
         saveListingToFile = false
