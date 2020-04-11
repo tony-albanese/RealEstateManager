@@ -153,6 +153,11 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
     /*
     This is the function that will be called when the date has been set.
     It will be used to set the selling date.
