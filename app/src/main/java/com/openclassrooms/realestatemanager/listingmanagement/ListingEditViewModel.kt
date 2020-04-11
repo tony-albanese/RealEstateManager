@@ -84,6 +84,9 @@ class ListingEditViewModel(
                 currentListing.value = listing
             }
         } else {
+            currentListing.value?.listingSaleDate = DateUtilities.getDateString(calendar)
+            currentListing.value?.listingDate = DateUtilities.getDateString(calendar)
+            /*
             val listing = loadListingFromFile()
             if (listing != null) {
                 currentListing.value = listing
@@ -91,6 +94,8 @@ class ListingEditViewModel(
                 currentListing.value?.listingSaleDate = DateUtilities.getDateString(calendar)
                 currentListing.value?.listingDate = DateUtilities.getDateString(calendar)
             }
+
+             */
         }
     }
 
@@ -119,6 +124,8 @@ class ListingEditViewModel(
             val objectInputStream = ObjectInputStream(fileInputStream)
             val listingJson = objectInputStream.readObject() as String
             val listingType = object : TypeToken<Listing>() {}.type
+            objectInputStream.close()
+            fileInputStream.close()
             return Gson().fromJson<Listing>(listingJson, listingType)
         } catch (e: FileNotFoundException) {
             Log.i("FILE-IO", "File not found.")
