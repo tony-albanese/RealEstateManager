@@ -39,6 +39,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     lateinit var addressEditText: EditText
     lateinit var calendar: Calendar
 
+    var saveListingToFile: Boolean = true
     val viewHashMap = HashMap<Int, View>()
 
     lateinit var locale: Locale
@@ -155,7 +156,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (viewModel.saveListingToFile) {
+        if (viewModel.saveListingToFile && saveListingToFile) {
             viewModel.saveListingToFile()
         }
     }
@@ -174,8 +175,9 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
     TODO: Implement this method.
      */
     fun initiateExitActivitySequence() {
+        saveListingToFile = false
         val dialogBuilder = CustomDialogBuilder(this)
-        dialogBuilder.buildWarningDialog(confirmDiscardChangesClickListener())
+        dialogBuilder.buildWarningDialog(confirmDiscardChangesClickListener(), cancelDiscardChangesClickListener())
                 .show()
     }
 
@@ -188,6 +190,13 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+    fun cancelDiscardChangesClickListener(): DialogInterface.OnClickListener {
+        return DialogInterface.OnClickListener { dialogInterface, i ->
+            saveListingToFile = true
+            dialogInterface.dismiss()
         }
     }
 
