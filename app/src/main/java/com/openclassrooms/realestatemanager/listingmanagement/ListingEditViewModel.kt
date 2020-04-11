@@ -17,8 +17,8 @@ import com.openclassrooms.realestatemanager.database_files.ListingRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.FileNotFoundException
+import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.*
@@ -36,6 +36,7 @@ class ListingEditViewModel(
 ) : ViewModel(), CoroutineScope {
 
     val repository: ListingRepository
+    var saveListingToFile: Boolean = true
 
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
@@ -52,6 +53,8 @@ class ListingEditViewModel(
     }
 
     fun saveListingToDatabase(builder: MaterialAlertDialogBuilder) {
+        saveListingToFile = false
+        deleteListingFile()
         viewModelScope.launch {
             val returnedID = repository.insert(currentListing.value!!)
 
@@ -81,36 +84,53 @@ class ListingEditViewModel(
                 currentListing.value = listing
             }
         } else {
-            //TODO: Set the initial dates for listing and selling.
-            //Check if there is an unsaved listing saved on file. If not,
-            //Set the default dates. Otherwise, restore the listing from the file.
-            currentListing.value?.listingSaleDate = DateUtilities.getDateString(calendar)
-            currentListing.value?.listingDate = DateUtilities.getDateString(calendar)
+            val listing = loadListingFromFile()
+            if (listing != null) {
+                currentListing.value = listing
+            } else {
+                currentListing.value?.listingSaleDate = DateUtilities.getDateString(calendar)
+                currentListing.value?.listingDate = DateUtilities.getDateString(calendar)
+            }
         }
     }
 
     fun saveListingToFile() {
-        val fileOutputStream = FileOutputStream(LISTING_SAVE_FILE)
-        val objectOutputStream = ObjectOutputStream(fileOutputStream)
-        val gson = Gson()
-        val listingString = gson.toJson(this.currentListing.value)
-        objectOutputStream.writeObject(listingString)
-        objectOutputStream.close()
+        Log.i("FILE-IO", "saveListingToFile() called")
+        try {
+            val fileOutputStream = application.applicationContext.openFileOutput(LISTING_SAVE_FILE, Application.MODE_PRIVATE)
+            val objectOutputStream = ObjectOutputStream(fileOutputStream)
+            val gson = Gson()
+            val listingString = gson.toJson(this.currentListing.value)
+            objectOutputStream.writeObject(listingString)
+            objectOutputStream.close()
+            fileOutputStream.close()
+        } catch (e: FileNotFoundException) {
+            Log.i("FILE-IO", "File not found saving.")
+        } catch (e: IOException) {
+            Log.i("FILE-IO", "Error saving file.")
+        }
+
     }
 
-    fun loadListingFromFile() {
-        val fileInputStream = FileInputStream(LISTING_SAVE_FILE)
-        val objectInputStream = ObjectInputStream(fileInputStream)
-        val listingJson = objectInputStream.readObject() as String
-        val listingType = object : TypeToken<Listing>() {}.type
-        val listing = Gson().fromJson<Listing>(listingJson, listingType)
-        currentListing.value = listing
+    fun loadListingFromFile(): Listing? {
+        Log.i("FILE-IO", "loadListingFromFile() called.")
+        try {
+            val fileInputStream = application.applicationContext.openFileInput(LISTING_SAVE_FILE)
+            val objectInputStream = ObjectInputStream(fileInputStream)
+            val listingJson = objectInputStream.readObject() as String
+            val listingType = object : TypeToken<Listing>() {}.type
+            return Gson().fromJson<Listing>(listingJson, listingType)
+        } catch (e: FileNotFoundException) {
+            Log.i("FILE-IO", "File not found.")
+            return null
+        }
     }
 
     fun deleteListingFile() {
+        Log.i("FILE-IO", "deleteListingFile() called")
         val successfuleDeletion = application.applicationContext.deleteFile(LISTING_SAVE_FILE)
         if (!successfuleDeletion) {
-            Log.e("DATABASE", "Error deleting file.")
+            Log.i("FILE-IO", "Error deleting file.")
         }
     }
 }
