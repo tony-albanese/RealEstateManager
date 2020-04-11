@@ -17,6 +17,8 @@ import com.openclassrooms.realestatemanager.database_files.ListingRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.*
@@ -30,10 +32,7 @@ a listing.
 class ListingEditViewModel(
         private val application: Application,
         val calendar: Calendar,
-        val listingId: Long,
-        val gson: Gson,
-        val objectInputStream: ObjectInputStream,
-        val objectOutputStream: ObjectOutputStream
+        val listingId: Long
 ) : ViewModel(), CoroutineScope {
 
     val repository: ListingRepository
@@ -91,15 +90,20 @@ class ListingEditViewModel(
     }
 
     fun saveListingToFile() {
+        val fileOutputStream = FileOutputStream(LISTING_SAVE_FILE)
+        val objectOutputStream = ObjectOutputStream(fileOutputStream)
+        val gson = Gson()
         val listingString = gson.toJson(this.currentListing.value)
         objectOutputStream.writeObject(listingString)
         objectOutputStream.close()
     }
 
     fun loadListingFromFile() {
+        val fileInputStream = FileInputStream(LISTING_SAVE_FILE)
+        val objectInputStream = ObjectInputStream(fileInputStream)
         val listingJson = objectInputStream.readObject() as String
         val listingType = object : TypeToken<Listing>() {}.type
-        val listing = gson.fromJson<Listing>(listingJson, listingType)
+        val listing = Gson().fromJson<Listing>(listingJson, listingType)
         currentListing.value = listing
     }
 
