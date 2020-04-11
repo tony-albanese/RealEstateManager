@@ -53,14 +53,14 @@ class ListingEditViewModel(
     }
 
     fun saveListingToDatabase(builder: MaterialAlertDialogBuilder) {
-        saveListingToFile = false
-        deleteListingFile()
         viewModelScope.launch {
             val returnedID = repository.insert(currentListing.value!!)
-
             if (!returnedID.equals(0)) {
+                saveListingToFile = false
+                deleteListingFile()
                 builder.show()
             } else {
+                saveListingToFile = true
                 builder.setMessage("Something went wrong.")
                         .setPositiveButton("OK", createPositiveErrorButtonLisenter())
                         .show()
