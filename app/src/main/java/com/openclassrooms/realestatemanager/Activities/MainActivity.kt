@@ -22,7 +22,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    //TODO: Setup data binding.
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
