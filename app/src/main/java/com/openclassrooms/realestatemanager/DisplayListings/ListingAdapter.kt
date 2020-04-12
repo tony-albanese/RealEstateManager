@@ -35,4 +35,9 @@ class ListingAdapter(val locale: Locale) : RecyclerView.Adapter<ListingAdapter.L
         holder.listingItemType.text = currentListing.listingType
         holder.listingItemPrice.text = ConversionUtilities.formatCurrencyIntToString(currentListing.listingPrice, locale)
     }
+
+    internal fun setListings(listings: List<Listing>) {
+        this.listings = listings
+        notifyDataSetChanged()
+    }
 }
