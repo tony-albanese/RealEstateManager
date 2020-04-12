@@ -2,7 +2,8 @@
 
 <!--This is the layout for the tablet version. -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -45,7 +46,9 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/listing_information_detail_layout" />
+            <include
+                layout="@layout/listing_information_detail_layout"
+                bind:viewModel="viewModel" />
         </FrameLayout>
 
         <androidx.constraintlayout.widget.Guideline

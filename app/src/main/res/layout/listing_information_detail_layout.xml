@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -79,7 +80,9 @@
             app:layout_constraintStart_toStartOf="@+id/tv_description_body"
             app:layout_constraintTop_toBottomOf="@+id/tv_description_body">
 
-            <include layout="@layout/listing_information_grid_layout" />
+            <include
+                layout="@layout/listing_information_grid_layout"
+                bind:listingViewModel="viewModel" />
         </FrameLayout>
 
 
