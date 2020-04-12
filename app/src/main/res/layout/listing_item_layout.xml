@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?><!--This is the layout that will hold a single listing item to be displayed in a recycler view. -->
 <!--TODO Put this back to ContraintLayout when bug is found. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <!--TODO: Put this back.
     <ImageView
@@ -16,18 +17,21 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_listing_item_listing_type"
         android:textSize="16sp"
+        tools:text="Listing Type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_listing_item_listing_city"
         android:textSize="16sp"
+        tools:text="Listing City"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_listing_item_listing_price"
         android:textSize="16sp"
+        tools:text="Price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
