@@ -6,13 +6,23 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
+import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import kotlinx.android.synthetic.main.listings_activity_layout.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var listingViewModel: ListingViewModel
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: ListingAdapter
 
     companion object {
         var database: AppDatabase? = null
@@ -22,6 +32,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.listings_activity_layout)
 
+        recyclerView = findViewById(R.id.rv_listings)
+        adapter = ListingAdapter(Locale("EN", "US"))
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
+
         setSupportActionBar(toolbar)
         toolbar.title = title
 
@@ -30,8 +48,13 @@ class MainActivity : AppCompatActivity() {
                 "listing-db")
                 .build()
 
-
+        listingViewModel.listings.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+                adapter.setListings(it)
+            }
+        })
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
