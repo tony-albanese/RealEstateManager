@@ -4,7 +4,6 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="listingViewModel"
             type="com.openclassrooms.realestatemanager.database_files.ListingViewModel" />
@@ -38,7 +37,7 @@
 
             <include
                 layout="@layout/listings_information_layout"
-                bind:vieModel="listingViewModel" />
+                bind:viewModel="@{listingViewModel}" />
         </FrameLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
