@@ -12,6 +12,11 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     private val repository: ListingRepository
     val listings: LiveData<List<Listing>>
 
+    val dummyAddress = "Dummy Address"
+    val dummyCity = "Dummy City"
+    val dummyPrice = 10000
+    val dummyDescription = "This is a dummy description."
+
     init {
         val listingDao = AppDatabase.getDatabase(application).listingDao()
         repository = ListingRepository(listingDao)
