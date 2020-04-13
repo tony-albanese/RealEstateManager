@@ -10,7 +10,7 @@ import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
 import com.openclassrooms.realestatemanager.database_files.Listing
 import java.util.*
 
-class ListingAdapter(val locale: Locale) : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
+class ListingAdapter(val locale: Locale, val callback: (Listing) -> Unit) : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
 
     private var listings = emptyList<Listing>()
     inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,6 +34,11 @@ class ListingAdapter(val locale: Locale) : RecyclerView.Adapter<ListingAdapter.L
         holder.listingItemCity.text = currentListing.listingCity
         holder.listingItemType.text = currentListing.listingType
         holder.listingItemPrice.text = ConversionUtilities.formatCurrencyIntToString(currentListing.listingPrice, locale)
+
+        holder.itemView.setOnClickListener {
+            callback(currentListing)
+        }
+
     }
 
     internal fun setListings(listings: List<Listing>) {
