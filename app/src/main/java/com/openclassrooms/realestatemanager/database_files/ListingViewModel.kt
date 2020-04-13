@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.database_files
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,17 +13,17 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     private val repository: ListingRepository
     val listings: LiveData<List<Listing>>
 
-    val dummyAddress = "Dummy Address"
-    val dummyCity = "Dummy City"
-    val dummyPrice = 10000
-    val dummyDescription = "This is a dummy description."
+    private val _selectedListing = MutableLiveData<Listing>()
+    val selectedListing: LiveData<Listing>
+        get() = _selectedListing
+
 
     init {
         val listingDao = AppDatabase.getDatabase(application).listingDao()
         repository = ListingRepository(listingDao)
         listings = repository.allListings
+        _selectedListing.value = Listing()
     }
-
 
     fun insert(listing: Listing) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(listing)
@@ -33,7 +34,10 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun getListingById(id: Long) = viewModelScope.launch(Dispatchers.IO) {
-        repository.getListingById(id)
-        //TODO: How to get return value out of the coroutine scope.
+        val result = repository.getListingById(id).value
+    }
+
+    fun setCurrentListing(listing: Listing) {
+        _selectedListing.value = listing
     }
 }
