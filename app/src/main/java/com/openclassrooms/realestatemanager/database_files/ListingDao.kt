@@ -26,6 +26,6 @@ interface ListingDao {
     fun deleteAllListings()
 
     @Query("SELECT * FROM table_listings WHERE id = :id")
-    fun getListingById(id: Long): Listing
+    fun getListingById(id: Long): LiveData<Listing>
 
 }
