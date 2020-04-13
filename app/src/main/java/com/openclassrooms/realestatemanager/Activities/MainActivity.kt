@@ -15,6 +15,7 @@ import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listings_activity_layout.*
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding.listingViewModel = listingViewModel
 
         recyclerView = findViewById(R.id.rv_listings)
-        adapter = ListingAdapter(Locale("EN", "US"))
+        adapter = ListingAdapter(Locale("EN", "US"), itemViewOnClickListenerCallback)
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -79,5 +80,9 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    val itemViewOnClickListenerCallback: (Listing) -> Unit = {
+        listingViewModel.setCurrentListing(it)
     }
 }
