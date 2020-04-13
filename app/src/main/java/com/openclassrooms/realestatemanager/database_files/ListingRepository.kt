@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.database_files
 
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -16,8 +17,9 @@ class ListingRepository(
         listingDao.deleteAllListings()
     }
 
-    suspend fun getListingById(id: Long): Listing =
+    suspend fun getListingById(id: Long): LiveData<Listing> =
             withContext(Dispatchers.IO) {
                 listingDao.getListingById(id)
             }
+
 }
