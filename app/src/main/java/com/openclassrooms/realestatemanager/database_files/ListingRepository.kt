@@ -8,6 +8,7 @@ class ListingRepository(
         private val listingDao: ListingDao
 ) {
     val allListings = listingDao.getAllListings()
+    val publishedListings = listingDao.getPublishedListings()
 
     suspend fun insert(listing: Listing): Long = withContext(Dispatchers.IO) {
         listingDao.insertListing(listing)
