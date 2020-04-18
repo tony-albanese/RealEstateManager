@@ -59,6 +59,7 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val callback:
             } else {
                 val context = holder.itemView.context
                 val intent = Intent(context, DisplayListingPortaitActivity::class.java)
+                intent.putExtra("LISTING_ID", currentListing.id)
                 context.startActivity(intent)
             }
 
