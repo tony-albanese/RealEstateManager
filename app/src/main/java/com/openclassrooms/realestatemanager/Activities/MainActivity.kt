@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         landscapeMode = listing_info_landscape_frame_layout != null
 
         recyclerView = findViewById(R.id.rv_listings)
-        adapter = ListingAdapter(Locale("EN", "US"), itemViewOnClickListenerCallback)
+        adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
