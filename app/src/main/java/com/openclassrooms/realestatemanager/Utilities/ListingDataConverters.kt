@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.Utilities
 
 import androidx.databinding.InverseMethod
+import com.openclassrooms.realestatemanager.database_files.Listing
 
 object ListingDataTypeConverters {
 
@@ -31,5 +32,35 @@ object ListingDataTypeConverters {
     @JvmStatic
     fun areaIntToString(value: Int): String {
         return value.toString()
+    }
+
+    @JvmStatic
+    fun generateAreaStringFromInt(value: Int): String {
+        return "Total Area: " + value.toString()
+    }
+
+    @JvmStatic
+    fun generateRoomsStringFromInt(value: Int): String {
+        return "Number of Rooms: " + value.toString()
+    }
+
+    @JvmStatic
+    fun generateNumberOfBathroomsString(value: Double): String {
+        return "Number of Bathrooms: " + value.toString()
+    }
+
+    @JvmStatic
+    fun generateNumberOfBedroomsString(value: Int): String {
+        return "Number of Bedrooms: " + value.toString()
+    }
+
+    @JvmStatic
+    fun generateAddressString(listing: Listing): String {
+        val builder = StringBuilder()
+        builder.appendln(listing.listingStreetAddress)
+                .appendln(listing.listingCity)
+                .appendln(listing.listingZipCode)
+
+        return builder.toString()
     }
 }
