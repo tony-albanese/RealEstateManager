@@ -44,6 +44,7 @@ class ListingAdapter(val locale: Locale, val callback: (Listing) -> Unit) : Recy
         holder.itemView.setOnClickListener {
             //TODO: Set the style instead of the individual properties.
             //TODO: Clean up the if statement.
+            //TODO: Need different listener if portrait or landscape mode.
             selectedPosition = position
             if (selectedPosition == previousPosition) {
 
