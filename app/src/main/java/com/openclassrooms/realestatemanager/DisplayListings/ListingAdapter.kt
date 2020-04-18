@@ -1,17 +1,19 @@
 package com.openclassrooms.realestatemanager.DisplayListings
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
+import com.openclassrooms.realestatemanager.Activities.DisplayListingPortaitActivity
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
 import com.openclassrooms.realestatemanager.database_files.Listing
 import java.util.*
 
-class ListingAdapter(val locale: Locale, val callback: (Listing) -> Unit) : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
+class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val callback: (Listing) -> Unit) : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
 
     private var listings = emptyList<Listing>()
     var previousView: View? = null
@@ -45,21 +47,25 @@ class ListingAdapter(val locale: Locale, val callback: (Listing) -> Unit) : Recy
             //TODO: Set the style instead of the individual properties.
             //TODO: Clean up the if statement.
             //TODO: Need different listener if portrait or landscape mode.
-            selectedPosition = position
-            if (selectedPosition == previousPosition) {
-
-            } else if (selectedPosition != previousPosition) {
-                previousPosition = selectedPosition
+            if (isLandscape) {
                 selectedPosition = position
-                previousView = selectedView
-                selectedView = holder.itemView
-                previousView?.setBackgroundColor(Color.TRANSPARENT)
-                selectedView?.setBackgroundColor(Color.BLUE)
+                if (selectedPosition == previousPosition) {
+
+                } else if (selectedPosition != previousPosition) {
+                    previousPosition = selectedPosition
+                    selectedPosition = position
+                    previousView = selectedView
+                    selectedView = holder.itemView
+                    previousView?.setBackgroundColor(Color.TRANSPARENT)
+                    selectedView?.setBackgroundColor(Color.BLUE)
+                }
+                callback(currentListing)
+            } else {
+                val context = holder.itemView.context
+                val intent = Intent(context, DisplayListingPortaitActivity::class.java)
+                context.startActivity(intent)
             }
 
-
-
-            callback(currentListing)
         }
 
     }
