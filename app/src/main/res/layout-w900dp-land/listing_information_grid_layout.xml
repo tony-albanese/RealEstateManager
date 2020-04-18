@@ -28,28 +28,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
-                android:text="@={ListingDataTypeConverters.generateAreaStringFromInt(listingViewModel.selectedListing.listingArea)}" />
+                android:text="@{ListingDataTypeConverters.generateAreaStringFromInt(listingViewModel.selectedListing.listingArea)}" />
 
             <TextView
                 android:id="@+id/tv_total_rooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
-                android:text="@={ListingDataTypeConverters.generateRoomsStringFromInt(listingViewModel.selectedListing.numberOfRooms)}" />
+                android:text="@{ListingDataTypeConverters.generateRoomsStringFromInt(listingViewModel.selectedListing.numberOfRooms)}" />
 
             <TextView
                 android:id="@+id/tv_number_of_bathrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
-                android:text="@={ListingDataTypeConverters.generateNumberOfBathroomsString(listingViewModel.selectedListing.numberBathrooms)}" />
+                android:text="@{ListingDataTypeConverters.generateNumberOfBathroomsString(listingViewModel.selectedListing.numberBathrooms)}" />
 
             <TextView
                 android:id="@+id/tv_bedrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
-                android:text="@={ListingDataTypeConverters.generateNumberOfBedroomsString(listingViewModel.selectedListing.numberOfBedrooms)}" />
+                android:text="@{ListingDataTypeConverters.generateNumberOfBedroomsString(listingViewModel.selectedListing.numberOfBedrooms)}" />
 
         </LinearLayout>
 
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/generic_background_color"
-            android:text="@={ListingDataTypeConverters.generateAddressString(listingViewModel.selectedListing)}" />
+            android:text="@{ListingDataTypeConverters.generateAddressString(listingViewModel.selectedListing)}" />
 
         <ImageView
             android:layout_width="0dp"
