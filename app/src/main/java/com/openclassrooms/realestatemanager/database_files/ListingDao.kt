@@ -29,4 +29,7 @@ interface ListingDao {
     @Query("SELECT * FROM table_listings WHERE id = :id")
     fun getListingById(id: Long): LiveData<Listing>
 
+    @Query("SELECT * FROM table_listings WHERE id = :id")
+    fun getListing(id: Long): Listing
+
 }
