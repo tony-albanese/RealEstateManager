@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 "listing-db")
                 .build()
 
-        listingViewModel.listings.observe(this, androidx.lifecycle.Observer {
+        listingViewModel.publishedListings.observe(this, androidx.lifecycle.Observer {
             it?.let {
                 adapter.setListings(it)
             }
