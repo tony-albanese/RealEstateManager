@@ -5,10 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class ListingViewModel(application: Application) : AndroidViewModel(application) {
+class ListingViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
 
     private val repository: ListingRepository
     val listings: LiveData<List<Listing>>
@@ -42,4 +44,13 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     fun setCurrentListing(listing: Listing) {
         _selectedListing.value = listing
     }
+
+    fun getListingForPortraitMode(id: Long) = viewModelScope.launch {
+        val listing = repository.getListing(id)
+        setCurrentListing(listing)
+    }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
 }
