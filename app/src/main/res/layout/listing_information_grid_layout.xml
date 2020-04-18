@@ -9,6 +9,8 @@
             name="listingViewModel"
             type="com.openclassrooms.realestatemanager.database_files.ListingViewModel" />
 
+        <import type="com.openclassrooms.realestatemanager.Utilities.ListingDataTypeConverters" />
+
     </data>
 
     <LinearLayout
