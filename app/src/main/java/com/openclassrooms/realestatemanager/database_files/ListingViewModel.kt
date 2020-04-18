@@ -12,6 +12,7 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
 
     private val repository: ListingRepository
     val listings: LiveData<List<Listing>>
+    val publishedListings: LiveData<List<Listing>>
 
     private val _selectedListing = MutableLiveData<Listing>()
     val selectedListing: LiveData<Listing>
@@ -22,6 +23,7 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
         val listingDao = AppDatabase.getDatabase(application).listingDao()
         repository = ListingRepository(listingDao)
         listings = repository.allListings
+        publishedListings = repository.publishedListings
         _selectedListing.value = Listing()
     }
 
