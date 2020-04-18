@@ -7,8 +7,9 @@ import androidx.room.Query
 
 @Dao
 interface ListingDao {
-
-    //TODO: Add signature for a method to select only the published listings.
+    
+    @Query("SELECT * FROM table_listings WHERE listing_is_published = :isPublished")
+    fun getPublishedListings(isPublished: Boolean = true): LiveData<List<Listing>>
     
     @Query("SELECT * FROM table_listings")
     fun getAllListings(): LiveData<List<Listing>>
