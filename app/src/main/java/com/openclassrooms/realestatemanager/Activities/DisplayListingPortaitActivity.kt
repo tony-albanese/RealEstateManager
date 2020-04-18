@@ -2,9 +2,11 @@ package com.openclassrooms.realestatemanager.Activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
+import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
 
 class DisplayListingPortaitActivity : AppCompatActivity() {
 
@@ -15,11 +17,17 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO: Inflate the layout to display the listing information.
-        //TODO: Switch the data binding.
+
         setContentView(R.layout.activity_main)
 
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
+
+        val binding: ListingInformationDetailLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_information_detail_layout)
+        binding.viewModel = listingViewModel
+        binding.lifecycleOwner = this
+
+        //TODO: Retrieve the id from the intent.
+        // listingViewModel.getListingForPortraitMode(1.toLong())
 
     }
 }
