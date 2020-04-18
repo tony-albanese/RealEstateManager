@@ -22,24 +22,28 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_surface_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
                 android:text="Surface area" />
 
             <TextView
+                android:id="@+id/tv_total_rooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
                 android:text="Total Rooms" />
 
             <TextView
+                android:id="@+id/tv_number_of_bathrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
                 android:text="Number of bathrooms" />
 
             <TextView
+                android:id="@+id/tv_bedrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
@@ -48,6 +52,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
