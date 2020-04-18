@@ -23,4 +23,8 @@ class ListingRepository(
                 listingDao.getListingById(id)
             }
 
+    suspend fun getListing(id: Long): Listing = withContext(Dispatchers.IO) {
+        listingDao.getListing(id)
+    }
+
 }
