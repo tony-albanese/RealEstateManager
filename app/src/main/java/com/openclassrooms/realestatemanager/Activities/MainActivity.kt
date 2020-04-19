@@ -6,13 +6,28 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
+import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import com.openclassrooms.realestatemanager.database_files.Listing
+import com.openclassrooms.realestatemanager.database_files.ListingViewModel
+import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listings_activity_layout.*
+import kotlinx.android.synthetic.main.listings_information_layout.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var listingViewModel: ListingViewModel
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: ListingAdapter
+    var landscapeMode: Boolean = false
 
     companion object {
         var database: AppDatabase? = null
@@ -20,7 +35,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.listings_activity_layout)
+
+        listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
+        val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
+        binding.lifecycleOwner = this
+        binding.listingViewModel = listingViewModel
+
+        landscapeMode = listing_info_landscape_frame_layout != null
+
+        recyclerView = findViewById(R.id.rv_listings)
+        adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -30,12 +57,23 @@ class MainActivity : AppCompatActivity() {
                 "listing-db")
                 .build()
 
-
+        listingViewModel.publishedListings.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+                adapter.setListings(it)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        //return super.onPrepareOptionsMenu(menu)
+        menu?.getItem(1)?.setEnabled(landscapeMode)
+        menu?.getItem(1)?.setVisible(landscapeMode)
         return true
     }
 
@@ -53,5 +91,9 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    val itemViewOnClickListenerCallback: (Listing) -> Unit = {
+        listingViewModel.setCurrentListing(it)
     }
 }

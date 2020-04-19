@@ -7,7 +7,10 @@ import androidx.room.Query
 
 @Dao
 interface ListingDao {
-
+    
+    @Query("SELECT * FROM table_listings WHERE listing_is_published = :isPublished")
+    fun getPublishedListings(isPublished: Boolean = true): LiveData<List<Listing>>
+    
     @Query("SELECT * FROM table_listings")
     fun getAllListings(): LiveData<List<Listing>>
 
@@ -24,6 +27,9 @@ interface ListingDao {
     fun deleteAllListings()
 
     @Query("SELECT * FROM table_listings WHERE id = :id")
-    fun getListingById(id: Long): Listing
+    fun getListingById(id: Long): LiveData<Listing>
+
+    @Query("SELECT * FROM table_listings WHERE id = :id")
+    fun getListing(id: Long): Listing
 
 }

@@ -1,54 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--This is the layout for small screens and portrait. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/root_layout_color"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="listingViewModel"
+            type="com.openclassrooms.realestatemanager.database_files.ListingViewModel" />
+
+        <import type="com.openclassrooms.realestatemanager.Utilities.ListingDataTypeConverters" />
+
+    </data>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/landscape_detail_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/root_layout_color"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/landscape_detail_color"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_listing_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/generic_background_color"
+                android:text="@{ListingDataTypeConverters.generateAreaStringFromInt(listingViewModel.selectedListing.listingArea)}" />
+
+            <TextView
+                android:id="@+id/tv_listing_total_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/generic_background_color"
+                android:text="@{ListingDataTypeConverters.generateRoomsStringFromInt(listingViewModel.selectedListing.numberOfRooms)}" />
+
+            <TextView
+                android:id="@+id/tv_listing_bathrooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/generic_background_color"
+                android:text="@{ListingDataTypeConverters.generateNumberOfBathroomsString(listingViewModel.selectedListing.numberBathrooms)}" />
+
+            <TextView
+                android:id="@+id/tv_listing_bedrooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{ListingDataTypeConverters.generateNumberOfBedroomsString(listingViewModel.selectedListing.numberOfBedrooms)}" />
+
+        </LinearLayout>
+
         <TextView
+            android:id="@+id/tv_listing_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/generic_background_color"
-            android:text="Surface area" />
+            android:text="@{ListingDataTypeConverters.generateAddressString(listingViewModel.selectedListing)}" />
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/generic_background_color"
-            android:text="Total Rooms" />
+            android:src="@drawable/placeholder_image" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/generic_background_color"
-            android:text="Number of bathrooms" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Number of bedrooms" />
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/generic_background_color"
-        android:text="Location" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/generic_background_color"
-        android:src="@drawable/placeholder_image" />
-
-
-</LinearLayout>
+</layout>

@@ -78,7 +78,7 @@ class ListingEditViewModel(
         if (!listingId.equals(0.toLong())) {
             viewModelScope.launch {
                 val listing = repository.getListingById(listingId)
-                currentListing.value = listing
+                currentListing.value = listing.value
             }
         } else {
             val listing = loadListingFromFile()
