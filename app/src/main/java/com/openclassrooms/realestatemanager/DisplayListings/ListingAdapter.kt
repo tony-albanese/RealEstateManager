@@ -11,6 +11,7 @@ import com.openclassrooms.realestatemanager.Activities.DisplayListingPortaitActi
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
 import com.openclassrooms.realestatemanager.database_files.Listing
+import kotlinx.android.synthetic.main.listing_item_layout.view.*
 import java.util.*
 
 class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val callback: (Listing) -> Unit) : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
@@ -38,13 +39,13 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val callback:
 
     override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
         val currentListing = listings.get(position)
+        val context = holder.itemView.context
 
         holder.listingItemCity.text = currentListing.listingCity
         holder.listingItemType.text = currentListing.listingType
         holder.listingItemPrice.text = ConversionUtilities.formatCurrencyIntToString(currentListing.listingPrice, locale)
 
         holder.itemView.setOnClickListener {
-            //TODO: Set the style instead of the individual properties.
             if (isLandscape) {
                 selectedPosition = position
                 if (selectedPosition != previousPosition) {
@@ -52,8 +53,17 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val callback:
                     selectedPosition = position
                     previousView = selectedView
                     selectedView = holder.itemView
+
+                    //Set the properties of the previous view.
                     previousView?.setBackgroundColor(Color.TRANSPARENT)
-                    selectedView?.setBackgroundColor(Color.BLUE)
+                    previousView?.tv_listing_item_listing_price
+                            ?.setTextColor(context.resources.getColor(R.color.colorAccent))
+
+                    //Set the properties of the selected view.
+                    selectedView?.setBackgroundColor(context.resources.getColor(R.color.colorAccent))
+                    selectedView?.tv_listing_item_listing_price
+                            ?.setTextColor(context.resources.getColor(R.color.white))
+
                 }
                 callback(currentListing)
             } else {
