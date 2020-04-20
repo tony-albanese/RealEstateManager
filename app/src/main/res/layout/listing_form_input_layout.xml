@@ -123,6 +123,7 @@
             android:id="@+id/tv_listing_area"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="Listing Area"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -210,48 +211,58 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:minWidth="90dp"
             android:text="Listing Date"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="64dp"
-            tools:layout_editor_absoluteY="496dp" />
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="@+id/seekbar_bathrooms"
+            app:layout_constraintTop_toBottomOf="@+id/seekbar_bathrooms" />
 
         <TextView
             android:id="@+id/tv_listing_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:text="@={viewModel.currentListing.listingDate}"
-            tools:layout_editor_absoluteX="76dp"
-            tools:layout_editor_absoluteY="523dp"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView"
             tools:text="mm/dd/yyyy" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:minWidth="90dp"
             android:text="Sell Date"
             android:textSize="18sp"
-            tools:layout_editor_absoluteX="216dp"
-            tools:layout_editor_absoluteY="558dp" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_market_available"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/tv_selling_date"
-            android:layout_width="84dp"
-            android:layout_height="13dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:text="@={viewModel.currentListing.listingSaleDate}"
-            tools:layout_editor_absoluteX="28dp"
-            tools:layout_editor_absoluteY="560dp"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2"
             tools:text="mm/dd/yyyy" />
 
         <TextView
             android:id="@+id/tv_market_available"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Available for sale"
+            android:layout_marginBottom="8dp"
+            android:text="For Sale?"
+            app:layout_constraintBottom_toTopOf="@+id/switch_for_sale"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView3"
-            tools:layout_editor_absoluteY="604dp" />
+            app:layout_constraintStart_toStartOf="@+id/switch_for_sale"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Switch
             android:id="@+id/switch_for_sale"
