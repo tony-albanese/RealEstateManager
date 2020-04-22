@@ -9,6 +9,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
@@ -61,7 +62,7 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_item_edit_listing -> {
                 val intent = Intent(this, EditListingActivity::class.java)
-                //TODO: Pass the current listing's id into the intent
+                intent.putExtra(LISTING_ID_KEY, listingViewModel.selectedListing.value?.id ?: 0)
                 startActivity(intent)
                 finish()
                 return true
