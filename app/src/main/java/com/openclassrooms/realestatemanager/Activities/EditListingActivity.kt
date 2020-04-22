@@ -162,6 +162,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
         })
 
         seekbar_total_rooms.setOnSeekBarChangeListener(this)
+        seekbar_bedrooms.setOnSeekBarChangeListener(this)
+        seekbar_bathrooms.setOnSeekBarChangeListener(this)
     }
 
     override fun onStop() {
