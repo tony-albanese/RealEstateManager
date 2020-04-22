@@ -179,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:max="10"
-            android:progress="@={viewModel.currentListing.numberOfBedrooms}"
+            android:progress="@{viewModel.currentListing.numberOfBedrooms}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_bedrooms" />
@@ -201,7 +201,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:max="20"
-            android:progress="@={ListingDataTypeConverters.bathroomsToProgress(viewModel.currentListing.numberBathrooms)}"
+            android:progress="@{ListingDataTypeConverters.bathroomsToProgress(viewModel.currentListing.numberBathrooms)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_bathrooms" />
