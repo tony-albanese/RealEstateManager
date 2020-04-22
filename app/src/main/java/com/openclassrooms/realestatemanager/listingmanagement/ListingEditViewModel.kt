@@ -96,19 +96,6 @@ class ListingEditViewModel(
                 }
 
             }
-            /*
-            if (!returnedID.equals(0)) {
-                saveToFile = false
-                deleteListingFile()
-                builder.show()
-            } else {
-                saveToFile = true
-                builder.setMessage("Something went wrong.")
-                        .setPositiveButton("OK", createPositiveErrorButtonLisenter())
-                        .show()
-            }
-
-             */
         }
     }
 
