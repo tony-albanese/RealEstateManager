@@ -14,10 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utilities.AddressTextWatcher
-import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
-import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
-import com.openclassrooms.realestatemanager.Utilities.FormValidatorUtilities
+import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.databinding.ListingEditLayoutBinding
 import com.openclassrooms.realestatemanager.listingmanagement.ListingDatePicker
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
@@ -157,8 +154,18 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
         }
 
         viewModel.numberOfRoom.observe(this, androidx.lifecycle.Observer {
-            val text = "Rooms: " + it.toString()
+            val text = ListingDataTypeConverters.generateRoomsStringFromInt(it)
             tv_total_rooms.setText(text)
+        })
+
+        viewModel.numberOfBedrooms.observe(this, androidx.lifecycle.Observer {
+            val text = ListingDataTypeConverters.generateNumberOfBedroomsString(it)
+            tv_bedrooms.setText(text)
+        })
+
+        viewModel.numberOfBathrooms.observe(this, androidx.lifecycle.Observer {
+            val text = ListingDataTypeConverters.generateNumberOfBathroomsString(it)
+            tv_bathrooms.setText(text)
         })
 
         seekbar_total_rooms.setOnSeekBarChangeListener(this)
