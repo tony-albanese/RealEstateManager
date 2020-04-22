@@ -103,8 +103,14 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
         saveButton.setOnClickListener {
             val data = viewModel.currentListing.value.toString()
             val successDialogBuilder = CustomDialogBuilder(this)
-            viewModel.saveListingToDatabase(successDialogBuilder.buildSuccessDialogBuilder())
-            System.out.println(data)
+
+            if (viewModel.isNewListing) {
+                viewModel.saveListingToDatabase(successDialogBuilder.buildSuccessDialogBuilder())
+                System.out.println(data)
+            } else {
+                viewModel.updateListing()
+            }
+
         }
 
 
