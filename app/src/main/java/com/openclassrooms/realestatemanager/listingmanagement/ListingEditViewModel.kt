@@ -39,7 +39,7 @@ class ListingEditViewModel(
     val repository: ListingRepository
     var saveToFile: Boolean = true
 
-    private var isNewListing: Boolean = true
+    var isNewListing: Boolean = true
 
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
@@ -99,6 +99,13 @@ class ListingEditViewModel(
         }
     }
 
+    fun updateListing() {
+        viewModelScope.launch {
+            val returned = repository.updateListing(currentListing.value!!)
+            Log.i("DATABASE", "Int: " + returned.toString())
+        }
+
+    }
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
