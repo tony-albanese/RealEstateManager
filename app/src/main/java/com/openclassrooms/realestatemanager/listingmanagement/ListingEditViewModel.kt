@@ -39,6 +39,8 @@ class ListingEditViewModel(
     val repository: ListingRepository
     var saveToFile: Boolean = true
 
+    private var isNewListing: Boolean = true
+
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
     /*
@@ -71,6 +73,30 @@ class ListingEditViewModel(
     fun saveListingToDatabase(builder: MaterialAlertDialogBuilder) {
         viewModelScope.launch {
             val returnedID = repository.insert(currentListing.value!!)
+            when (returnedID) {
+                -1.toLong() -> {
+                    Log.i("DATABASE", "Conflict. Ignored")
+                    Log.i("DATABASE", returnedID.toString())
+                    saveToFile = true
+                    builder.setMessage("Error. Data Conflict.")
+                            .setPositiveButton("OK", createPositiveErrorButtonLisenter())
+                            .show()
+
+                }
+                in 0..Long.MAX_VALUE -> {
+                    saveToFile = false
+                    deleteListingFile()
+                    builder.show()
+                }
+                else -> {
+                    saveToFile = true
+                    builder.setMessage("Something went wrong.")
+                            .setPositiveButton("OK", createPositiveErrorButtonLisenter())
+                            .show()
+                }
+
+            }
+            /*
             if (!returnedID.equals(0)) {
                 saveToFile = false
                 deleteListingFile()
@@ -81,6 +107,8 @@ class ListingEditViewModel(
                         .setPositiveButton("OK", createPositiveErrorButtonLisenter())
                         .show()
             }
+
+             */
         }
     }
 
@@ -98,6 +126,7 @@ class ListingEditViewModel(
             viewModelScope.launch {
                 val listing = repository.getListing(listingId)
                 currentListing.value = listing
+                isNewListing = false
             }
         } else {
             val listing = loadListingFromFile()
