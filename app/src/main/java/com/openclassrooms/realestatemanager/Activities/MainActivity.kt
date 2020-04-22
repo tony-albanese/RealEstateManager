@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -19,15 +21,18 @@ import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
+import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
+    lateinit var descriptionTextView: TextView
+
     var landscapeMode: Boolean = false
 
     companion object {
@@ -45,9 +50,10 @@ class MainActivity : AppCompatActivity() {
         landscapeMode = listing_info_landscape_frame_layout != null
 
         recyclerView = findViewById(R.id.rv_listings)
-
+        descriptionTextView = findViewById(R.id.tv_description_body)
 
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
+
 
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -68,6 +74,8 @@ class MainActivity : AppCompatActivity() {
                 adapter.setListings(it)
             }
         })
+
+        descriptionTextView.setOnLongClickListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -109,5 +117,12 @@ class MainActivity : AppCompatActivity() {
 
     val itemViewOnClickListenerCallback: (Listing) -> Unit = {
         listingViewModel.setCurrentListing(it)
+    }
+
+    override fun onLongClick(p0: View?): Boolean {
+        listing_description_editor_layout.visibility = View.VISIBLE
+        listing_description_editor_layout.bringToFront()
+        return true
+
     }
 }
