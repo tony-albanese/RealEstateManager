@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.Activities
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -37,5 +39,19 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
                 listingViewModel.getListingForPortraitMode(it)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.getItem(0)?.setEnabled(false)
+        menu?.getItem(0)?.setVisible(false)
+        menu?.getItem(2)?.setEnabled(false)
+        menu?.getItem(2)?.setVisible(false)
+        return true
     }
 }
