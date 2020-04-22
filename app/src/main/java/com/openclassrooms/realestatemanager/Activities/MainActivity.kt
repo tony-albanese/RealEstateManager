@@ -92,6 +92,14 @@ class MainActivity : AppCompatActivity() {
                 finish()
                 return true
             }
+            R.id.menu_item_edit_listing -> {
+                val intent = Intent(this, EditListingActivity::class.java)
+                intent.putExtra(LISTING_ID_KEY, listingViewModel.selectedListing.value?.id
+                        ?: 0.toLong())
+                startActivity(intent)
+                finish()
+                return true
+            }
             else -> {
                 return true
 
