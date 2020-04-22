@@ -254,7 +254,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
-        viewModel.onSpinnerChange(seekBar, progress)
+        viewModel.onProgressChange(seekBar, progress)
     }
 
     override fun onStartTrackingTouch(p0: SeekBar?) {
