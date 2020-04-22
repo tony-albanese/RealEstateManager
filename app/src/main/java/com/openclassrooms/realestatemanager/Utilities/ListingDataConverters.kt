@@ -8,7 +8,7 @@ object ListingDataTypeConverters {
     @InverseMethod("bathroomsToProgress")
     @JvmStatic
     fun progressToNumberOfBathrooms(progress: Int): Double {
-        return (progress / 2).toDouble()
+        return (progress.toDouble() / 2)
     }
 
     @JvmStatic
