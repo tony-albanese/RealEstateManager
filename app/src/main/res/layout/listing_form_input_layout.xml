@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:max="20"
-            android:progress="@={viewModel.currentListing.numberOfRooms}"
+            android:progress="@{viewModel.currentListing.numberOfRooms}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_total_rooms" />
