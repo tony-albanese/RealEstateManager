@@ -253,8 +253,8 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
         viewHashMap.put(addressEditText.id, addressEditText)
     }
 
-    override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-        viewModel.onSpinnerChange(p1)
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
+        viewModel.onSpinnerChange(seekBar, progress)
     }
 
     override fun onStartTrackingTouch(p0: SeekBar?) {
