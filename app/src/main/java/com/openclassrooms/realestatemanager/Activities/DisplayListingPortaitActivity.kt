@@ -1,8 +1,10 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -53,5 +55,18 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
         menu?.getItem(2)?.setEnabled(false)
         menu?.getItem(2)?.setVisible(false)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_item_edit_listing -> {
+                val intent = Intent(this, EditListingActivity::class.java)
+                //TODO: Pass the current listing's id into the intent
+                startActivity(intent)
+                finish()
+                return true
+            }
+            else -> return true
+        }
     }
 }
