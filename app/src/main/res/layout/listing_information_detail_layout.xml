@@ -14,6 +14,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <include
+            layout="@layout/listing_decription_editor_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="70dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_media_title" />
         <!--This is the base layout for all of the detailed information for a listing.
         It will be the same on all devices. The grid layout will change. -->
         <com.google.android.material.appbar.AppBarLayout
