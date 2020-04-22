@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.listingmanagement
 import android.app.Application
 import android.content.DialogInterface
 import android.util.Log
+import android.widget.SeekBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,9 +39,20 @@ class ListingEditViewModel(
 
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
+    /*
+    These variables are the LiveData for the number of rooms in the listing.
+     */
     val _numberOfRooms = MutableLiveData<Int>(0)
     val numberOfRoom: LiveData<Int>
         get() = _numberOfRooms
+
+    val _numberOfBedrooms = MutableLiveData<Int>(0)
+    val numberOfBedrooms: LiveData<Int>
+        get() = _numberOfBedrooms
+
+    val _numberOfBathrooms = MutableLiveData<Double>(0.0)
+    val numberOfBathrooms: LiveData<Double>
+        get() = _numberOfBathrooms
 
     init {
         System.out.println(listingId)
@@ -143,7 +155,7 @@ class ListingEditViewModel(
         }
     }
 
-    fun onSpinnerChange(progress: Int) {
+    fun onSpinnerChange(seekBar: SeekBar, progress: Int) {
         currentListing.value?.numberOfRooms = progress
         _numberOfRooms.value = currentListing.value?.numberOfRooms
     }
