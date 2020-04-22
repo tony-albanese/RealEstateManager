@@ -157,9 +157,9 @@ class ListingEditViewModel(
         }
     }
 
-    fun onSpinnerChange(seekBar: SeekBar, progress: Int) {
+    fun onSpinnerChange(seekBar: SeekBar?, progress: Int) {
 
-        when (seekBar.id) {
+        when (seekBar?.id) {
             R.id.seekbar_total_rooms -> {
                 currentListing.value?.numberOfRooms = progress
                 _numberOfRooms.value = currentListing.value?.numberOfRooms
