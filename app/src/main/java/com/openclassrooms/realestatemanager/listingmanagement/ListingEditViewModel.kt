@@ -99,10 +99,21 @@ class ListingEditViewModel(
         }
     }
 
-    fun updateListing() {
+    fun updateListing(builder: MaterialAlertDialogBuilder) {
         viewModelScope.launch {
-            val returned = repository.updateListing(currentListing.value!!)
-            Log.i("DATABASE", "Int: " + returned.toString())
+            val returnedValue = repository.updateListing(currentListing.value!!)
+            if (returnedValue == 1) {
+                saveToFile = false
+                Log.i("DATABASE", "Int: " + returnedValue.toString())
+                builder.setMessage("Listing Updated")
+                builder.show()
+            } else {
+                saveToFile = true
+                Log.i("DATABASE", "Int: " + returnedValue.toString())
+                builder.setMessage("Something went wrong.")
+                        .setPositiveButton("OK", createPositiveErrorButtonLisenter())
+                        .show()
+            }
         }
 
     }
