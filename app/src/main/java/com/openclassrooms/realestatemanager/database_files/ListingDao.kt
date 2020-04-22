@@ -1,10 +1,7 @@
 package com.openclassrooms.realestatemanager.database_files
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ListingDao {
@@ -24,6 +21,8 @@ interface ListingDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertListing(listing: Listing): Long
 
+    @Update
+    fun updateListing(listing: Listing): Int
 
     @Query("DELETE FROM table_listings")
     fun deleteAllListings()

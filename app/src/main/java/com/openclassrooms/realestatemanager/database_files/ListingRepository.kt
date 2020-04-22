@@ -27,4 +27,8 @@ class ListingRepository(
         listingDao.getListing(id)
     }
 
+    suspend fun updateListing(listing: Listing): Int = withContext(Dispatchers.IO) {
+        listingDao.updateListing(listing)
+    }
+
 }
