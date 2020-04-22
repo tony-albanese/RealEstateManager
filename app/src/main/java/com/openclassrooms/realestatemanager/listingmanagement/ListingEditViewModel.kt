@@ -12,7 +12,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.openclassrooms.realestatemanager.Constants.LISTING_SAVE_FILE
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.DateUtilities
+import com.openclassrooms.realestatemanager.Utilities.ListingDataTypeConverters
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingRepository
@@ -156,7 +158,22 @@ class ListingEditViewModel(
     }
 
     fun onSpinnerChange(seekBar: SeekBar, progress: Int) {
-        currentListing.value?.numberOfRooms = progress
-        _numberOfRooms.value = currentListing.value?.numberOfRooms
+
+        when (seekBar.id) {
+            R.id.seekbar_total_rooms -> {
+                currentListing.value?.numberOfRooms = progress
+                _numberOfRooms.value = currentListing.value?.numberOfRooms
+            }
+            R.id.seekbar_bedrooms -> {
+                currentListing.value?.numberOfBedrooms = progress
+                _numberOfBedrooms.value = progress
+            }
+            R.id.seekbar_bathrooms -> {
+                val numberOfBathrooms = ListingDataTypeConverters.progressToNumberOfBathrooms(progress)
+                currentListing.value?.numberBathrooms = numberOfBathrooms
+                _numberOfBathrooms.value = numberOfBathrooms
+            }
+        }
+
     }
 }
