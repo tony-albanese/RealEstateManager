@@ -28,12 +28,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Listing Type"
-            android:textSize="20sp"
+            style="@style/DefaultListingFormTextViewStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!--Spinner for listing type. -->
-        <!--TODO: Implement save when value is changed. -->
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner_listing_type"
             android:layout_width="wrap_content"
@@ -121,6 +120,7 @@
 
         <TextView
             android:id="@+id/tv_listing_area"
+            style="@style/DefaultListingFormTextViewStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -146,6 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Total Rooms"
+            style="@style/DefaultListingFormTextViewStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_listing_area" />
@@ -168,6 +169,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="Number of Bedrooms"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -190,6 +192,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="Number of Bathrooms"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -214,6 +217,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:minWidth="90dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="Listing Date"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/textView2"
@@ -225,6 +229,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="@={viewModel.currentListing.listingDate}"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="@+id/textView"
@@ -237,6 +242,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:minWidth="90dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="Sell Date"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_market_available"
@@ -248,6 +254,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="@={viewModel.currentListing.listingSaleDate}"
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="@+id/textView2"
@@ -258,6 +265,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="For Sale?"
             app:layout_constraintBottom_toTopOf="@+id/switch_for_sale"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
@@ -277,6 +285,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="Publish?"
             app:layout_constraintStart_toStartOf="@+id/switch_for_sale"
             app:layout_constraintTop_toBottomOf="@+id/switch_for_sale" />
