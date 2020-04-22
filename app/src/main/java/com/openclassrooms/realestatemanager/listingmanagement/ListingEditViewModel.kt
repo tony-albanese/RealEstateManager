@@ -3,6 +3,8 @@ package com.openclassrooms.realestatemanager.listingmanagement
 import android.app.Application
 import android.content.DialogInterface
 import android.util.Log
+import android.widget.SeekBar
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +12,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.openclassrooms.realestatemanager.Constants.LISTING_SAVE_FILE
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.DateUtilities
+import com.openclassrooms.realestatemanager.Utilities.ListingDataTypeConverters
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingRepository
@@ -36,6 +40,21 @@ class ListingEditViewModel(
     var saveToFile: Boolean = true
 
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
+
+    /*
+    These variables are the LiveData for the number of rooms in the listing.
+     */
+    private val _numberOfRooms = MutableLiveData<Int>(0)
+    val numberOfRoom: LiveData<Int>
+        get() = _numberOfRooms
+
+    private val _numberOfBedrooms = MutableLiveData<Int>(0)
+    val numberOfBedrooms: LiveData<Int>
+        get() = _numberOfBedrooms
+
+    private val _numberOfBathrooms = MutableLiveData<Double>(0.0)
+    val numberOfBathrooms: LiveData<Double>
+        get() = _numberOfBathrooms
 
     init {
         System.out.println(listingId)
@@ -136,5 +155,25 @@ class ListingEditViewModel(
         if (!successfuleDeletion) {
             Log.i("FILE-IO", "Error deleting file.")
         }
+    }
+
+    fun onProgressChange(seekBar: SeekBar?, progress: Int) {
+
+        when (seekBar?.id) {
+            R.id.seekbar_total_rooms -> {
+                currentListing.value?.numberOfRooms = progress
+                _numberOfRooms.value = currentListing.value?.numberOfRooms
+            }
+            R.id.seekbar_bedrooms -> {
+                currentListing.value?.numberOfBedrooms = progress
+                _numberOfBedrooms.value = progress
+            }
+            R.id.seekbar_bathrooms -> {
+                val numberOfBathrooms = ListingDataTypeConverters.progressToNumberOfBathrooms(progress)
+                currentListing.value?.numberBathrooms = numberOfBathrooms
+                _numberOfBathrooms.value = numberOfBathrooms
+            }
+        }
+
     }
 }

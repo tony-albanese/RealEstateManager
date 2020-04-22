@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            style="@style/style_text_header"
             android:text="Description"
             app:layout_constraintBottom_toTopOf="@+id/tv_description_body"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,6 +32,7 @@
 
         <TextView
             android:id="@+id/tv_description_body"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -40,7 +42,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tv_description_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_description_title" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_description_title"
+            bind:text="Add a description here." />
 
         <TextView
             android:id="@+id/tv_media_title"
@@ -50,6 +53,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Media"
+            style="@style/style_text_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

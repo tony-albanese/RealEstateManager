@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -44,10 +45,15 @@ class MainActivity : AppCompatActivity() {
         landscapeMode = listing_info_landscape_frame_layout != null
 
         recyclerView = findViewById(R.id.rv_listings)
+
+
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
 
-        recyclerView.adapter = adapter
+
         recyclerView.layoutManager = LinearLayoutManager(this)
+        val itemDecor = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
+        recyclerView.addItemDecoration(itemDecor)
+        recyclerView.adapter = adapter
 
         setSupportActionBar(toolbar)
         toolbar.title = title

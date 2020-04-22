@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -16,76 +18,97 @@
             type="com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/listing_form_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tv_listing_type_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:text="Select Listing Type"
-            android:textSize="20sp" />
+            style="@style/DefaultListingFormTextViewStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!--Spinner for listing type. -->
-        <!--TODO: Implement save when value is changed. -->
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner_listing_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="200dp" />
+            android:layout_marginTop="8dp"
+            android:minWidth="200dp"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/tv_listing_type_title" />
 
         <!--Input Street Address -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/textInputLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Street Address">
+            android:hint="Street Address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_listing_type">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_street_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.currentListing.listingStreetAddress}" />
+                android:text="@={viewModel.currentListing.listingStreetAddress}"
+                tools:text="Address" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--Input city. -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/textInputLayout2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="City">
+            android:hint="City"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_city"
-                android:text="@={viewModel.currentListing.listingCity}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.currentListing.listingCity}"
+                tools:text="City" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--Input zipcode. -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/textInputLayout3"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Zipcode">
+            android:layout_marginTop="61dp"
+            android:hint="Zipcode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textInputLayout2">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_zipcode"
-                android:text="@={viewModel.currentListing.listingZipCode}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.currentListing.listingZipCode}"
+                tools:text="ZipCode" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--Input Price -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/et_input_layout_sales_price"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Listing Price">
+            android:hint="Listing Price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_listing_sales_price"
@@ -97,106 +120,183 @@
 
         <TextView
             android:id="@+id/tv_listing_area"
-            android:layout_width="match_parent"
+            style="@style/DefaultListingFormTextViewStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Listing Area" />
-        
+            android:layout_marginStart="8dp"
+            android:text="Listing Area"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_input_layout_sales_price" />
+
         <EditText
             android:id="@+id/et_listing_area"
             android:layout_width="wrap_content"
-            android:minWidth="150dp"
-            android:inputType="number"
             android:layout_height="wrap_content"
+            android:inputType="number"
+            android:minWidth="150dp"
             android:text="@={ListingDataTypeConverters.areaIntToString(viewModel.currentListing.listingArea)}"
-            />
+            app:layout_constraintStart_toStartOf="@+id/tv_listing_area"
+            app:layout_constraintTop_toBottomOf="@+id/tv_listing_area" />
 
         <!--Set the total number of rooms. -->
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_total_rooms"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Total Rooms" />
+            android:layout_marginStart="8dp"
+            android:text="Total Rooms"
+            style="@style/DefaultListingFormTextViewStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_listing_area" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekbar_total_rooms"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:max="20"
-            android:progress="@={viewModel.currentListing.numberOfRooms}" />
+            android:progress="@{viewModel.currentListing.numberOfRooms}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_total_rooms" />
 
 
         <!--Set the number of bedrooms. -->
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_bedrooms"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Number of Bedrooms" />
+            android:layout_marginStart="8dp"
+            style="@style/DefaultListingFormTextViewStyle"
+            android:text="Number of Bedrooms"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekbar_total_rooms" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekbar_bedrooms"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:max="10"
-            android:progress="@={viewModel.currentListing.numberOfBedrooms}" />
+            android:progress="@{viewModel.currentListing.numberOfBedrooms}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bedrooms" />
 
         <!--Set the number of bathrooms. -->
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_bathrooms"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Number of Bathrooms" />
+            android:layout_marginStart="8dp"
+            style="@style/DefaultListingFormTextViewStyle"
+            android:text="Number of Bathrooms"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekbar_bedrooms" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekbar_bathrooms"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:max="20"
-            android:progress="@={ListingDataTypeConverters.bathroomsToProgress(viewModel.currentListing.numberBathrooms)}" />
+            android:progress="@{ListingDataTypeConverters.bathroomsToProgress(viewModel.currentListing.numberBathrooms)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bathrooms" />
+
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:minWidth="90dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="Listing Date"
-            android:textSize="18sp" />
-
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="@+id/seekbar_bathrooms"
+            app:layout_constraintTop_toBottomOf="@+id/seekbar_bathrooms" />
 
         <TextView
             android:id="@+id/tv_listing_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@={viewModel.currentListing.listingDate}" />
+            android:layout_marginStart="24dp"
+            style="@style/DefaultListingFormTextViewStyle"
+            android:text="@={viewModel.currentListing.listingDate}"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView"
+            tools:text="mm/dd/yyyy" />
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:minWidth="90dp"
+            style="@style/DefaultListingFormTextViewStyle"
             android:text="Sell Date"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_market_available"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/tv_selling_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@={viewModel.currentListing.listingSaleDate}" />
+            android:layout_marginStart="24dp"
+            style="@style/DefaultListingFormTextViewStyle"
+            android:text="@={viewModel.currentListing.listingSaleDate}"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2"
+            tools:text="mm/dd/yyyy" />
 
         <TextView
             android:id="@+id/tv_market_available"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Available for sale" />
+            android:layout_marginBottom="8dp"
+            style="@style/DefaultListingFormTextViewStyle"
+            android:text="For Sale?"
+            app:layout_constraintBottom_toTopOf="@+id/switch_for_sale"
+            app:layout_constraintEnd_toEndOf="@+id/textView3"
+            app:layout_constraintStart_toStartOf="@+id/switch_for_sale"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Switch
             android:id="@+id/switch_for_sale"
-            android:checked="@={viewModel.currentListing.available}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Publish?" />
+            android:layout_marginStart="8dp"
+            android:checked="@={viewModel.currentListing.available}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_market_available" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/DefaultListingFormTextViewStyle"
+            android:text="Publish?"
+            app:layout_constraintStart_toStartOf="@+id/switch_for_sale"
+            app:layout_constraintTop_toBottomOf="@+id/switch_for_sale" />
 
         <Switch
             android:id="@+id/switch_is_published"
-            android:checked="@{viewModel.currentListing.listingIsPublished}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checked="@{viewModel.currentListing.listingIsPublished}"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

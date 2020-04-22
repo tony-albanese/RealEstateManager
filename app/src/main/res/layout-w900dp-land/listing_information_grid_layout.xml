@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
 
         <variable
@@ -28,28 +29,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
-                android:text="@{ListingDataTypeConverters.generateAreaStringFromInt(listingViewModel.selectedListing.listingArea)}" />
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:drawableLeft="@drawable/ic_area"
+                android:text="@{ListingDataTypeConverters.generateAreaStringFromInt(listingViewModel.selectedListing.listingArea)}"
+                tools:text="Area" />
 
             <TextView
                 android:id="@+id/tv_total_rooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
-                android:text="@{ListingDataTypeConverters.generateRoomsStringFromInt(listingViewModel.selectedListing.numberOfRooms)}" />
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:drawableLeft="@drawable/ic_rooms"
+                android:text="@{ListingDataTypeConverters.generateRoomsStringFromInt(listingViewModel.selectedListing.numberOfRooms)}"
+                tools:text="Number Rooms" />
 
             <TextView
                 android:id="@+id/tv_number_of_bathrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
-                android:text="@{ListingDataTypeConverters.generateNumberOfBathroomsString(listingViewModel.selectedListing.numberBathrooms)}" />
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:text="@{ListingDataTypeConverters.generateNumberOfBathroomsString(listingViewModel.selectedListing.numberBathrooms)}"
+                tools:text="Bathrooms" />
 
             <TextView
                 android:id="@+id/tv_bedrooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/generic_background_color"
-                android:text="@{ListingDataTypeConverters.generateNumberOfBedroomsString(listingViewModel.selectedListing.numberOfBedrooms)}" />
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:text="@{ListingDataTypeConverters.generateNumberOfBedroomsString(listingViewModel.selectedListing.numberOfBedrooms)}"
+                tools:text="Bedrooms" />
 
         </LinearLayout>
 
@@ -59,7 +70,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/generic_background_color"
-            android:text="@{ListingDataTypeConverters.generateAddressString(listingViewModel.selectedListing)}" />
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:drawableLeft="@drawable/ic_location"
+            android:text="@{ListingDataTypeConverters.generateAddressString(listingViewModel.selectedListing)}"
+            tools:text="Location" />
 
         <ImageView
             android:layout_width="0dp"

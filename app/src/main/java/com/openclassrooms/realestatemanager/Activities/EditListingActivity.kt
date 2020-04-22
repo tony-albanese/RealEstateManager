@@ -14,10 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utilities.AddressTextWatcher
-import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
-import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
-import com.openclassrooms.realestatemanager.Utilities.FormValidatorUtilities
+import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.databinding.ListingEditLayoutBinding
 import com.openclassrooms.realestatemanager.listingmanagement.ListingDatePicker
 import com.openclassrooms.realestatemanager.listingmanagement.ListingEditViewModel
@@ -27,7 +24,7 @@ import kotlinx.android.synthetic.main.listing_form_input_layout.*
 import java.util.*
 import kotlin.collections.HashMap
 
-class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
+class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
 
     lateinit var viewModel: ListingEditViewModel
     lateinit var spinner: Spinner
@@ -155,6 +152,25 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
                 FormValidatorUtilities.validateForm(viewHashMap)
             }
         }
+
+        viewModel.numberOfRoom.observe(this, androidx.lifecycle.Observer {
+            val text = ListingDataTypeConverters.generateRoomsStringFromInt(it)
+            tv_total_rooms.setText(text)
+        })
+
+        viewModel.numberOfBedrooms.observe(this, androidx.lifecycle.Observer {
+            val text = ListingDataTypeConverters.generateNumberOfBedroomsString(it)
+            tv_bedrooms.setText(text)
+        })
+
+        viewModel.numberOfBathrooms.observe(this, androidx.lifecycle.Observer {
+            val text = ListingDataTypeConverters.generateNumberOfBathroomsString(it)
+            tv_bathrooms.setText(text)
+        })
+
+        seekbar_total_rooms.setOnSeekBarChangeListener(this)
+        seekbar_bedrooms.setOnSeekBarChangeListener(this)
+        seekbar_bathrooms.setOnSeekBarChangeListener(this)
     }
 
     override fun onStop() {
@@ -244,5 +260,17 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener {
         viewHashMap.put(et_listing_area.id, et_listing_area)
         viewHashMap.put(et_listing_sales_price.id, et_listing_sales_price)
         viewHashMap.put(addressEditText.id, addressEditText)
+    }
+
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
+        viewModel.onProgressChange(seekBar, progress)
+    }
+
+    override fun onStartTrackingTouch(p0: SeekBar?) {
+
+    }
+
+    override fun onStopTrackingTouch(p0: SeekBar?) {
+
     }
 }
