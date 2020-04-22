@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.listingmanagement
 import android.app.Application
 import android.content.DialogInterface
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,6 +37,10 @@ class ListingEditViewModel(
     var saveToFile: Boolean = true
 
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
+
+    val _numberOfRooms = MutableLiveData<Int>(0)
+    val numberOfRoom: LiveData<Int>
+        get() = _numberOfRooms
 
     init {
         System.out.println(listingId)
@@ -136,5 +141,10 @@ class ListingEditViewModel(
         if (!successfuleDeletion) {
             Log.i("FILE-IO", "Error deleting file.")
         }
+    }
+
+    fun onSpinnerChange(progress: Int) {
+        currentListing.value?.numberOfRooms = progress
+        _numberOfRooms.value = currentListing.value?.numberOfRooms
     }
 }
