@@ -44,15 +44,15 @@ class ListingEditViewModel(
     /*
     These variables are the LiveData for the number of rooms in the listing.
      */
-    val _numberOfRooms = MutableLiveData<Int>(0)
+    private val _numberOfRooms = MutableLiveData<Int>(0)
     val numberOfRoom: LiveData<Int>
         get() = _numberOfRooms
 
-    val _numberOfBedrooms = MutableLiveData<Int>(0)
+    private val _numberOfBedrooms = MutableLiveData<Int>(0)
     val numberOfBedrooms: LiveData<Int>
         get() = _numberOfBedrooms
 
-    val _numberOfBathrooms = MutableLiveData<Double>(0.0)
+    private val _numberOfBathrooms = MutableLiveData<Double>(0.0)
     val numberOfBathrooms: LiveData<Double>
         get() = _numberOfBathrooms
 
