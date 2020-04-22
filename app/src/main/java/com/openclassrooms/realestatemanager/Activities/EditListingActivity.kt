@@ -108,7 +108,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
                 viewModel.saveListingToDatabase(successDialogBuilder.buildSuccessDialogBuilder())
                 System.out.println(data)
             } else {
-                viewModel.updateListing()
+                viewModel.updateListing(successDialogBuilder.buildSuccessDialogBuilder())
             }
 
         }
