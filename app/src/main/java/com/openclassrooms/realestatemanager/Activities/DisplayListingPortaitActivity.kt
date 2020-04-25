@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.Activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.database_files.Listing
@@ -69,9 +67,8 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_edit_listing -> {
-                val intent = Intent(this, EditListingActivity::class.java)
-                intent.putExtra(LISTING_ID_KEY, listingViewModel.selectedListing.value?.id ?: 0)
-                startActivity(intent)
+                helper.onEditListingClick(this, listingViewModel.selectedListing?.value?.id?.toLong()
+                        ?: 0)
                 finish()
                 return true
             }
