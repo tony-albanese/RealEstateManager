@@ -16,7 +16,7 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     val listings: LiveData<List<Listing>>
     val publishedListings: LiveData<List<Listing>>
     val unpublishedListings: LiveData<List<Listing>>
-    
+
     private val _selectedListing = MutableLiveData<Listing>()
     val selectedListing: LiveData<Listing>
         get() = _selectedListing
