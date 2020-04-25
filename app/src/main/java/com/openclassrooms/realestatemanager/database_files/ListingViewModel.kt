@@ -51,7 +51,8 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun updateListingDescription(description: String) {
-        _selectedListing.value?.listingDescription = description
+        _selectedListing?.value?.listingDescription = description
+        _selectedListing.postValue(_selectedListing.value)
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.updateListing(_selectedListing.value!!)
         }
