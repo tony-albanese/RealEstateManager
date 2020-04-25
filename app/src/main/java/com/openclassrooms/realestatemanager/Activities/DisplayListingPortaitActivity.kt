@@ -5,17 +5,23 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
+import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listing_information_detail_layout.*
 
-class DisplayListingPortaitActivity : AppCompatActivity() {
+class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener {
 
     lateinit var listingViewModel: ListingViewModel
     lateinit var helper: HelperMethods
@@ -47,6 +53,9 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
                 listingViewModel.getListingForPortraitMode(it)
             }
         }
+
+        setListingDescriptionListeners()
+        setObservers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -76,5 +85,61 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
             }
             else -> return true
         }
+    }
+
+    fun setListingDescriptionListeners() {
+        val descriptionTextView = findViewById<TextView>(R.id.tv_description_body)
+        val confirmImageButton = findViewById<ImageButton>(R.id.ib_confirm_description)
+        val cancelImageButton = findViewById<ImageButton>(R.id.ib_cancel_description)
+        val editText = findViewById<EditText>(R.id.et_listing_description)
+
+        descriptionTextView.setOnLongClickListener(this)
+
+        confirmImageButton.setOnClickListener {
+            listingViewModel.updateListingDescription(editText.text.toString(), updateCallback)
+            editText?.text?.clear()
+            listing_description_editor_layout?.visibility = View.GONE
+        }
+
+        cancelImageButton.setOnClickListener {
+            editText?.text?.clear()
+            listing_description_editor_layout?.visibility = View.GONE
+        }
+
+    }
+
+    val updateCallback: (Int) -> Unit = {
+
+        val snackbar = Snackbar.make(
+                findViewById(R.id.display_listing_constraint_layout),
+                R.string.update_ok_message, BaseTransientBottomBar.LENGTH_LONG)
+
+        when (it) {
+            1 -> snackbar.show()
+            else -> {
+                snackbar.setText(R.string.update_failed_message)
+                        .show()
+            }
+        }
+
+
+    }
+
+    override fun onLongClick(view: View?): Boolean {
+        listing_description_editor_layout.visibility = View.VISIBLE
+        listing_description_editor_layout.bringToFront()
+        return true
+    }
+
+    fun setObservers() {
+        val listingBodyTextView = findViewById<TextView>(R.id.tv_description_body)
+        listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
+            listingBodyTextView.text = it.listingDescription
+        })
+
+        listingViewModel.unpublishedListings.observe(this, androidx.lifecycle.Observer {
+            unpublishedListings = it
+            invalidateOptionsMenu()
+        })
     }
 }
