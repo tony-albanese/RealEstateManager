@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -31,7 +30,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
-    lateinit var descriptionTextView: TextView
 
     var landscapeMode: Boolean = false
 
@@ -50,7 +48,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         landscapeMode = listing_info_landscape_frame_layout != null
 
         recyclerView = findViewById(R.id.rv_listings)
-        descriptionTextView = findViewById(R.id.tv_description_body)
 
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
 
@@ -74,8 +71,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 adapter.setListings(it)
             }
         })
-
-        descriptionTextView.setOnLongClickListener(this)
+        
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -119,10 +115,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         listingViewModel.setCurrentListing(it)
     }
 
-    override fun onLongClick(p0: View?): Boolean {
+    override fun onLongClick(view: View?): Boolean {
         listing_description_editor_layout.visibility = View.VISIBLE
         listing_description_editor_layout.bringToFront()
         return true
-
     }
 }
