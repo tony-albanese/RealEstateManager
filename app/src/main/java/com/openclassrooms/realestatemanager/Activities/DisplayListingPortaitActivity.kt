@@ -47,14 +47,15 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu, menu)
-        return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.getItem(0)?.setEnabled(false)
         menu?.getItem(0)?.setVisible(false)
         menu?.getItem(2)?.setEnabled(false)
         menu?.getItem(2)?.setVisible(false)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        //helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
 
