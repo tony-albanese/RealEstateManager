@@ -92,14 +92,13 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_add_listing -> {
+                helper.onAddNewListingClick(this)
                 finish()
                 return true
             }
             R.id.menu_item_edit_listing -> {
-                val intent = Intent(this, EditListingActivity::class.java)
-                intent.putExtra(LISTING_ID_KEY, listingViewModel.selectedListing.value?.id
+                helper.onEditListingClick(this, listingViewModel.selectedListing.value?.id
                         ?: 0.toLong())
-                startActivity(intent)
                 finish()
                 return true
             }
