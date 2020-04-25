@@ -27,15 +27,15 @@
         android:id="@+id/ib_confirm_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_check"
         app:layout_constraintEnd_toEndOf="@+id/et_listing_description"
-        app:layout_constraintTop_toBottomOf="@+id/et_listing_description"
-        app:srcCompat="@drawable/ic_check" />
+        app:layout_constraintTop_toBottomOf="@+id/et_listing_description" />
 
     <ImageButton
         android:id="@+id/ib_cancel_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancel"
         app:layout_constraintEnd_toStartOf="@+id/ib_confirm_description"
-        app:layout_constraintTop_toTopOf="@+id/ib_confirm_description"
-        app:srcCompat="@drawable/ic_cancel" />
+        app:layout_constraintTop_toTopOf="@+id/ib_confirm_description" />
 </androidx.constraintlayout.widget.ConstraintLayout>
