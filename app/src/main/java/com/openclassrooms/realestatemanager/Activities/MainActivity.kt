@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
+    lateinit var helper: HelperMethods
 
     var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
@@ -54,6 +56,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         landscapeMode = listing_info_landscape_frame_layout != null
         recyclerView = findViewById(R.id.rv_listings)
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
+        helper = HelperMethods()
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         val itemDecor = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
@@ -82,20 +85,13 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         //return super.onPrepareOptionsMenu(menu)
-        val subMenu = menu?.getItem(3)?.subMenu.apply {
-            for (listing in unpublishedListings) {
-                this?.add(Menu.NONE, listing.id.toInt(), Menu.NONE, listing.listingStreetAddress)
-            }
-        }
+        helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_add_listing -> {
-                val intent = Intent(this, EditListingActivity::class.java)
-                intent.putExtra(LISTING_ID_KEY, 0.toLong())
-                startActivity(intent)
                 finish()
                 return true
             }
@@ -108,7 +104,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 return true
             }
             else -> {
-                onUnpublishedListingClick(item.itemId.toLong())
+                helper.onUnpublishedListingClick(this, unpublishedListings, item.itemId.toLong())
                 return true
             }
         }
