@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
+    lateinit var listingBodyTextView: TextView
 
     var landscapeMode: Boolean = false
 
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         landscapeMode = listing_info_landscape_frame_layout != null
 
         recyclerView = findViewById(R.id.rv_listings)
+        listingBodyTextView = findViewById(R.id.tv_description_body)
 
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
 
@@ -67,13 +69,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 "listing-db")
                 .build()
 
-        listingViewModel.publishedListings.observe(this, androidx.lifecycle.Observer {
-            it?.let {
-                adapter.setListings(it)
-            }
-        })
-
         setListingDescriptionListeners()
+        setObservers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -143,5 +140,17 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
             listing_description_editor_layout?.visibility = View.GONE
         }
 
+    }
+
+    fun setObservers() {
+        listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
+            listingBodyTextView.text = it.listingDescription
+        })
+
+        listingViewModel.publishedListings.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+                adapter.setListings(it)
+            }
+        })
     }
 }
