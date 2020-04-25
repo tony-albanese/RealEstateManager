@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
 
+    var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
 
     companion object {
@@ -74,13 +75,18 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu, menu)
+        menu?.getItem(1)?.setEnabled(landscapeMode)
+        menu?.getItem(1)?.setVisible(landscapeMode)
         return true
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         //return super.onPrepareOptionsMenu(menu)
-        menu?.getItem(1)?.setEnabled(landscapeMode)
-        menu?.getItem(1)?.setVisible(landscapeMode)
+        val subMenu = menu?.getItem(3)?.subMenu.apply {
+            for (listing in unpublishedListings) {
+                this?.add(Menu.NONE, listing.id.toInt(), Menu.NONE, listing.listingStreetAddress)
+            }
+        }
         return true
     }
 
@@ -102,6 +108,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 return true
             }
             else -> {
+                onUnpublishedListingClick(item.itemId.toLong())
                 return true
             }
         }
@@ -153,6 +160,11 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 adapter.setListings(it)
             }
         })
+
+        listingViewModel.unpublishedListings.observe(this, androidx.lifecycle.Observer {
+            unpublishedListings = it
+            invalidateOptionsMenu()
+        })
     }
 
     val updateCallback: (Int) -> Unit = {
@@ -168,5 +180,16 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
             }
         }
 
+    }
+
+    fun onUnpublishedListingClick(menuId: Long) {
+        val listingId = unpublishedListings.filter {
+            it.id == menuId
+        }
+        if (listingId.size == 1) {
+            val intent = Intent(this, EditListingActivity::class.java)
+            intent.putExtra(LISTING_ID_KEY, menuId)
+            startActivity(intent)
+        }
     }
 }
