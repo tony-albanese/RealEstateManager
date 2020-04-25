@@ -6,7 +6,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -22,7 +24,6 @@ import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
-import kotlinx.android.synthetic.main.listing_information_detail_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.util.*
@@ -124,16 +125,23 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     //TODO: See if you can move this out of the activity.
     fun setListingDescriptionListeners() {
-        tv_description_body?.setOnLongClickListener(this)
+        val descriptionTextView = findViewById<TextView>(R.id.tv_description_body)
+        val confirmImageButton = findViewById<ImageButton>(R.id.ib_confirm_description)
+        val cancelImageButton = findViewById<ImageButton>(R.id.ib_cancel_description)
+        val editText = findViewById<EditText>(R.id.et_listing_description)
 
-        ib_cancel_description?.setOnClickListener {
-            et_listing_description?.text?.clear()
+        descriptionTextView.setOnLongClickListener(this)
+
+        confirmImageButton.setOnClickListener {
+            listingViewModel.updateListingDescription(editText.text.toString())
+            editText?.text?.clear()
             listing_description_editor_layout?.visibility = View.GONE
         }
 
-        ib_confirm_description?.setOnClickListener {
-            Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show()
+        cancelImageButton.setOnClickListener {
+            editText?.text?.clear()
             listing_description_editor_layout?.visibility = View.GONE
         }
+
     }
 }
