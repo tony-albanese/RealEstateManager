@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
-    lateinit var listingBodyTextView: TextView
 
     var landscapeMode: Boolean = false
 
@@ -52,10 +51,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         binding.listingViewModel = listingViewModel
 
         landscapeMode = listing_info_landscape_frame_layout != null
-
         recyclerView = findViewById(R.id.rv_listings)
-        listingBodyTextView = findViewById(R.id.tv_description_body)
-
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -71,7 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 "listing-db")
                 .build()
 
-        setListingDescriptionListeners()
+        if (landscapeMode) setListingDescriptionListeners()
         setObservers()
     }
 
@@ -107,7 +103,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
             }
             else -> {
                 return true
-
             }
         }
     }
@@ -145,9 +140,13 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     }
 
     fun setObservers() {
-        listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
-            listingBodyTextView.text = it.listingDescription
-        })
+
+        if (landscapeMode) {
+            val listingBodyTextView = findViewById<TextView>(R.id.tv_description_body)
+            listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
+                listingBodyTextView.text = it.listingDescription
+            })
+        }
 
         listingViewModel.publishedListings.observe(this, androidx.lifecycle.Observer {
             it?.let {
