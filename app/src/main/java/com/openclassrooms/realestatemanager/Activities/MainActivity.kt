@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
@@ -130,7 +132,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         descriptionTextView.setOnLongClickListener(this)
 
         confirmImageButton.setOnClickListener {
-            listingViewModel.updateListingDescription(editText.text.toString())
+            listingViewModel.updateListingDescription(editText.text.toString(), updateCallback)
             editText?.text?.clear()
             listing_description_editor_layout?.visibility = View.GONE
         }
@@ -152,5 +154,20 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 adapter.setListings(it)
             }
         })
+    }
+
+    val updateCallback: (Int) -> Unit = {
+        val snackbar = Snackbar.make(
+                findViewById(R.id.listing_activity_coordinator_layout),
+                R.string.update_ok_message, LENGTH_LONG)
+
+        when (it) {
+            1 -> snackbar.show()
+            else -> {
+                snackbar.setText(R.string.update_failed_message)
+                        .show()
+            }
+        }
+
     }
 }
