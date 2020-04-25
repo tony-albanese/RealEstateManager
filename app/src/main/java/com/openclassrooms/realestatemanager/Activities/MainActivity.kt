@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +22,7 @@ import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
+import kotlinx.android.synthetic.main.listing_information_detail_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.util.*
@@ -51,8 +53,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
 
-
-
         recyclerView.layoutManager = LinearLayoutManager(this)
         val itemDecor = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
         recyclerView.addItemDecoration(itemDecor)
@@ -71,7 +71,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 adapter.setListings(it)
             }
         })
-        
+
+        setListingDescriptionListeners()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -119,5 +120,20 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         listing_description_editor_layout.visibility = View.VISIBLE
         listing_description_editor_layout.bringToFront()
         return true
+    }
+
+    //TODO: See if you can move this out of the activity.
+    fun setListingDescriptionListeners() {
+        tv_description_body?.setOnLongClickListener(this)
+
+        ib_cancel_description?.setOnClickListener {
+            et_listing_description?.text?.clear()
+            listing_description_editor_layout?.visibility = View.GONE
+        }
+
+        ib_confirm_description?.setOnClickListener {
+            Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show()
+            listing_description_editor_layout?.visibility = View.GONE
+        }
     }
 }
