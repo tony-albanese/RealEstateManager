@@ -50,6 +50,13 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
         setCurrentListing(listing)
     }
 
+    fun updateListingDescription(description: String) {
+        _selectedListing.value?.listingDescription = description
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.updateListing(_selectedListing.value!!)
+        }
+    }
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
