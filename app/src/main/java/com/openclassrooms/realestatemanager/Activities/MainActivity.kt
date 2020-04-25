@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.Activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
-import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
@@ -176,15 +174,5 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         }
 
     }
-
-    fun onUnpublishedListingClick(menuId: Long) {
-        val listingId = unpublishedListings.filter {
-            it.id == menuId
-        }
-        if (listingId.size == 1) {
-            val intent = Intent(this, EditListingActivity::class.java)
-            intent.putExtra(LISTING_ID_KEY, menuId)
-            startActivity(intent)
-        }
-    }
+    
 }
