@@ -62,7 +62,7 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        //helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
+        helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
 
