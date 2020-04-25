@@ -11,6 +11,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.HelperMethods
+import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
 import kotlinx.android.synthetic.main.listing_information_detail_layout.*
@@ -18,6 +20,9 @@ import kotlinx.android.synthetic.main.listing_information_detail_layout.*
 class DisplayListingPortaitActivity : AppCompatActivity() {
 
     lateinit var listingViewModel: ListingViewModel
+    lateinit var helper: HelperMethods
+
+    var unpublishedListings = listOf<Listing>()
     /*
     This is the activity that will be launched if the device is in portrait mode.
     It will display the info for a selected listing.
@@ -35,6 +40,8 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
         portrait_toolbar.setTitle("Your Listing")
         setSupportActionBar(portrait_toolbar)
         portrait_app_bar.visibility = View.VISIBLE
+
+        helper = HelperMethods()
 
         val intent = intent
         intent.getLongExtra("LISTING_ID", 0).let {
