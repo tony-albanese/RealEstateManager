@@ -20,4 +20,11 @@
         android:title="Search Listing"
         />
 
+    <item
+        android:id="@+id/menu_item_unpublished_listings"
+        android:icon="@drawable/ic_unpub_listings"
+        android:title="Unpublished Listings"
+        app:showAsAction="ifRoom" />
+
+
 </menu>
