@@ -56,6 +56,8 @@ class DisplayListingPortaitActivity : AppCompatActivity() {
         menu?.getItem(0)?.setVisible(false)
         menu?.getItem(2)?.setEnabled(false)
         menu?.getItem(2)?.setVisible(false)
+        menu?.getItem(3)?.setEnabled(false)
+        menu?.getItem(3)?.setVisible(false)
         return true
     }
 
