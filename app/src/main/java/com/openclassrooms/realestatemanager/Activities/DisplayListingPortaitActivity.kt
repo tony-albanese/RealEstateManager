@@ -126,6 +126,8 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
     }
 
     override fun onLongClick(view: View?): Boolean {
+        val editText = findViewById<EditText>(R.id.et_listing_description)
+        editText.setText(listingViewModel.selectedListing.value?.listingDescription ?: "")
         listing_description_editor_layout.visibility = View.VISIBLE
         listing_description_editor_layout.bringToFront()
         return true
