@@ -12,6 +12,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/display_listing_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -51,13 +52,14 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </com.google.android.material.appbar.AppBarLayout>
+
         <TextView
             android:id="@+id/tv_description_title"
+            style="@style/style_text_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            style="@style/style_text_header"
             android:text="Description"
             app:layout_constraintBottom_toTopOf="@+id/tv_description_body"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.Activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -18,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
-import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
@@ -35,7 +34,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
+    lateinit var helper: HelperMethods
 
+    var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
 
     companion object {
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         landscapeMode = listing_info_landscape_frame_layout != null
         recyclerView = findViewById(R.id.rv_listings)
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
+        helper = HelperMethods()
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         val itemDecor = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
@@ -74,34 +76,32 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu, menu)
+        menu?.getItem(1)?.setEnabled(landscapeMode)
+        menu?.getItem(1)?.setVisible(landscapeMode)
         return true
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         //return super.onPrepareOptionsMenu(menu)
-        menu?.getItem(1)?.setEnabled(landscapeMode)
-        menu?.getItem(1)?.setVisible(landscapeMode)
+        helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_add_listing -> {
-                val intent = Intent(this, EditListingActivity::class.java)
-                intent.putExtra(LISTING_ID_KEY, 0.toLong())
-                startActivity(intent)
+                helper.onAddNewListingClick(this)
                 finish()
                 return true
             }
             R.id.menu_item_edit_listing -> {
-                val intent = Intent(this, EditListingActivity::class.java)
-                intent.putExtra(LISTING_ID_KEY, listingViewModel.selectedListing.value?.id
+                helper.onEditListingClick(this, listingViewModel.selectedListing.value?.id
                         ?: 0.toLong())
-                startActivity(intent)
                 finish()
                 return true
             }
             else -> {
+                helper.onUnpublishedListingClick(this, unpublishedListings, item.itemId.toLong())
                 return true
             }
         }
@@ -153,6 +153,11 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 adapter.setListings(it)
             }
         })
+
+        listingViewModel.unpublishedListings.observe(this, androidx.lifecycle.Observer {
+            unpublishedListings = it
+            invalidateOptionsMenu()
+        })
     }
 
     val updateCallback: (Int) -> Unit = {
@@ -169,4 +174,5 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         }
 
     }
+    
 }
