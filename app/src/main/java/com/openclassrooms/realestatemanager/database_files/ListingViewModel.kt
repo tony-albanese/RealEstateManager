@@ -44,7 +44,8 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setCurrentListing(listing: Listing) {
-        _selectedListing.value = listing
+        //_selectedListing.value = listing
+        _selectedListing.postValue(listing)
     }
 
     fun getListingForPortraitMode(id: Long) = viewModelScope.launch {
