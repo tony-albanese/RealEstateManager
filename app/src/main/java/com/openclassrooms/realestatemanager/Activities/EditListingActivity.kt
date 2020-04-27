@@ -88,7 +88,6 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             spinner.adapter = adapter
-            spinner.setSelection(adapter.getPosition(viewModel.currentListing.value?.toString()))
         }
 
         //Set up the listeners.
