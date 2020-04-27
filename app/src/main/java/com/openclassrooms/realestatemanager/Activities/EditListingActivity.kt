@@ -40,6 +40,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
     val viewHashMap = HashMap<Int, View>()
 
     lateinit var locale: Locale
+    lateinit var dapter: ArrayAdapter<CharSequence>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +79,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
+        dapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.listing_type_array,
                 android.R.layout.simple_spinner_item
@@ -175,6 +176,11 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
             tv_bathrooms.setText(text)
         })
 
+        viewModel.currentListing.observe(this, androidx.lifecycle.Observer {
+            val type = it.listingType
+            val position = dapter.getPosition(it.listingType)
+            spinner.setSelection(position)
+        })
         seekbar_total_rooms.setOnSeekBarChangeListener(this)
         seekbar_bedrooms.setOnSeekBarChangeListener(this)
         seekbar_bathrooms.setOnSeekBarChangeListener(this)
