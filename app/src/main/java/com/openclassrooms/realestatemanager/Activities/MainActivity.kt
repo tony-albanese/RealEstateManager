@@ -114,6 +114,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     override fun onLongClick(view: View?): Boolean {
         val editText = findViewById<EditText>(R.id.et_listing_description)
         editText.setText(listingViewModel.selectedListing.value?.listingDescription ?: "")
+        editText.bringToFront()
         listing_description_editor_layout.visibility = View.VISIBLE
         listing_description_editor_layout.bringToFront()
         return true
@@ -130,12 +131,10 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
         confirmImageButton.setOnClickListener {
             listingViewModel.updateListingDescription(editText.text.toString(), updateCallback)
-            editText?.text?.clear()
             listing_description_editor_layout?.visibility = View.GONE
         }
 
         cancelImageButton.setOnClickListener {
-            editText?.text?.clear()
             listing_description_editor_layout?.visibility = View.GONE
         }
 
