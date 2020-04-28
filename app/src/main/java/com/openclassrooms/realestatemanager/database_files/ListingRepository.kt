@@ -9,6 +9,7 @@ class ListingRepository(
 ) {
     val allListings = listingDao.getAllListings()
     val publishedListings = listingDao.getPublishedListings()
+    val unpublishedListings = listingDao.getPublishedListings(false)
 
     suspend fun insert(listing: Listing): Long = withContext(Dispatchers.IO) {
         listingDao.insertListing(listing)
@@ -25,6 +26,10 @@ class ListingRepository(
 
     suspend fun getListing(id: Long): Listing = withContext(Dispatchers.IO) {
         listingDao.getListing(id)
+    }
+
+    suspend fun updateListing(listing: Listing): Int = withContext(Dispatchers.IO) {
+        listingDao.updateListing(listing)
     }
 
 }

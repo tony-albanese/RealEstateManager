@@ -39,6 +39,8 @@ class ListingEditViewModel(
     val repository: ListingRepository
     var saveToFile: Boolean = true
 
+    var isNewListing: Boolean = true
+
     val currentListing: MutableLiveData<Listing>  //This is the member variable that will be exposed to the outside world.
 
     /*
@@ -71,19 +73,50 @@ class ListingEditViewModel(
     fun saveListingToDatabase(builder: MaterialAlertDialogBuilder) {
         viewModelScope.launch {
             val returnedID = repository.insert(currentListing.value!!)
-            if (!returnedID.equals(0)) {
+            when (returnedID) {
+                -1.toLong() -> {
+                    Log.i("DATABASE", "Conflict. Ignored")
+                    Log.i("DATABASE", returnedID.toString())
+                    saveToFile = true
+                    builder.setMessage("Error. Data Conflict.")
+                            .setPositiveButton("OK", createPositiveErrorButtonLisenter())
+                            .show()
+
+                }
+                in 0..Long.MAX_VALUE -> {
+                    saveToFile = false
+                    deleteListingFile()
+                    builder.show()
+                }
+                else -> {
+                    saveToFile = true
+                    builder.setMessage("Something went wrong.")
+                            .setPositiveButton("OK", createPositiveErrorButtonLisenter())
+                            .show()
+                }
+
+            }
+        }
+    }
+
+    fun updateListing(builder: MaterialAlertDialogBuilder) {
+        viewModelScope.launch {
+            val returnedValue = repository.updateListing(currentListing.value!!)
+            if (returnedValue == 1) {
                 saveToFile = false
-                deleteListingFile()
+                Log.i("DATABASE", "Int: " + returnedValue.toString())
+                builder.setMessage("Listing Updated")
                 builder.show()
             } else {
                 saveToFile = true
+                Log.i("DATABASE", "Int: " + returnedValue.toString())
                 builder.setMessage("Something went wrong.")
                         .setPositiveButton("OK", createPositiveErrorButtonLisenter())
                         .show()
             }
         }
-    }
 
+    }
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -96,8 +129,9 @@ class ListingEditViewModel(
     fun initializeListing() {
         if (!listingId.equals(0.toLong())) {
             viewModelScope.launch {
-                val listing = repository.getListingById(listingId)
-                currentListing.value = listing.value
+                val listing = repository.getListing(listingId)
+                currentListing.value = listing
+                isNewListing = false
             }
         } else {
             val listing = loadListingFromFile()

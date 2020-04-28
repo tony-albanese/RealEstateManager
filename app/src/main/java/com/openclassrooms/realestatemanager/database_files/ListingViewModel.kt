@@ -15,6 +15,7 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     private val repository: ListingRepository
     val listings: LiveData<List<Listing>>
     val publishedListings: LiveData<List<Listing>>
+    val unpublishedListings: LiveData<List<Listing>>
 
     private val _selectedListing = MutableLiveData<Listing>()
     val selectedListing: LiveData<Listing>
@@ -26,6 +27,7 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
         repository = ListingRepository(listingDao)
         listings = repository.allListings
         publishedListings = repository.publishedListings
+        unpublishedListings = repository.unpublishedListings
         _selectedListing.value = Listing()
     }
 
@@ -42,12 +44,24 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setCurrentListing(listing: Listing) {
-        _selectedListing.value = listing
+        //_selectedListing.value = listing
+        _selectedListing.postValue(listing)
     }
 
     fun getListingForPortraitMode(id: Long) = viewModelScope.launch {
         val listing = repository.getListing(id)
         setCurrentListing(listing)
+    }
+
+    fun updateListingDescription(description: String, onUpdate: (Int) -> Unit) {
+        _selectedListing?.value?.listingDescription = description
+        _selectedListing.postValue(_selectedListing.value)
+
+        viewModelScope.launch {
+            val result = repository.updateListing(_selectedListing.value!!)
+            onUpdate(result)
+        }
+
     }
 
     override val coroutineContext: CoroutineContext
