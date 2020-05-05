@@ -77,12 +77,6 @@ dependencies {
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    //TomTom Libraries
-    implementation("com.tomtom.online:sdk-maps:2.4458")
-    implementation("com.tomtom.online:sdk-search:2.4458")
-    implementation("com.tomtom.online:sdk-maps-ui-extensions:2.4458")
-    implementation("com.tomtom.online:sdk-maps-ktx-extensions:2.4458")
-    implementation("com.tomtom.online:sdk-maps-static-image:2.4458")
 
     //Unit test libraries
     testImplementation 'junit:junit:4.13'
