@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".Activities.ListingsMapActivity"></activity>
         <activity android:name=".Activities.DisplayListingPortaitActivity"></activity>
         <activity
             android:name=".Activities.EditListingActivity"
