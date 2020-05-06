@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -97,6 +98,12 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
             R.id.menu_item_edit_listing -> {
                 helper.onEditListingClick(this, listingViewModel.selectedListing.value?.id
                         ?: 0.toLong())
+                finish()
+                return true
+            }
+            R.id.menu_item_map_view -> {
+                val intent = Intent(this, ListingsMapActivity::class.java)
+                startActivity(intent)
                 finish()
                 return true
             }
