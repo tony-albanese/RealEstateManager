@@ -77,6 +77,8 @@ dependencies {
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    //Mapbox library
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
 
     //Unit test libraries
     testImplementation 'junit:junit:4.13'
