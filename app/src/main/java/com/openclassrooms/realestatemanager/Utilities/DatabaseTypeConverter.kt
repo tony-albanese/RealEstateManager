@@ -7,13 +7,23 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 
 class DatabaseTypeConverter {
     @TypeConverter
-    fun fromLatLng(latLng: LatLng): String {
-        return Gson().toJson(latLng)
+    fun fromLatLng(latLng: LatLng?): String {
+        if (latLng == null) {
+            return ""
+        } else {
+            return Gson().toJson(latLng)
+        }
+
     }
 
     @TypeConverter
-    fun latLngFromString(latLngJson: String): LatLng {
-        val type = object : TypeToken<LatLng>() {}.type
-        return Gson().fromJson<LatLng>(latLngJson, type)
+    fun latLngFromString(latLngJson: String?): LatLng? {
+        if (latLngJson.isNullOrEmpty()) {
+            return null
+        } else {
+            val type = object : TypeToken<LatLng>() {}.type
+            return Gson().fromJson<LatLng>(latLngJson, type)
+        }
+
     }
 }
