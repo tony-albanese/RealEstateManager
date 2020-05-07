@@ -86,7 +86,9 @@ class ListingEditViewModel(
                     deleteListingFile()
                     builder.buildSuccessDialogBuilder()
                             .show()
-                    when (currentListing.value?.location) {
+
+                    //TODO: Check Value of Listing Location
+                    when (currentListing) {
                         null -> {
                         }
                         else -> {
