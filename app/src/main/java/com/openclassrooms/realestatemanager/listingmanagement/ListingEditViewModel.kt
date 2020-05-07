@@ -84,14 +84,15 @@ class ListingEditViewModel(
                 in 0..Long.MAX_VALUE -> {
                     saveToFile = false
                     deleteListingFile()
-                    builder.buildSuccessDialogBuilder()
-                            .show()
 
-                    //TODO: Check Value of Listing Location
-                    when (currentListing) {
+                    when (currentListing.value?.latLng) {
                         null -> {
+                            builder.buildRequestListingLocationDialog(returnedID)
+                                    .show()
                         }
                         else -> {
+                            builder.buildSuccessDialogBuilder()
+                                    .show()
                         }
                     }
                 }
