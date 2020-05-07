@@ -66,4 +66,11 @@ class ListingsMapActivity : AppCompatActivity() {
     If it's displaying all of the listings or a particular listing, it should take the user to the display listing activity.
 
      */
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }
