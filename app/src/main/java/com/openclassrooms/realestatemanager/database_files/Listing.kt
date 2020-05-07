@@ -24,10 +24,10 @@ data class Listing(
         @ColumnInfo(name = "listing_agent_id") var listingAgentId: Long = 0,
         @ColumnInfo(name = "listing_agent_name") var listingAgentName: String = "",
         @ColumnInfo(name = "listing_is_published") var listingIsPublished: Boolean = false,
+        @ColumnInfo(name = "listing_lat_long") var listingLocation: LatLng? = null
 
         //TODO: Still need a way to record POIs.
-        //TODO: Still need to geocode.
-        //TODO: Need to turn this into a column.
-        var latLng: LatLng? = null
+       
 ) {
+
 }
