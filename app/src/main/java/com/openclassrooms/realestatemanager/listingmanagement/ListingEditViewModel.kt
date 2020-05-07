@@ -84,8 +84,8 @@ class ListingEditViewModel(
                 in 0..Long.MAX_VALUE -> {
                     saveToFile = false
                     deleteListingFile()
-
-                    when (currentListing.value?.latLng) {
+                    
+                    when (currentListing.value?.listingLocation) {
                         null -> {
                             builder.buildRequestListingLocationDialog(returnedID)
                                     .show()
