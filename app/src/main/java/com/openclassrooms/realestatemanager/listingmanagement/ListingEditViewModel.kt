@@ -86,7 +86,12 @@ class ListingEditViewModel(
                 in 0..Long.MAX_VALUE -> {
                     saveToFile = false
                     deleteListingFile()
-                    builder.show()
+                    when (currentListing.value?.location) {
+                        null -> {
+                        }
+                        else -> {
+                        }
+                    }
                 }
                 else -> {
                     saveToFile = true
