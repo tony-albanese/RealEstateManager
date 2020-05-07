@@ -102,14 +102,12 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
 
         saveButton.setOnClickListener {
             salePriceEditText.clearFocus()
-            val data = viewModel.currentListing.value.toString()
             val successDialogBuilder = CustomDialogBuilder(this)
 
             if (viewModel.isNewListing) {
-                viewModel.saveListingToDatabase(successDialogBuilder.buildSuccessDialogBuilder())
-                System.out.println(data)
+                viewModel.saveListingToDatabase(successDialogBuilder)
             } else {
-                viewModel.updateListing(successDialogBuilder.buildSuccessDialogBuilder())
+                viewModel.updateListing(successDialogBuilder)
             }
 
         }
