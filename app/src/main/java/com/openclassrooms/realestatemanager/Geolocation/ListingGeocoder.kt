@@ -2,6 +2,9 @@ package com.openclassrooms.realestatemanager.Geolocation
 
 import android.content.Context
 import android.net.Uri
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
 import com.openclassrooms.realestatemanager.Utilities.ERROR_STRING
 import com.openclassrooms.realestatemanager.Utilities.LOCATION_IQ_KEY
 import com.openclassrooms.realestatemanager.Utilities.NO_CONNECTION
@@ -9,15 +12,19 @@ import com.openclassrooms.realestatemanager.Utilities.NO_RESPONSE
 import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.io.Reader
+import java.lang.reflect.Type
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
 class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap: HashMap<String, String>) {
+
 
     var listener: OnConnectionResultListener? = null
     var geocodingBaseUrl: String
@@ -120,5 +127,22 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
                 else -> listener?.onConnectionResult(result)
             }
         }
+    }
+
+    fun processListingLocationJsonResponse(jsonString: String): ArrayList<ForwardGeocodeResponse> {
+
+        try {
+            val jsonObject: JSONObject? = JSONObject(jsonString)
+            jsonObject?.let {
+                if (it.has("error")) {
+                    return ArrayList<ForwardGeocodeResponse>()
+                }
+            }
+        } catch (e: JSONException) {
+
+        }
+
+        val founderListType: Type = object : TypeToken<ArrayList<ForwardGeocodeResponse?>?>() {}.getType()
+        return Gson().fromJson(jsonString, founderListType)
     }
 }
