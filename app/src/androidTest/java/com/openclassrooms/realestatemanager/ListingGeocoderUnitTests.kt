@@ -21,7 +21,7 @@ class ListingGeocoderUnitTests {
     @Before
     fun setup() {
         //MockitoAnnotations.initMocks(this)
-        mockContext = MockContext()
+        //mockContext = MockContext()
     }
 
     @Test
