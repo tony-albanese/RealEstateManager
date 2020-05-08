@@ -1,6 +1,9 @@
 package com.openclassrooms.realestatemanager.Geolocation
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
+import com.openclassrooms.realestatemanager.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -12,9 +15,24 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-class ListingGeocoder {
+class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context) {
 
     var searchUrl = ""
+    var geocodingBaseUrl: String
+
+    val SCHEME: String = "https"
+    val GEOCODING_AUTHORITY: String = "eu1.locationiq.com"
+    val GEOCODING_PATH: String = "v1/search.php"
+
+    init {
+        geocodingBaseUrl = buildForwardGeocodingBaseUrl(context.getString(R.string.locationIQ_token))
+    }
+
+
+
+
+
+
 
     /*
    Accepts a search url as input and returns a response from the server. The default
@@ -74,5 +92,13 @@ class ListingGeocoder {
             Log.e("Connect error.", e.toString())
             return "ERROR"
         }
+    }
+
+    fun buildForwardGeocodingBaseUrl(key: String): String {
+        return uriBuilder.scheme(SCHEME)
+                .authority(GEOCODING_AUTHORITY)
+                .path(GEOCODING_PATH)
+                .appendQueryParameter("key", key)
+                .toString()
     }
 }
