@@ -27,29 +27,12 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
     init {
         geocodingBaseUrl = buildForwardGeocodingBaseUrl(keyMap.get(LOCATION_IQ_KEY)!!)
     }
-
-
+    
     interface OnConnectionResultListener {
         fun onConnectionResult(result: String)
         fun onConnectionError(errorCode: Int)
     }
 
-    suspend fun make(url: String) {
-        val connection = connectToSite(stringToUrl(url))
-        if (connection == null) {
-        } else {
-            val result = readDataFromConnection(connection)
-            when (result) {
-
-            }
-        }
-
-    }
-
-    suspend fun readDataFromConnection(connection: HttpURLConnection?): String {
-        return readDataFromConnection(connection)
-    }
-    
     /*
    Accepts a search url as input and returns a response from the server. The default
    search url is the one created by the constructor.
