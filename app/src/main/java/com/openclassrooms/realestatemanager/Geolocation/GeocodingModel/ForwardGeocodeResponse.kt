@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.Geolocation.GeocodingModel
 
 import com.google.gson.annotations.SerializedName
+import com.mapbox.mapboxsdk.geometry.LatLng
 
 data class ForwardGeocodeResponse(
 
@@ -23,5 +24,7 @@ data class ForwardGeocodeResponse(
         val placeId: String? = null,
 
         @field:SerializedName("lat")
-        val lat: String? = null
+        val lat: String? = null,
+
+        val latLng: LatLng? = null
 )
