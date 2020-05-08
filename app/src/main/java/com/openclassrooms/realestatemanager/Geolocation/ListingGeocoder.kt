@@ -20,7 +20,6 @@ import java.net.URL
 class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap: HashMap<String, String>) {
 
     var listener: OnConnectionResultListener? = null
-    var searchUrl = ""
     var geocodingBaseUrl: String
 
     val SCHEME: String = "https"
@@ -110,26 +109,16 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
                 .toString()
     }
 
-
-    suspend fun getListingLocationsSuspend(url: String) {
+    suspend fun getListingLocationSuspend(url: String) = withContext(Dispatchers.IO) {
         val connection = connectToSite(stringToUrl(url))
         if (connection == null) {
-            this.listener?.onConnectionError(NO_CONNECTION)
+            listener?.onConnectionError(NO_CONNECTION)
         } else {
             val result = readDataFromConnection(connection)
             when (result) {
-                ERROR_STRING -> this.listener?.onConnectionError(NO_RESPONSE)
-                else -> this.listener?.onConnectionResult(result)
+                ERROR_STRING -> listener?.onConnectionError(NO_RESPONSE)
+                else -> listener?.onConnectionResult(result)
             }
         }
-
-        suspend fun getListingLocation(url: String) {
-            withContext(Dispatchers.IO) {
-                getListingLocationsSuspend(url)
-            }
-        }
-
     }
-
-
 }
