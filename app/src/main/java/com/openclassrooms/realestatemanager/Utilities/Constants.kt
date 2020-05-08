@@ -9,3 +9,8 @@ val TASK_SELECT_LISTING_LOCATION: Int = 1300
 val LISTING_ID: String = "listing_id"
 
 val LOCATION_IQ_KEY: String = "locationIQ_key"
+
+
+val NO_CONNECTION = 2322
+val NO_RESPONSE = 1211
+val ERROR_STRING = "ERROR"
