@@ -1,9 +1,14 @@
 package com.openclassrooms.realestatemanager;
 
+import android.content.Context;
+
+import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -14,9 +19,9 @@ import org.junit.runner.RunWith;
 public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
-        // Context of the app under test.
-        //Context appContext = InstrumentationRegistry.getTargetContext();
+        //Context of the app under test.
+        Context appContext = InstrumentationRegistry.getTargetContext();
 
-        //assertEquals("com.openclassrooms.go4lunch", appContext.getPackageName());
+        assertEquals("com.openclassrooms.realestatemanager", appContext.getPackageName());
     }
 }
