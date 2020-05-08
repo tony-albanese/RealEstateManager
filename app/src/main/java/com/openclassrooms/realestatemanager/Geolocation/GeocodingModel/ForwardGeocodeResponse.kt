@@ -26,5 +26,5 @@ data class ForwardGeocodeResponse(
         @field:SerializedName("lat")
         val lat: String? = null,
 
-        val latLng: LatLng? = null
+        var latLng: LatLng? = null
 )
