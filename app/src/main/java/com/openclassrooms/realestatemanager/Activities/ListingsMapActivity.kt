@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -8,22 +9,34 @@ import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.openclassrooms.realestatemanager.Geolocation.ListingGeocoder
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.ACTIVITY_TASK
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
+import com.openclassrooms.realestatemanager.Utilities.LOCATION_IQ_KEY
 import com.openclassrooms.realestatemanager.Utilities.TASK_SELECT_LISTING_LOCATION
+import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.android.synthetic.main.activity_listings_map.*
 
-class ListingsMapActivity : AppCompatActivity() {
+class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionResultListener {
 
     var incomingIntent: Intent? = null
     var activityTask: Int = 0
     var listingId: Long = 0
+    val keyMap = HashMap<String, String>()
+
+    lateinit var listingGeocoder: ListingGeocoder
+    lateinit var listing: Listing
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Mapbox.getInstance(this, getString(R.string.mapquest_token))
         setContentView(R.layout.activity_listings_map)
+
+        keyMap.put(LOCATION_IQ_KEY, getString(R.string.locationIQ_token))
+        val uriBuilder = Uri.Builder()
+        listingGeocoder = ListingGeocoder(uriBuilder, this, keyMap)
+        listingGeocoder.listener = this
 
         incomingIntent = intent
         incomingIntent?.let {
@@ -72,5 +85,14 @@ class ListingsMapActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onConnectionResult(result: String) {
+
+
+    }
+
+    override fun onConnectionError(errorCode: Int) {
+
     }
 }
