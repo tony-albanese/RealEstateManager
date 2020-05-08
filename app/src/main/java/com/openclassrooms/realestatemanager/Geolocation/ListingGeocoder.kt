@@ -3,7 +3,8 @@ package com.openclassrooms.realestatemanager.Geolocation
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.LOCATION_IQ_KEY
+import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -15,7 +16,7 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context) {
+class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap: HashMap<String, String>) {
 
     var searchUrl = ""
     var geocodingBaseUrl: String
@@ -25,12 +26,8 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context) {
     val GEOCODING_PATH: String = "v1/search.php"
 
     init {
-        geocodingBaseUrl = buildForwardGeocodingBaseUrl(context.getString(R.string.locationIQ_token))
+        geocodingBaseUrl = buildForwardGeocodingBaseUrl(keyMap.get(LOCATION_IQ_KEY)!!)
     }
-
-
-
-
 
 
 
@@ -99,6 +96,20 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context) {
                 .authority(GEOCODING_AUTHORITY)
                 .path(GEOCODING_PATH)
                 .appendQueryParameter("key", key)
+                .toString()
+    }
+    
+    fun buildForwardGeocodingUrl(listing: Listing): String {
+        val streetParameter = "street"
+        val cityParameter = "city"
+        val postalCodeParameter = "postalcode"
+        val formatParameter = "format"
+        return Uri.parse(geocodingBaseUrl)
+                .buildUpon()
+                .appendQueryParameter(streetParameter, listing.listingStreetAddress)
+                .appendQueryParameter(cityParameter, listing.listingCity)
+                .appendQueryParameter(postalCodeParameter, listing.listingZipCode).appendQueryParameter(formatParameter, "json")
+                .build()
                 .toString()
     }
 }
