@@ -3,7 +3,9 @@ package com.openclassrooms.realestatemanager
 import android.content.Context
 import android.net.Uri
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
 import com.openclassrooms.realestatemanager.Geolocation.ListingGeocoder
+import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
 import com.openclassrooms.realestatemanager.Utilities.LOCATION_IQ_KEY
 import com.openclassrooms.realestatemanager.database_files.Listing
 import org.junit.Before
@@ -92,6 +94,27 @@ class ListingGeocoderUnitTests {
                 errorResponseInvalidKey
         )
         assert(resultsList.size == 0)
+    }
+
+    @Test
+    fun testConvertStringToLatLng() {
+        var list = listingGeocoder.processListingLocationJsonResponse(
+                sampleForwardGeocodingResponseSingleResult
+        )
+
+        for (response in list) {
+            ConversionUtilities.setGeocodeLatLng(response)
+        }
+
+        val response = list.get(0)
+        assert(response.latLng != null)
+    }
+
+    @Test
+    fun testLatLngConversionWithNullValues() {
+        val testResponse = ForwardGeocodeResponse()
+        ConversionUtilities.setGeocodeLatLng(testResponse)
+        assert(testResponse.latLng == null)
     }
 
     //region TestResponseStrings
