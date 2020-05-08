@@ -2,10 +2,12 @@ package com.openclassrooms.realestatemanager.Geolocation
 
 import android.content.Context
 import android.net.Uri
+import com.openclassrooms.realestatemanager.Utilities.ERROR_STRING
 import com.openclassrooms.realestatemanager.Utilities.LOCATION_IQ_KEY
+import com.openclassrooms.realestatemanager.Utilities.NO_CONNECTION
+import com.openclassrooms.realestatemanager.Utilities.NO_RESPONSE
 import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.IOException
@@ -17,6 +19,7 @@ import java.net.URL
 
 class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap: HashMap<String, String>) {
 
+    var listener: OnConnectionResultListener? = null
     var searchUrl = ""
     var geocodingBaseUrl: String
 
@@ -27,25 +30,12 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
     init {
         geocodingBaseUrl = buildForwardGeocodingBaseUrl(keyMap.get(LOCATION_IQ_KEY)!!)
     }
-    
+
     interface OnConnectionResultListener {
         fun onConnectionResult(result: String)
         fun onConnectionError(errorCode: Int)
     }
 
-    /*
-   Accepts a search url as input and returns a response from the server. The default
-   search url is the one created by the constructor.
-    */
-    fun retrieveServerResponse(url: String = searchUrl): String = runBlocking {
-
-        val connection: HttpURLConnection? =
-                connectToSite(stringToUrl(url))
-        val result = withContext(Dispatchers.IO) {
-            readDataFromConnection(connection!!)
-        }
-        return@runBlocking result
-    }
 
     /**
      * Converts a given string to URL
@@ -119,4 +109,27 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
                 .build()
                 .toString()
     }
+
+
+    suspend fun getListingLocationsSuspend(url: String) {
+        val connection = connectToSite(stringToUrl(url))
+        if (connection == null) {
+            this.listener?.onConnectionError(NO_CONNECTION)
+        } else {
+            val result = readDataFromConnection(connection)
+            when (result) {
+                ERROR_STRING -> this.listener?.onConnectionError(NO_RESPONSE)
+                else -> this.listener?.onConnectionResult(result)
+            }
+        }
+
+        suspend fun getListingLocation(url: String) {
+            withContext(Dispatchers.IO) {
+                getListingLocationsSuspend(url)
+            }
+        }
+
+    }
+
+
 }
