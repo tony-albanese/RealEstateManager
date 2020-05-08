@@ -91,6 +91,9 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
         }
     }
 
+    /*
+    This method builds the forward gecoding base url.
+     */
     fun buildForwardGeocodingBaseUrl(key: String): String {
         return uriBuilder.scheme(SCHEME)
                 .authority(GEOCODING_AUTHORITY)
@@ -98,7 +101,10 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
                 .appendQueryParameter("key", key)
                 .toString()
     }
-    
+
+    /*
+    Method that takes a listing and builds the forward geocoding url frome the passed in listing address.
+     */
     fun buildForwardGeocodingUrl(listing: Listing): String {
         val streetParameter = "street"
         val cityParameter = "city"
