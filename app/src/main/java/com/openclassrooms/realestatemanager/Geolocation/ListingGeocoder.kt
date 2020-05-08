@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.Geolocation
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.openclassrooms.realestatemanager.Utilities.LOCATION_IQ_KEY
 import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +29,27 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
     }
 
 
+    interface OnConnectionResultListener {
+        fun onConnectionResult(result: String)
+        fun onConnectionError(errorCode: Int)
+    }
 
+    suspend fun make(url: String) {
+        val connection = connectToSite(stringToUrl(url))
+        if (connection == null) {
+        } else {
+            val result = readDataFromConnection(connection)
+            when (result) {
+
+            }
+        }
+
+    }
+
+    suspend fun readDataFromConnection(connection: HttpURLConnection?): String {
+        return readDataFromConnection(connection)
+    }
+    
     /*
    Accepts a search url as input and returns a response from the server. The default
    search url is the one created by the constructor.
@@ -86,7 +105,6 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
 
             return stringBuilder.toString()
         } catch (e: Exception) {
-            Log.e("Connect error.", e.toString())
             return "ERROR"
         }
     }
