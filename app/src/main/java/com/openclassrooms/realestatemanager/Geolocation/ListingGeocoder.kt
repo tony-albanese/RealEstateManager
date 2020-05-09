@@ -39,8 +39,8 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
     }
 
     interface OnConnectionResultListener {
-        fun onConnectionResult(result: String)
-        fun onConnectionError(errorCode: Int)
+        fun onGeocodingResult(result: String)
+        fun onGeocodingError(errorCode: Int)
     }
 
 
@@ -122,12 +122,12 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
         Log.i("GEOCODE", "getListingLocationSuspend() called")
         val connection = connectToSite(stringToUrl(url))
         if (connection == null) {
-            listener?.onConnectionError(NO_CONNECTION)
+            listener?.onGeocodingError(NO_CONNECTION)
         } else {
             val result = readDataFromConnection(connection)
             when (result) {
-                ERROR_STRING -> listener?.onConnectionError(NO_RESPONSE)
-                else -> listener?.onConnectionResult(result)
+                ERROR_STRING -> listener?.onGeocodingError(NO_RESPONSE)
+                else -> listener?.onGeocodingResult(result)
             }
         }
     }

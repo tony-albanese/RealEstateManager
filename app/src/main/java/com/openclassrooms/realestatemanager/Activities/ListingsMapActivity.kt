@@ -98,7 +98,7 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
         finish()
     }
 
-    override fun onConnectionResult(result: String) {
+    override fun onGeocodingResult(result: String) {
 
         val list = listingGeocoder.processListingLocationJsonResponse(result)
         runOnUiThread {
@@ -107,7 +107,7 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
 
     }
 
-    override fun onConnectionError(errorCode: Int) {
+    override fun onGeocodingError(errorCode: Int) {
         runOnUiThread {
             Toast.makeText(this, "ERROR!", Toast.LENGTH_LONG).show()
         }
