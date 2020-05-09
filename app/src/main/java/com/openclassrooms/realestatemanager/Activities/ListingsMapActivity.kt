@@ -3,7 +3,6 @@ package com.openclassrooms.realestatemanager.Activities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -59,13 +58,11 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
 
     val mapReadyCallback = object : OnMapReadyCallback {
         override fun onMapReady(mapboxMap: MapboxMap) {
-            Log.i("GEOCODE", "mapReadyCallback called")
             map = mapboxMap
             mapboxMap.setStyle(Style.MAPBOX_STREETS)
 
             when (activityTask) {
                 TASK_SELECT_LISTING_LOCATION -> {
-                    Log.i("GEOCODE", "TASK_SELECT_LISTING LOCATION")
                     geocodeListing()
                 }
 
@@ -122,4 +119,6 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
             listingGeocoder.getListingLocationSuspend(url)
         }
     }
+
+
 }
