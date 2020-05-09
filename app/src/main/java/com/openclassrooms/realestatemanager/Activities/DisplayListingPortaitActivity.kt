@@ -54,6 +54,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
             }
         }
 
+        //TODO: Set the click listener on the image view.
         setListingDescriptionListeners()
         setObservers()
     }
@@ -137,6 +138,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         val listingBodyTextView = findViewById<TextView>(R.id.tv_description_body)
         listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
             listingBodyTextView.text = it.listingDescription
+            //TODO: Load the url here.
         })
 
         listingViewModel.unpublishedListings.observe(this, androidx.lifecycle.Observer {

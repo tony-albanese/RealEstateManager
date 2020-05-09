@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 "listing-db")
                 .build()
 
+        //TODO: Refactor the methond and include a click listener for the image view.
         if (landscapeMode) setListingDescriptionListeners()
         setObservers()
     }
@@ -156,6 +157,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
             val listingBodyTextView = findViewById<TextView>(R.id.tv_description_body)
             listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
                 listingBodyTextView.text = it.listingDescription
+                //TODO: Set the url image here.
             })
         }
 
