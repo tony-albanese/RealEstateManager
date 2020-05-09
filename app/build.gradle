@@ -83,6 +83,7 @@ dependencies {
 
     //Mapbox library
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-services:5.1.0'
 
     //Libraries for unit testing.
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
