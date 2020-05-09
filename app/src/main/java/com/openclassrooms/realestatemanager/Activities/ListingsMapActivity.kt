@@ -33,6 +33,7 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
     lateinit var listingViewModel: ListingViewModel
     lateinit var map: MapboxMap
     lateinit var dialogBuilder: CustomDialogBuilder
+    lateinit var helperMethods: HelperMethods
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,8 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
 
         listing = Listing()
         dialogBuilder = CustomDialogBuilder(this)
+        helperMethods = HelperMethods()
+
         //Setup the ListingGeocoder object.
         keyMap.put(LOCATION_IQ_KEY, getString(R.string.locationIQ_token))
         val uriBuilder = Uri.Builder()
@@ -119,6 +122,10 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
             when (activityTask) {
                 TASK_SELECT_LISTING_LOCATION -> {
                     listing.listingLocation = marker.position
+                    listing.listingImageUrl = helperMethods.buildStaticImageUrl(
+                            getString(R.string.mapquest_token),
+                            listing
+                    )
                     updateListing(listing)
                 }
             }
