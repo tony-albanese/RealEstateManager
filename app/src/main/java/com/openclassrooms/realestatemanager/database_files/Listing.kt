@@ -24,10 +24,11 @@ data class Listing(
         @ColumnInfo(name = "listing_agent_id") var listingAgentId: Long = 0,
         @ColumnInfo(name = "listing_agent_name") var listingAgentName: String = "",
         @ColumnInfo(name = "listing_is_published") var listingIsPublished: Boolean = false,
-        @ColumnInfo(name = "listing_lat_long") var listingLocation: LatLng? = null
+        @ColumnInfo(name = "listing_lat_long") var listingLocation: LatLng? = null,
+        @ColumnInfo(name = "listing_image_url") var listingImageUrl: String = ""
 
         //TODO: Still need a way to record POIs.
-       
+
 ) {
 
 }
