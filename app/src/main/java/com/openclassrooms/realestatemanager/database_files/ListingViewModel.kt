@@ -40,8 +40,8 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
         repository.delete()
     }
 
-    fun getListingById(id: Long) = viewModelScope.launch(Dispatchers.IO) {
-        val result = repository.getListingById(id).value
+    suspend fun getListingById(id: Long): Listing {
+        return repository.getListing(id)
     }
 
     fun setCurrentListing(listing: Listing) {
