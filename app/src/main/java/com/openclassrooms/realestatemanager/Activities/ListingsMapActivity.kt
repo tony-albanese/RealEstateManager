@@ -13,10 +13,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.openclassrooms.realestatemanager.Geolocation.ListingGeocoder
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utilities.ACTIVITY_TASK
-import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
-import com.openclassrooms.realestatemanager.Utilities.LOCATION_IQ_KEY
-import com.openclassrooms.realestatemanager.Utilities.TASK_SELECT_LISTING_LOCATION
+import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import kotlinx.android.synthetic.main.activity_listings_map.*
@@ -101,8 +98,11 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
     override fun onGeocodingResult(result: String) {
 
         val list = listingGeocoder.processListingLocationJsonResponse(result)
+        val helperMethods = HelperMethods()
+
         runOnUiThread {
             Toast.makeText(this, list.size.toString(), Toast.LENGTH_LONG).show()
+            helperMethods.placeListingLocationMarkers(map, list)
         }
 
     }
