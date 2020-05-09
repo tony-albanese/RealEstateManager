@@ -3,7 +3,6 @@ package com.openclassrooms.realestatemanager.Activities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.maps.MapboxMap
@@ -33,11 +32,13 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
         Mapbox.getInstance(this, getString(R.string.mapquest_token))
         setContentView(R.layout.activity_listings_map)
 
+        //Setup the ListingGeocoder object.
         keyMap.put(LOCATION_IQ_KEY, getString(R.string.locationIQ_token))
         val uriBuilder = Uri.Builder()
         listingGeocoder = ListingGeocoder(uriBuilder, this, keyMap)
         listingGeocoder.listener = this
 
+        //Get the incoming Intent and deterline which task code needs to get done.
         incomingIntent = intent
         incomingIntent?.let {
             val activityTaskCode = it.getIntExtra(ACTIVITY_TASK, 0)
@@ -57,13 +58,18 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
                 TASK_SELECT_LISTING_LOCATION -> {
                     displayPossibleListingLocationMarkers(mapboxMap)
                 }
+
+                //TODO: Task for displaying all listings.
+
+                //TODO: Task for displaying all listings near the user.
+
+                //TODO: Task for displaying a single listing centered on the map.
             }
         }
     }
 
 
     fun displayPossibleListingLocationMarkers(map: MapboxMap) {
-        Toast.makeText(this, "displaying possible lisitngs", Toast.LENGTH_LONG).show()
 
         //TODO: Load the listing from DB
         //TODO: Do a Forward geocoding
