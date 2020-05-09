@@ -7,10 +7,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.R
@@ -136,9 +138,14 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
 
     fun setObservers() {
         val listingBodyTextView = findViewById<TextView>(R.id.tv_description_body)
+        val imageView = findViewById<ImageView>(R.id.listing_image_view)
         listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
             listingBodyTextView.text = it.listingDescription
-            //TODO: Load the url here.
+            Glide.with(this)
+                    .load(it.listingImageUrl)
+                    .error(R.drawable.placeholder_image)
+                    .placeholder(R.drawable.placeholder_image)
+                    .into(imageView)
         })
 
         listingViewModel.unpublishedListings.observe(this, androidx.lifecycle.Observer {
