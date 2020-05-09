@@ -13,4 +13,5 @@ val LOCATION_IQ_KEY: String = "locationIQ_key"
 
 val NO_CONNECTION = 2322
 val NO_RESPONSE = 1211
+val NO_RESULTS = 1212
 val ERROR_STRING = "ERROR"
