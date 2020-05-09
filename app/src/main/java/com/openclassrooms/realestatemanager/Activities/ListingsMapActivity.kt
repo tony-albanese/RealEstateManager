@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
@@ -58,6 +59,7 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
 
     val mapReadyCallback = object : OnMapReadyCallback {
         override fun onMapReady(mapboxMap: MapboxMap) {
+            mapboxMap.setOnMarkerClickListener(markerClickListener)
             map = mapboxMap
             mapboxMap.setStyle(Style.MAPBOX_STREETS)
 
@@ -108,7 +110,6 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
         runOnUiThread {
             Toast.makeText(this, "ERROR!", Toast.LENGTH_LONG).show()
         }
-
     }
 
     fun geocodeListing() {
@@ -120,5 +121,16 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
         }
     }
 
+    val markerClickListener = object : MapboxMap.OnMarkerClickListener {
+        override fun onMarkerClick(marker: Marker): Boolean {
+            when (activityTask) {
+                TASK_SELECT_LISTING_LOCATION -> {
+                    Toast.makeText(applicationContext, "Update database here", Toast.LENGTH_LONG).show()
+                }
+            }
+            return true
+        }
+
+    }
 
 }
