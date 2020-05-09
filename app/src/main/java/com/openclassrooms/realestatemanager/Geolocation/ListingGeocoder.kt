@@ -6,10 +6,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
-import com.openclassrooms.realestatemanager.Utilities.ERROR_STRING
-import com.openclassrooms.realestatemanager.Utilities.LOCATION_IQ_KEY
-import com.openclassrooms.realestatemanager.Utilities.NO_CONNECTION
-import com.openclassrooms.realestatemanager.Utilities.NO_RESPONSE
+import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -138,6 +135,7 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
             val jsonObject: JSONObject? = JSONObject(jsonString)
             jsonObject?.let {
                 if (it.has("error")) {
+                    this.listener?.onGeocodingError(NO_RESULTS)
                     return ArrayList<ForwardGeocodeResponse>()
                 }
             }
