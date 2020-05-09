@@ -3,6 +3,8 @@ package com.openclassrooms.realestatemanager.Activities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.mapbox.mapboxsdk.Mapbox
@@ -18,6 +20,8 @@ import com.openclassrooms.realestatemanager.Utilities.TASK_SELECT_LISTING_LOCATI
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import kotlinx.android.synthetic.main.activity_listings_map.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionResultListener {
 
@@ -47,20 +51,26 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
             val activityTaskCode = it.getIntExtra(ACTIVITY_TASK, 0)
             activityTask = activityTaskCode
             listingId = it.getLongExtra(LISTING_ID, 0)
+            Log.i("GEOCODE", "Listing id: " + listingId.toString())
         }
 
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
-        
+
         map_view?.getMapAsync(mapReadyCallback)
     }
 
     val mapReadyCallback = object : OnMapReadyCallback {
         override fun onMapReady(mapboxMap: MapboxMap) {
+            Log.i("GEOCODE", "mapReadyCallback called")
             mapboxMap.setStyle(Style.MAPBOX_STREETS)
 
             when (activityTask) {
                 TASK_SELECT_LISTING_LOCATION -> {
-                    displayPossibleListingLocationMarkers(mapboxMap)
+                    Log.i("GEOCODE", "TASK_SELECT_LISTING LOCATION")
+                    GlobalScope.launch {
+                        displayPossibleListingLocationMarkers(mapboxMap)
+                    }
+
                 }
 
                 //TODO: Task for displaying all listings.
@@ -73,13 +83,16 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
     }
 
 
-    fun displayPossibleListingLocationMarkers(map: MapboxMap) {
+    suspend fun displayPossibleListingLocationMarkers(map: MapboxMap) {
+        Log.i("GEOCODE", "displayPossibleListingLocation() called")
 
-        //TODO: Load the listing from DB
-        //TODO: Do a Forward geocoding
+        listingViewModel.getListingForPortraitMode(listingId)
+        val url = listingGeocoder.buildForwardGeocodingUrl(listingViewModel.selectedListing.value!!)
+        listingGeocoder.getListingLocationSuspend(url)
         //TODO: Display all of the markers
 
     }
+
 
     //TODO: Implement on marker click.
     /*
@@ -99,6 +112,11 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
 
     override fun onConnectionResult(result: String) {
 
+        val list = listingGeocoder.processListingLocationJsonResponse(result)
+        Log.i("GEOCODE", "onConnectionResult() called")
+        runOnUiThread {
+            Toast.makeText(this, list.size.toString(), Toast.LENGTH_LONG).show()
+        }
 
     }
 

@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.Geolocation
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
@@ -103,6 +104,7 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
     Method that takes a listing and builds the forward geocoding url frome the passed in listing address.
      */
     fun buildForwardGeocodingUrl(listing: Listing): String {
+        Log.i("GEOCODE", "buildForwardGeocodingUrl called")
         val streetParameter = "street"
         val cityParameter = "city"
         val postalCodeParameter = "postalcode"
@@ -117,6 +119,7 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
     }
 
     suspend fun getListingLocationSuspend(url: String) = withContext(Dispatchers.IO) {
+        Log.i("GEOCODE", "getListingLocationSuspend() called")
         val connection = connectToSite(stringToUrl(url))
         if (connection == null) {
             listener?.onConnectionError(NO_CONNECTION)
@@ -130,7 +133,7 @@ class ListingGeocoder(val uriBuilder: Uri.Builder, val context: Context, keyMap:
     }
 
     fun processListingLocationJsonResponse(jsonString: String): ArrayList<ForwardGeocodeResponse> {
-
+        Log.i("GEOCODE", "process json response")
         try {
             val jsonObject: JSONObject? = JSONObject(jsonString)
             jsonObject?.let {
