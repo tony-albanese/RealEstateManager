@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.Menu
 import com.mapbox.api.staticmap.v1.MapboxStaticMap
 import com.mapbox.api.staticmap.v1.StaticMapCriteria
+import com.mapbox.api.staticmap.v1.models.StaticMarkerAnnotation
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
@@ -69,9 +70,18 @@ class HelperMethods() {
     }
 
     fun buildStaticImageUrl(token: String, listing: Listing): String {
+
+        val point = Point.fromLngLat(listing.listingLocation?.longitude!!, listing.listingLocation?.latitude!!)
+        val annotation = StaticMarkerAnnotation
+                .builder()
+                .lnglat(point)
+                .build()
+        val list = mutableListOf<StaticMarkerAnnotation>()
+        list.add(annotation)
         return MapboxStaticMap.builder()
                 .accessToken(token)
                 .styleId(StaticMapCriteria.LIGHT_STYLE)
+                .staticMarkerAnnotations(list)
                 .cameraPoint(Point.fromLngLat(
                         listing.listingLocation?.longitude!!,
                         listing.listingLocation?.latitude!!))
