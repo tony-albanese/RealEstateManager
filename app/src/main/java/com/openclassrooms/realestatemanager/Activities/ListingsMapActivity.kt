@@ -32,12 +32,15 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
     lateinit var listing: Listing
     lateinit var listingViewModel: ListingViewModel
     lateinit var map: MapboxMap
+    lateinit var dialogBuilder: CustomDialogBuilder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Mapbox.getInstance(this, getString(R.string.mapquest_token))
         setContentView(R.layout.activity_listings_map)
 
+        listing = Listing()
+        dialogBuilder = CustomDialogBuilder(this)
         //Setup the ListingGeocoder object.
         keyMap.put(LOCATION_IQ_KEY, getString(R.string.locationIQ_token))
         val uriBuilder = Uri.Builder()
@@ -77,16 +80,6 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
         }
     }
 
-
-    //TODO: Implement on marker click.
-    /*
-    Depending on the situation, the following has to happen:
-    If its to select the listing location, the marker updates the listing with the location, updates the user, and returns to the main activity.
-
-    If it's displaying all of the listings or a particular listing, it should take the user to the display listing activity.
-
-     */
-
     override fun onBackPressed() {
         //super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)
@@ -100,7 +93,6 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
         val helperMethods = HelperMethods()
 
         runOnUiThread {
-            Toast.makeText(this, list.size.toString(), Toast.LENGTH_LONG).show()
             helperMethods.placeListingLocationMarkers(map, list)
         }
 
@@ -116,6 +108,7 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
         GlobalScope.launch {
             val futureListing = async { listingViewModel.getListingById(listingId) }
             val retrievedListing = futureListing.await()
+            listing = retrievedListing
             val url = listingGeocoder.buildForwardGeocodingUrl(retrievedListing)
             listingGeocoder.getListingLocationSuspend(url)
         }
@@ -125,12 +118,37 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
         override fun onMarkerClick(marker: Marker): Boolean {
             when (activityTask) {
                 TASK_SELECT_LISTING_LOCATION -> {
-                    Toast.makeText(applicationContext, "Update database here", Toast.LENGTH_LONG).show()
+                    listing.listingLocation = marker.position
+                    updateListing(listing)
                 }
             }
             return true
         }
-
     }
 
+    fun updateListing(listing: Listing) {
+        GlobalScope.launch {
+            val id = async { listingViewModel.updateListing(listing) }.await()
+            when (id) {
+                1 -> {
+                    runOnUiThread {
+                        dialogBuilder
+                                .buildSuccessDialogBuilder()
+                                .setMessage("Listing Location updated!")
+                                .show()
+                    }
+
+                }
+                else -> {
+                    runOnUiThread {
+                        dialogBuilder
+                                .buildErrorDialog()
+                                .show()
+                    }
+                }
+
+            }
+        }
+
+    }
 }

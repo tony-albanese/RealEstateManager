@@ -66,6 +66,9 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
 
     }
 
+    suspend fun updateListing(listing: Listing): Int {
+        return repository.updateListing(listing)
+    }
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
