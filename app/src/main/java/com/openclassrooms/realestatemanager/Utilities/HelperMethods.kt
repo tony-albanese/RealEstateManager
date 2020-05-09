@@ -3,9 +3,15 @@ package com.openclassrooms.realestatemanager.Utilities
 import android.content.Context
 import android.content.Intent
 import android.view.Menu
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.openclassrooms.realestatemanager.Activities.EditListingActivity
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
+import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
 import com.openclassrooms.realestatemanager.database_files.Listing
+
 
 class HelperMethods() {
 
@@ -38,5 +44,24 @@ class HelperMethods() {
         val intent = Intent(context, EditListingActivity::class.java)
         intent.putExtra(LISTING_ID_KEY, id)
         context.startActivity(intent)
+    }
+
+    @Suppress("DEPRECATION")
+    fun placeListingLocationMarkers(map: MapboxMap, list: ArrayList<ForwardGeocodeResponse>) {
+        for (location in list) {
+            ConversionUtilities.setGeocodeLatLng(location)
+            map.addMarker(MarkerOptions()
+                    .position(location.latLng)
+            )
+
+        }
+
+        val position = CameraPosition.Builder()
+                .target(list.get(0).latLng)
+                .zoom(12.toDouble())
+                .build()
+
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
+
     }
 }
