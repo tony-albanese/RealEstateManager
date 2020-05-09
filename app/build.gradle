@@ -81,8 +81,9 @@ dependencies {
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    //Picaso image library.
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    //Glide image library.
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     //Mapbox library
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
