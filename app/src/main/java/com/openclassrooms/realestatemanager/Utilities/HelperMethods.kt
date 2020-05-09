@@ -3,6 +3,9 @@ package com.openclassrooms.realestatemanager.Utilities
 import android.content.Context
 import android.content.Intent
 import android.view.Menu
+import com.mapbox.api.staticmap.v1.MapboxStaticMap
+import com.mapbox.api.staticmap.v1.StaticMapCriteria
+import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -63,5 +66,18 @@ class HelperMethods() {
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
 
+    }
+
+    fun buildStaticImageUrl(token: String, listing: Listing): String {
+        return MapboxStaticMap.builder()
+                .accessToken(token)
+                .styleId(StaticMapCriteria.LIGHT_STYLE)
+                .cameraPoint(Point.fromLngLat(
+                        listing.listingLocation?.longitude!!,
+                        listing.listingLocation?.latitude!!))
+                .cameraZoom(13.toDouble())
+                .build()
+                .url()
+                .toString()
     }
 }
