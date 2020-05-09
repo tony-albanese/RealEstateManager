@@ -21,6 +21,7 @@ import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import kotlinx.android.synthetic.main.activity_listings_map.*
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionResultListener {
@@ -33,6 +34,7 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
     lateinit var listingGeocoder: ListingGeocoder
     lateinit var listing: Listing
     lateinit var listingViewModel: ListingViewModel
+    lateinit var map: MapboxMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,6 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
             val activityTaskCode = it.getIntExtra(ACTIVITY_TASK, 0)
             activityTask = activityTaskCode
             listingId = it.getLongExtra(LISTING_ID, 0)
-            Log.i("GEOCODE", "Listing id: " + listingId.toString())
         }
 
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
@@ -62,15 +63,13 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
     val mapReadyCallback = object : OnMapReadyCallback {
         override fun onMapReady(mapboxMap: MapboxMap) {
             Log.i("GEOCODE", "mapReadyCallback called")
+            map = mapboxMap
             mapboxMap.setStyle(Style.MAPBOX_STREETS)
 
             when (activityTask) {
                 TASK_SELECT_LISTING_LOCATION -> {
                     Log.i("GEOCODE", "TASK_SELECT_LISTING LOCATION")
-                    GlobalScope.launch {
-                        displayPossibleListingLocationMarkers(mapboxMap)
-                    }
-
+                    geocodeListing()
                 }
 
                 //TODO: Task for displaying all listings.
@@ -80,17 +79,6 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
                 //TODO: Task for displaying a single listing centered on the map.
             }
         }
-    }
-
-
-    suspend fun displayPossibleListingLocationMarkers(map: MapboxMap) {
-        Log.i("GEOCODE", "displayPossibleListingLocation() called")
-
-        listingViewModel.getListingForPortraitMode(listingId)
-        val url = listingGeocoder.buildForwardGeocodingUrl(listingViewModel.selectedListing.value!!)
-        listingGeocoder.getListingLocationSuspend(url)
-        //TODO: Display all of the markers
-
     }
 
 
@@ -113,7 +101,6 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
     override fun onConnectionResult(result: String) {
 
         val list = listingGeocoder.processListingLocationJsonResponse(result)
-        Log.i("GEOCODE", "onConnectionResult() called")
         runOnUiThread {
             Toast.makeText(this, list.size.toString(), Toast.LENGTH_LONG).show()
         }
@@ -121,6 +108,18 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
     }
 
     override fun onConnectionError(errorCode: Int) {
+        runOnUiThread {
+            Toast.makeText(this, "ERROR!", Toast.LENGTH_LONG).show()
+        }
 
+    }
+
+    fun geocodeListing() {
+        GlobalScope.launch {
+            val futureListing = async { listingViewModel.getListingById(listingId) }
+            val retrievedListing = futureListing.await()
+            val url = listingGeocoder.buildForwardGeocodingUrl(retrievedListing)
+            listingGeocoder.getListingLocationSuspend(url)
+        }
     }
 }
