@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.Utilities
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.Menu
 import com.mapbox.api.staticmap.v1.MapboxStaticMap
 import com.mapbox.api.staticmap.v1.StaticMapCriteria
@@ -15,6 +17,11 @@ import com.openclassrooms.realestatemanager.Activities.EditListingActivity
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
 import com.openclassrooms.realestatemanager.database_files.Listing
+import java.io.BufferedInputStream
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
 
 
 class HelperMethods() {
@@ -90,4 +97,32 @@ class HelperMethods() {
                 .url()
                 .toString()
     }
+
+    suspend fun saveStaticImage(urlString: String): Bitmap? {
+
+        var connection: HttpURLConnection? = null
+        try {
+            val url: URL? = URL(urlString)
+            connection = url?.openConnection() as HttpURLConnection
+            connection.connect()
+
+            val inputStream = connection?.inputStream
+            val bufferedInputStream = BufferedInputStream(inputStream)
+
+            val bmp = BitmapFactory.decodeStream(bufferedInputStream)
+            return bmp
+        } catch (excepetion: IOException) {
+
+            return null
+        } catch (exception: MalformedURLException) {
+
+            return null
+        } catch (exception: Exception) {
+            return null
+        } finally {
+            connection?.disconnect()
+        }
+    }
+
+    
 }
