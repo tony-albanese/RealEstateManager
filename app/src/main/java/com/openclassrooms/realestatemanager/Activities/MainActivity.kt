@@ -76,8 +76,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 AppDatabase::class.java,
                 "listing-db")
                 .build()
-
-        //TODO: Refactor the methond and include a click listener for the image view.
+        
         if (landscapeMode) setListingDescriptionListeners()
         setObservers()
     }
