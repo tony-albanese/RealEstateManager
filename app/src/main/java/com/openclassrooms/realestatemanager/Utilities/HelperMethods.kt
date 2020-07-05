@@ -76,6 +76,21 @@ class HelperMethods() {
 
     }
 
+    @Suppress("DEPRECATION")
+    fun placeListingMarker(map: MapboxMap, listing: Listing) {
+        map.addMarker(
+                MarkerOptions()
+                        .position(listing.listingLocation)
+        )
+
+        val position = CameraPosition.Builder()
+                .target(listing.listingLocation)
+                .zoom(12.toDouble())
+                .build()
+
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
+    }
+
     fun buildStaticImageUrl(token: String, listing: Listing): String {
 
         val point = Point.fromLngLat(listing.listingLocation?.longitude!!, listing.listingLocation?.latitude!!)
