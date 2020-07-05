@@ -3,10 +3,12 @@ package com.openclassrooms.realestatemanager.Activities.ListingMapActivities
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.openclassrooms.realestatemanager.Geolocation.ListingGeocoder
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
 import com.openclassrooms.realestatemanager.database_files.Listing
@@ -35,6 +37,7 @@ class GeocodeListingLocationActivity : ListingMapBaseActivity(), ListingGeocoder
         val mapReadyCallback = object : OnMapReadyCallback {
             override fun onMapReady(mapboxMap: MapboxMap) {
                 map = mapboxMap
+                mapboxMap.setOnMarkerClickListener(markerClickListener)
                 mapboxMap.setStyle(Style.MAPBOX_STREETS)
             }
         }
@@ -92,5 +95,17 @@ class GeocodeListingLocationActivity : ListingMapBaseActivity(), ListingGeocoder
             }
         }
 
+    }
+
+    val markerClickListener = object : MapboxMap.OnMarkerClickListener {
+        override fun onMarkerClick(marker: Marker): Boolean {
+            listing.listingLocation = marker.position
+            listing.listingImageUrl = helperMethods.buildStaticImageUrl(
+                    getString(R.string.mapquest_token),
+                    listing
+            )
+            updateListing(listing)
+            return true
+        }
     }
 }
