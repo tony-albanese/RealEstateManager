@@ -21,10 +21,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.ListingsMapActivity
+import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.ACTIVITY_TASK
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
+import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
 import com.openclassrooms.realestatemanager.Utilities.TASK_DISPLAY_ALL_LISTINGS
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
@@ -168,6 +170,12 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                         .error(R.drawable.placeholder_image)
                         .into(imageView)
             })
+
+            imageView.setOnClickListener {
+                val intent = Intent(this, SingleListingMapActivity::class.java)
+                intent.putExtra(LISTING_ID, listingViewModel.selectedListing.value?.id)
+                startActivity(intent)
+            }
         }
 
         listingViewModel.publishedListings.observe(this, androidx.lifecycle.Observer {
