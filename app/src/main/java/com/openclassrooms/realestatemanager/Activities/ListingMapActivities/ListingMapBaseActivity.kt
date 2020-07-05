@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Activities.ListingMapActivities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +9,7 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.openclassrooms.realestatemanager.Activities.MainActivity
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 
@@ -38,6 +40,12 @@ open class ListingMapBaseActivity : AppCompatActivity() {
             }
         }
         map_view.getMapAsync(mapReadyCallback)
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
 }
