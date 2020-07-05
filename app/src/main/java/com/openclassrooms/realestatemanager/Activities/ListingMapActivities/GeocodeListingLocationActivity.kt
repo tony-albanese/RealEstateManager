@@ -2,19 +2,21 @@ package com.openclassrooms.realestatemanager.Activities.ListingMapActivities
 
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.openclassrooms.realestatemanager.Geolocation.ListingGeocoder
+import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class GeocodeListingLocationActivity : ListingMapBaseActivity() {
+class GeocodeListingLocationActivity : ListingMapBaseActivity(), ListingGeocoder.OnConnectionResultListener {
 
     lateinit var listingGeocoder: ListingGeocoder
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,4 +50,22 @@ class GeocodeListingLocationActivity : ListingMapBaseActivity() {
             listingGeocoder.getListingLocationSuspend(url)
         }
     }
+
+    override fun onGeocodingResult(result: String) {
+
+        val list = listingGeocoder.processListingLocationJsonResponse(result)
+        val helperMethods = HelperMethods()
+
+        runOnUiThread {
+            helperMethods.placeListingLocationMarkers(map, list)
+        }
+
+    }
+
+    override fun onGeocodingError(errorCode: Int) {
+        runOnUiThread {
+            Toast.makeText(this, "ERROR!", Toast.LENGTH_LONG).show()
+        }
+    }
+
 }
