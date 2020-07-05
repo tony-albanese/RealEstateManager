@@ -89,6 +89,9 @@ dependencies {
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.1.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-sdk-services:5.1.0'
 
+    //Google PlayServices
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
     //Libraries for unit testing.
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'org.mockito:mockito-android:3.3.3'
