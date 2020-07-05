@@ -12,15 +12,36 @@ import com.google.android.material.snackbar.Snackbar
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
+import com.mapbox.mapboxsdk.maps.Style
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.database_files.Listing
 
 private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
 class AllListingsMapActivity : ListingMapBaseActivity() {
 
+    var allListings = ArrayList<Listing>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.initializeActivity()
-        requestForegroundPermission()
+        initializeActivity()
+    }
+
+    override fun initializeActivity() {
+        val mapReadyCallback = object : OnMapReadyCallback {
+            override fun onMapReady(mapboxMap: MapboxMap) {
+                map = mapboxMap
+                mapboxMap.setStyle(Style.MAPBOX_STREETS)
+
+                listingViewModel.publishedListings.observe(this@AllListingsMapActivity, androidx.lifecycle.Observer {
+                    allListings = it as ArrayList
+                    helperMethods.placeListingMarkersOnMap(map, allListings)
+                })
+
+                requestForegroundPermission()
+            }
+        }
+        map_view.getMapAsync(mapReadyCallback)
     }
 
     private fun isForegroundPermissionGranted(): Boolean {
@@ -64,7 +85,6 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
                 grantResults.isEmpty() -> Toast.makeText(this, "Action cancelled", Toast.LENGTH_LONG).show()
 
                 grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
-                    //TODO Load all of the listings and display them. Center the camera on the user.
                     centerMapOnUser()
                 }
 
@@ -76,7 +96,6 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
             }
         }
     }
-
 
     @SuppressLint("MissingPermission")
     fun centerMapOnUser() {
