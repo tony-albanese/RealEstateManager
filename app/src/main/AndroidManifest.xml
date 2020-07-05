@@ -12,12 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".Activities.ListingsMapActivity"></activity>
-        <activity android:name=".Activities.DisplayListingPortaitActivity"></activity>
+        <activity android:name=".Activities.ListingMapActivities.GeocodeListingLocationActivity"></activity>
+        <activity android:name=".Activities.ListingMapActivities.ListingMapBaseActivity" />
+        <activity android:name=".Activities.ListingsMapActivity" />
+        <activity android:name=".Activities.DisplayListingPortaitActivity" />
         <activity
             android:name=".Activities.EditListingActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
