@@ -30,7 +30,7 @@ class SingleListingMapActivity : ListingMapBaseActivity() {
                 inializeActivity()
             }
         }
-        
+
     }
 
     override fun inializeActivity() {
@@ -40,6 +40,7 @@ class SingleListingMapActivity : ListingMapBaseActivity() {
                 map = mapboxMap
                 mapboxMap.setOnMarkerClickListener(markerClickListener)
                 mapboxMap.setStyle(Style.MAPBOX_STREETS)
+                helperMethods.placeListingMarker(map, listing)
             }
         }
         map_view.getMapAsync(mapReadyCallback)
