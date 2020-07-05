@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -15,8 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
+import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
@@ -56,7 +59,6 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
             }
         }
 
-        //TODO: Set the click listener on the image view.
         setListingDescriptionListeners()
         setObservers()
     }
@@ -152,5 +154,11 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
             unpublishedListings = it
             invalidateOptionsMenu()
         })
+
+        imageView.setOnClickListener {
+            val intent = Intent(this, SingleListingMapActivity::class.java)
+            intent.putExtra(LISTING_ID, listingViewModel.selectedListing.value?.id)
+            startActivity(intent)
+        }
     }
 }
