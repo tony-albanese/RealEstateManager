@@ -150,5 +150,7 @@ class HelperMethods() {
         }
     }
 
-    
+    fun calculateCentralLocation(list: ArrayList<Listing>) {
+
+    }
 }
