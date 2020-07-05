@@ -31,10 +31,10 @@ class GeocodeListingLocationActivity : ListingMapBaseActivity(), ListingGeocoder
         val uriBuilder = Uri.Builder()
         listingGeocoder = ListingGeocoder(uriBuilder, this, keyMap)
         listingGeocoder.listener = this
-        inializeActivity()
+        initializeActivity()
     }
 
-    override fun inializeActivity() {
+    override fun initializeActivity() {
         val mapReadyCallback = object : OnMapReadyCallback {
             override fun onMapReady(mapboxMap: MapboxMap) {
                 map = mapboxMap

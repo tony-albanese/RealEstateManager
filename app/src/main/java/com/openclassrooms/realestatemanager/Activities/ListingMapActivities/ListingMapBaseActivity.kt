@@ -47,7 +47,7 @@ open class ListingMapBaseActivity : AppCompatActivity() {
         //inializeActivity()
     }
 
-    open fun inializeActivity() {
+    open fun initializeActivity() {
         val mapReadyCallback = object : OnMapReadyCallback {
             override fun onMapReady(mapboxMap: MapboxMap) {
                 map = mapboxMap

@@ -27,13 +27,13 @@ class SingleListingMapActivity : ListingMapBaseActivity() {
             listing = retrievedListing
 
             runOnUiThread {
-                inializeActivity()
+                initializeActivity()
             }
         }
 
     }
 
-    override fun inializeActivity() {
+    override fun initializeActivity() {
         Toast.makeText(this, listing.id.toString(), Toast.LENGTH_LONG).show()
         val mapReadyCallback = object : OnMapReadyCallback {
             override fun onMapReady(mapboxMap: MapboxMap) {

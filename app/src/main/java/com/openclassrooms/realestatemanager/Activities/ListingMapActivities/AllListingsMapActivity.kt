@@ -14,7 +14,7 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.inializeActivity()
+        super.initializeActivity()
         requestForegroundPermission()
     }
 
@@ -52,7 +52,6 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
         }
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         //   super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -72,4 +71,6 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
             }
         }
     }
+
+
 }
