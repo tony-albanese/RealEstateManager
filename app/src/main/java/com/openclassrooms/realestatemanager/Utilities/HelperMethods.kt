@@ -91,6 +91,17 @@ class HelperMethods() {
         map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
     }
 
+    @Suppress("DEPRECATION")
+    fun placeListingMarkersOnMap(map: MapboxMap, list: List<Listing>) {
+        for (listing in list) {
+            map.addMarker(
+                    MarkerOptions()
+                            .position(listing.listingLocation)
+            )
+        }
+
+    }
+
     fun buildStaticImageUrl(token: String, listing: Listing): String {
 
         val point = Point.fromLngLat(listing.listingLocation?.longitude!!, listing.listingLocation?.latitude!!)
