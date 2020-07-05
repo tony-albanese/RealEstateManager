@@ -7,6 +7,9 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.google.android.material.snackbar.Snackbar
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.openclassrooms.realestatemanager.R
 
 private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
@@ -53,8 +56,6 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        //   super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         when (requestCode) {
             REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE -> when {
 
@@ -62,15 +63,26 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
                 grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
                     //TODO Load all of the listings and display them. Center the camera on the user.
+
                 }
 
                 else -> {
                     //TODO Load all of the listings. Center the camera in the middle of all the listings.
+
                 }
 
             }
         }
     }
 
+
+    fun centerMapOnUser() {
+        val chicagoLocation = LatLng(41.79, -87.78)
+        val position = CameraPosition.Builder()
+                .target(chicagoLocation)
+                .zoom(12.toDouble())
+                .build()
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
+    }
 
 }
