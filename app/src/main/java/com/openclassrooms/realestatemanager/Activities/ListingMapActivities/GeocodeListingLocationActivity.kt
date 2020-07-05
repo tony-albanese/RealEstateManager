@@ -9,6 +9,7 @@ import com.mapbox.mapboxsdk.maps.Style
 import com.openclassrooms.realestatemanager.Geolocation.ListingGeocoder
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
+import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -52,7 +53,6 @@ class GeocodeListingLocationActivity : ListingMapBaseActivity(), ListingGeocoder
     }
 
     override fun onGeocodingResult(result: String) {
-
         val list = listingGeocoder.processListingLocationJsonResponse(result)
         val helperMethods = HelperMethods()
 
@@ -68,4 +68,29 @@ class GeocodeListingLocationActivity : ListingMapBaseActivity(), ListingGeocoder
         }
     }
 
+    fun updateListing(listing: Listing) {
+        GlobalScope.launch {
+            val id = async { listingViewModel.updateListing(listing) }.await()
+            when (id) {
+                1 -> {
+                    runOnUiThread {
+                        dialogBuilder
+                                .buildSuccessDialogBuilder()
+                                .setMessage("Listing Location updated!")
+                                .show()
+                    }
+
+                }
+                else -> {
+                    runOnUiThread {
+                        dialogBuilder
+                                .buildErrorDialog()
+                                .show()
+                    }
+                }
+
+            }
+        }
+
+    }
 }
