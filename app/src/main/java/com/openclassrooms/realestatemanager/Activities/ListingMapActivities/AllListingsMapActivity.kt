@@ -1,11 +1,13 @@
 package com.openclassrooms.realestatemanager.Activities.ListingMapActivities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -63,7 +65,7 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
                 grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
                     //TODO Load all of the listings and display them. Center the camera on the user.
-
+                    centerMapOnUser()
                 }
 
                 else -> {
@@ -76,13 +78,19 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
     }
 
 
+    @SuppressLint("MissingPermission")
     fun centerMapOnUser() {
-        val chicagoLocation = LatLng(41.79, -87.78)
-        val position = CameraPosition.Builder()
-                .target(chicagoLocation)
-                .zoom(12.toDouble())
-                .build()
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        fusedLocationClient.lastLocation.addOnSuccessListener {
+            val currentLocation = LatLng(it.latitude, it.longitude)
+            val position = CameraPosition.Builder()
+                    .target(currentLocation)
+                    .zoom(12.toDouble())
+                    .build()
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
+        }
+
     }
 
 }
