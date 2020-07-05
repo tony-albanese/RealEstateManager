@@ -62,7 +62,7 @@ class ListingDatabaseTests {
         listing.listingDescription = "description"
         val id = listingDao.insertListing(listing)
         val retrievedListing = listingDao.getListingById(id)
-        assert(retrievedListing.listingDescription.equals(listing.listingDescription))
+        assert(retrievedListing.value?.listingDescription.equals(listing.listingDescription))
     }
 
 

@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.database_files
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,8 +40,8 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
         repository.delete()
     }
 
-    fun getListingById(id: Long) = viewModelScope.launch(Dispatchers.IO) {
-        val result = repository.getListingById(id).value
+    suspend fun getListingById(id: Long): Listing {
+        return repository.getListing(id)
     }
 
     fun setCurrentListing(listing: Listing) {
@@ -49,6 +50,7 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun getListingForPortraitMode(id: Long) = viewModelScope.launch {
+        Log.i("GEOCODE", "getListingforPortraitMode called")
         val listing = repository.getListing(id)
         setCurrentListing(listing)
     }
@@ -64,6 +66,9 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
 
     }
 
+    suspend fun updateListing(listing: Listing): Int {
+        return repository.updateListing(listing)
+    }
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 

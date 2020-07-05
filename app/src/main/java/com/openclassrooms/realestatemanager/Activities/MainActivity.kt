@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -7,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -15,11 +17,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.ACTIVITY_TASK
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
+import com.openclassrooms.realestatemanager.Utilities.TASK_DISPLAY_ALL_LISTINGS
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
@@ -69,6 +74,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 "listing-db")
                 .build()
 
+        //TODO: Refactor the methond and include a click listener for the image view.
         if (landscapeMode) setListingDescriptionListeners()
         setObservers()
     }
@@ -97,6 +103,13 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
             R.id.menu_item_edit_listing -> {
                 helper.onEditListingClick(this, listingViewModel.selectedListing.value?.id
                         ?: 0.toLong())
+                finish()
+                return true
+            }
+            R.id.menu_item_map_view -> {
+                val intent = Intent(this, ListingsMapActivity::class.java)
+                intent.putExtra(ACTIVITY_TASK, TASK_DISPLAY_ALL_LISTINGS)
+                startActivity(intent)
                 finish()
                 return true
             }
@@ -144,8 +157,15 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
         if (landscapeMode) {
             val listingBodyTextView = findViewById<TextView>(R.id.tv_description_body)
+            val imageView = findViewById<ImageView>(R.id.listing_image_view)
             listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
                 listingBodyTextView.text = it.listingDescription
+
+                Glide.with(this)
+                        .load(it.listingImageUrl)
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.placeholder_image)
+                        .into(imageView)
             })
         }
 

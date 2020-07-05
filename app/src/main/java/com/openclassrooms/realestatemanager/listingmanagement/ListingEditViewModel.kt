@@ -1,18 +1,17 @@
 package com.openclassrooms.realestatemanager.listingmanagement
 
 import android.app.Application
-import android.content.DialogInterface
 import android.util.Log
 import android.widget.SeekBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.openclassrooms.realestatemanager.Constants.LISTING_SAVE_FILE
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
 import com.openclassrooms.realestatemanager.Utilities.DateUtilities
 import com.openclassrooms.realestatemanager.Utilities.ListingDataTypeConverters
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
@@ -70,7 +69,7 @@ class ListingEditViewModel(
         currentListing.value?.listingPrice = newValue
     }
 
-    fun saveListingToDatabase(builder: MaterialAlertDialogBuilder) {
+    fun saveListingToDatabase(builder: CustomDialogBuilder) {
         viewModelScope.launch {
             val returnedID = repository.insert(currentListing.value!!)
             when (returnedID) {
@@ -78,20 +77,28 @@ class ListingEditViewModel(
                     Log.i("DATABASE", "Conflict. Ignored")
                     Log.i("DATABASE", returnedID.toString())
                     saveToFile = true
-                    builder.setMessage("Error. Data Conflict.")
-                            .setPositiveButton("OK", createPositiveErrorButtonLisenter())
+                    builder.buildErrorDialog()
                             .show()
 
                 }
                 in 0..Long.MAX_VALUE -> {
                     saveToFile = false
                     deleteListingFile()
-                    builder.show()
+                    
+                    when (currentListing.value?.listingLocation) {
+                        null -> {
+                            builder.buildRequestListingLocationDialog(returnedID)
+                                    .show()
+                        }
+                        else -> {
+                            builder.buildSuccessDialogBuilder()
+                                    .show()
+                        }
+                    }
                 }
                 else -> {
                     saveToFile = true
-                    builder.setMessage("Something went wrong.")
-                            .setPositiveButton("OK", createPositiveErrorButtonLisenter())
+                    builder.buildErrorDialog()
                             .show()
                 }
 
@@ -99,19 +106,19 @@ class ListingEditViewModel(
         }
     }
 
-    fun updateListing(builder: MaterialAlertDialogBuilder) {
+    fun updateListing(builder: CustomDialogBuilder) {
         viewModelScope.launch {
             val returnedValue = repository.updateListing(currentListing.value!!)
             if (returnedValue == 1) {
                 saveToFile = false
                 Log.i("DATABASE", "Int: " + returnedValue.toString())
-                builder.setMessage("Listing Updated")
-                builder.show()
+                builder.buildSuccessDialogBuilder()
+                        .setMessage("Listing Updated")
+                        .show()
             } else {
                 saveToFile = true
                 Log.i("DATABASE", "Int: " + returnedValue.toString())
-                builder.setMessage("Something went wrong.")
-                        .setPositiveButton("OK", createPositiveErrorButtonLisenter())
+                builder.buildErrorDialog()
                         .show()
             }
         }
@@ -120,11 +127,6 @@ class ListingEditViewModel(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    private fun createPositiveErrorButtonLisenter(): DialogInterface.OnClickListener {
-        return DialogInterface.OnClickListener { dialogInterface, i ->
-            dialogInterface.dismiss()
-        }
-    }
 
     fun initializeListing() {
         if (!listingId.equals(0.toLong())) {

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menu_item_add_listing"
         android:icon="@drawable/ic_action_add_listing"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="Add Listing"
         />
     <item
@@ -30,6 +30,12 @@
             
         </menu>
     </item>
+
+    <item
+        android:id="@+id/menu_item_map_view"
+        android:icon="@drawable/ic_map"
+        android:title="Lisrings Map"
+        app:showAsAction="always" />
 
 
 </menu>
