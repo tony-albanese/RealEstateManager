@@ -20,6 +20,7 @@ import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
+import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.ListingsMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.ACTIVITY_TASK

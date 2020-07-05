@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.Activities
+package com.openclassrooms.realestatemanager.Activities.ListingMapActivities
 
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +11,7 @@ import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.openclassrooms.realestatemanager.Activities.MainActivity
 import com.openclassrooms.realestatemanager.Geolocation.ListingGeocoder
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.*
