@@ -44,8 +44,7 @@ open class ListingMapBaseActivity : AppCompatActivity() {
         listing = Listing()
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
         map_view = findViewById<MapView>(R.id.map_view)
-        inializeActivity()
-
+        //inializeActivity()
     }
 
     open fun inializeActivity() {
