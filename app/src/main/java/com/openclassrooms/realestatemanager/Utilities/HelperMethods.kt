@@ -5,8 +5,13 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.View
+import android.widget.Button
+import android.widget.PopupWindow
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.mapbox.api.staticmap.v1.MapboxStaticMap
 import com.mapbox.api.staticmap.v1.StaticMapCriteria
 import com.mapbox.api.staticmap.v1.models.StaticMarkerAnnotation
@@ -19,6 +24,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.openclassrooms.realestatemanager.Activities.EditListingActivity
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing
 import java.io.BufferedInputStream
 import java.io.IOException
@@ -178,11 +184,17 @@ class HelperMethods() {
 
     }
 
-    fun createListingDetailPopup(baseContext: Context) {
+    fun createListingDetailPopup(baseContext: Context, layout: ConstraintLayout) {
 
         val layoutInflater = baseContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        //val popupView: View = layoutInflater.inflate()
+        val popupView: View = layoutInflater.inflate(R.layout.popup_layout, null)
+        val popupWindow = PopupWindow(popupView, ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
 
+        popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0)
 
+        val closeButton = popupView.findViewById<Button>(R.id.pop_btn_close)
+        closeButton.setOnClickListener {
+            popupWindow.dismiss()
+        }
     }
 }
