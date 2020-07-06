@@ -45,6 +45,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:drawableLeft="@drawable/ic_location"
                 android:id="@+id/pop_tv_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
 
             <TextView
                 android:id="@+id/pop_tv_rooms"
+                android:drawableLeft="@drawable/ic_rooms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Bedrooms" />
@@ -73,6 +75,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Bedrooms" />
+
+            <TextView
+                android:id="@+id/pop_tv_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_area"
+                tools:text="Area" />
+
+
         </TableRow>
 
     </TableLayout>
