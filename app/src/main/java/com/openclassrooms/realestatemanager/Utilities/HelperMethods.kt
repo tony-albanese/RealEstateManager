@@ -1,9 +1,11 @@
 package com.openclassrooms.realestatemanager.Utilities
 
 import android.content.Context
+import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.LayoutInflater
 import android.view.Menu
 import com.mapbox.api.staticmap.v1.MapboxStaticMap
 import com.mapbox.api.staticmap.v1.StaticMapCriteria
@@ -173,6 +175,14 @@ class HelperMethods() {
         val averageLongitude = (longSum / numberOfPoints)
 
         return LatLng(averageLatitude, averageLongitude)
+
+    }
+
+    fun createListingDetailPopup(baseContext: Context) {
+
+        val layoutInflater = baseContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        //val popupView: View = layoutInflater.inflate()
+
 
     }
 }
