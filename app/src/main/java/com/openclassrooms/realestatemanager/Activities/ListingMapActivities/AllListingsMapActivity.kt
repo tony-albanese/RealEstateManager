@@ -117,12 +117,10 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
     }
 
-    //TODO () Determine why layout isn't inflating.
     //TODO () Pass listing in.
     val markerClickListener = object : MapboxMap.OnMarkerClickListener {
         override fun onMarkerClick(marker: Marker): Boolean {
-            Toast.makeText(this@AllListingsMapActivity, "Marker Clicked", Toast.LENGTH_LONG).show()
-            helperMethods.createListingDetailPopup(baseContext, mapLayout)
+            helperMethods.createListingDetailPopup(this@AllListingsMapActivity, mapLayout)
             return true
         }
     }
