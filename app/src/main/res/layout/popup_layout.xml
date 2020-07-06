@@ -83,7 +83,19 @@
                 android:drawableLeft="@drawable/ic_area"
                 tools:text="Area" />
 
+        </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+            <Button
+                android:id="@+id/pop_btn_close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="4"
+                android:text="Close" />
         </TableRow>
 
     </TableLayout>
