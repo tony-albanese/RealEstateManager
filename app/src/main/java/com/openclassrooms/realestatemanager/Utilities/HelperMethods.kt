@@ -187,17 +187,19 @@ class HelperMethods() {
 
     //TODO () Pass a listing into the method.
     //TODO () Add data from listing.
-    fun createListingDetailPopup(baseContext: Context, layout: ConstraintLayout) {
+    fun createListingDetailPopup(context: Context, anchorView: View) {
 
-        val layoutInflater = baseContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView: View = layoutInflater.inflate(R.layout.popup_layout, null)
-        val popupWindow = PopupWindow(popupView, ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-
-        popupView.findViewById<TextView>(R.id.pop_tv_price).setText("$200322")
-        popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0)
+        val layoutInflater = context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupContentView: View = layoutInflater.inflate(R.layout.popup_layout, null)
+        val popupWindow = PopupWindow(popupContentView, 400, ConstraintLayout.LayoutParams.WRAP_CONTENT, true)
 
 
-        val closeButton = popupView.findViewById<Button>(R.id.pop_btn_close)
+        popupContentView.findViewById<TextView>(R.id.pop_tv_price).setText("$200322")
+        popupContentView.findViewById<TextView>(R.id.pop_tv_address).setText("This is the address.")
+        popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0)
+        popupWindow.showAsDropDown(anchorView)
+        
+        val closeButton = popupContentView.findViewById<Button>(R.id.pop_btn_close)
         closeButton.setOnClickListener {
             popupWindow.dismiss()
         }
