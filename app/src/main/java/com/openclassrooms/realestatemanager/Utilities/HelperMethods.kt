@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.View
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.mapbox.api.staticmap.v1.MapboxStaticMap
 import com.mapbox.api.staticmap.v1.StaticMapCriteria
@@ -184,13 +185,17 @@ class HelperMethods() {
 
     }
 
+    //TODO () Pass a listing into the method.
+    //TODO () Add data from listing.
     fun createListingDetailPopup(baseContext: Context, layout: ConstraintLayout) {
 
         val layoutInflater = baseContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView: View = layoutInflater.inflate(R.layout.popup_layout, null)
         val popupWindow = PopupWindow(popupView, ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
 
+        popupView.findViewById<TextView>(R.id.pop_tv_price).setText("$200322")
         popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0)
+
 
         val closeButton = popupView.findViewById<Button>(R.id.pop_btn_close)
         closeButton.setOnClickListener {
