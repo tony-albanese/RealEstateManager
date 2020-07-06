@@ -193,13 +193,19 @@ class HelperMethods() {
 
         val layoutInflater = context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupContentView: View = layoutInflater.inflate(R.layout.popup_layout, null)
-        val popupWindow = PopupWindow(popupContentView, 400, ConstraintLayout.LayoutParams.WRAP_CONTENT, true)
+        val popupWindow = PopupWindow(popupContentView, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT, true)
 
-
-        popupContentView.findViewById<TextView>(R.id.pop_tv_price).setText(listing?.listingPrice.toString())
-        popupContentView.findViewById<TextView>(R.id.pop_tv_address).setText(listing?.listingStreetAddress
-                ?: "No Address")
-
+        popupContentView.apply {
+            findViewById<TextView>(R.id.pop_tv_price).setText(ConversionUtilities.formatCurrencyIntToString(listing?.listingPrice
+                    ?: 0))
+            findViewById<TextView>(R.id.pop_tv_address).setText(listing?.listingStreetAddress
+                    ?: "No Address")
+            findViewById<TextView>(R.id.pop_tv_area).setText("Area: ${listing?.listingArea}")
+            findViewById<TextView>(R.id.pop_tv_bathrooms).setText("Bathrooms: ${listing?.numberBathrooms}")
+            findViewById<TextView>(R.id.pop_tv_bedrooms).setText("Bedrooms: ${listing?.numberOfBedrooms}")
+            findViewById<TextView>(R.id.pop_tv_rooms).setText("Rooms: ${listing?.numberOfRooms}")
+            findViewById<TextView>(R.id.pop_tv_description).setText(listing?.listingDescription)
+        }
 
         popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0)
         popupWindow.update(0, 0, popupWindow.getWidth(), popupWindow.getHeight())
