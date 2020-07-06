@@ -12,6 +12,7 @@ import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.openclassrooms.realestatemanager.Activities.EditListingActivity
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
@@ -154,7 +155,24 @@ class HelperMethods() {
         }
     }
 
-    fun calculateCentralLocation(list: ArrayList<Listing>) {
+    fun calculateCentralLocation(list: ArrayList<Listing>): LatLng {
+
+        var latSum: Double = 0.0
+        var longSum: Double = 0.0
+        var numberOfPoints = 0
+        for (listing in list) {
+            listing.listingLocation?.apply {
+                latSum += this.latitude
+                longSum += this.longitude
+                numberOfPoints++
+            }
+
+        }
+
+        val averageLatitude = (latSum / numberOfPoints)
+        val averageLongitude = (longSum / numberOfPoints)
+
+        return LatLng(averageLatitude, averageLongitude)
 
     }
 }
