@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -33,6 +34,7 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
         val mapReadyCallback = object : OnMapReadyCallback {
             override fun onMapReady(mapboxMap: MapboxMap) {
                 map = mapboxMap
+                map.setOnMarkerClickListener(markerClickListener)
                 mapboxMap.setStyle(Style.MAPBOX_STREETS)
 
                 listingViewModel.publishedListings.observe(this@AllListingsMapActivity, androidx.lifecycle.Observer {
@@ -115,5 +117,13 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
     }
 
-    
+    //TODO () Determine why layout isn't inflating.
+    //TODO () Pass listing in.
+    val markerClickListener = object : MapboxMap.OnMarkerClickListener {
+        override fun onMarkerClick(marker: Marker): Boolean {
+            Toast.makeText(this@AllListingsMapActivity, "Marker Clicked", Toast.LENGTH_LONG).show()
+            helperMethods.createListingDetailPopup(baseContext, mapLayout)
+            return true
+        }
+    }
 }
