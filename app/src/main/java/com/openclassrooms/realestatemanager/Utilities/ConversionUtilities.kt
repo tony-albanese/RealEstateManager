@@ -7,7 +7,7 @@ import java.util.*
 
 object ConversionUtilities {
 
-    fun formatCurrencyIntToString(amount: Int, locale: Locale): String {
+    fun formatCurrencyIntToString(amount: Int, locale: Locale = Locale("EN", "US")): String {
         val value = locale.let { locale: Locale ->
             NumberFormat.getCurrencyInstance(locale).apply {
                 this.maximumFractionDigits = 0
