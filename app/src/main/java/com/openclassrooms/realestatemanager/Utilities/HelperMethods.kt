@@ -94,10 +94,14 @@ class HelperMethods() {
     @Suppress("DEPRECATION")
     fun placeListingMarkersOnMap(map: MapboxMap, list: List<Listing>) {
         for (listing in list) {
-            map.addMarker(
-                    MarkerOptions()
-                            .position(listing.listingLocation)
-            )
+
+            listing.listingLocation?.apply {
+                map.addMarker(
+                        MarkerOptions()
+                                .position(this)
+                )
+            }
+
         }
 
     }
