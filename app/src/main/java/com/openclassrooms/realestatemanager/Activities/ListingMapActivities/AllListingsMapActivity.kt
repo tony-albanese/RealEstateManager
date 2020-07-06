@@ -22,8 +22,10 @@ private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
 class AllListingsMapActivity : ListingMapBaseActivity() {
 
     var allListings = ArrayList<Listing>()
+    lateinit var mapLayout: ConstraintLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mapLayout = findViewById(R.id.map_activity_layout)
         initializeActivity()
     }
 
@@ -113,4 +115,5 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
     }
 
+    
 }
