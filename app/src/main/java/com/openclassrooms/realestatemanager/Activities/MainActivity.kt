@@ -20,11 +20,12 @@ import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
+import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
+import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utilities.ACTIVITY_TASK
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
-import com.openclassrooms.realestatemanager.Utilities.TASK_DISPLAY_ALL_LISTINGS
+import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
@@ -74,7 +75,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 "listing-db")
                 .build()
 
-        //TODO: Refactor the methond and include a click listener for the image view.
         if (landscapeMode) setListingDescriptionListeners()
         setObservers()
     }
@@ -107,8 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 return true
             }
             R.id.menu_item_map_view -> {
-                val intent = Intent(this, ListingsMapActivity::class.java)
-                intent.putExtra(ACTIVITY_TASK, TASK_DISPLAY_ALL_LISTINGS)
+                val intent = Intent(this, AllListingsMapActivity::class.java)
                 startActivity(intent)
                 finish()
                 return true
@@ -167,6 +166,12 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                         .error(R.drawable.placeholder_image)
                         .into(imageView)
             })
+
+            imageView.setOnClickListener {
+                val intent = Intent(this, SingleListingMapActivity::class.java)
+                intent.putExtra(LISTING_ID, listingViewModel.selectedListing.value?.id)
+                startActivity(intent)
+            }
         }
 
         listingViewModel.publishedListings.observe(this, androidx.lifecycle.Observer {

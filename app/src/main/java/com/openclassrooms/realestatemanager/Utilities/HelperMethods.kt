@@ -12,6 +12,7 @@ import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.openclassrooms.realestatemanager.Activities.EditListingActivity
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
@@ -76,6 +77,36 @@ class HelperMethods() {
 
     }
 
+    @Suppress("DEPRECATION")
+    fun placeListingMarker(map: MapboxMap, listing: Listing) {
+        map.addMarker(
+                MarkerOptions()
+                        .position(listing.listingLocation)
+        )
+
+        val position = CameraPosition.Builder()
+                .target(listing.listingLocation)
+                .zoom(12.toDouble())
+                .build()
+
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
+    }
+
+    @Suppress("DEPRECATION")
+    fun placeListingMarkersOnMap(map: MapboxMap, list: List<Listing>) {
+        for (listing in list) {
+
+            listing.listingLocation?.apply {
+                map.addMarker(
+                        MarkerOptions()
+                                .position(this)
+                )
+            }
+
+        }
+
+    }
+
     fun buildStaticImageUrl(token: String, listing: Listing): String {
 
         val point = Point.fromLngLat(listing.listingLocation?.longitude!!, listing.listingLocation?.latitude!!)
@@ -124,5 +155,24 @@ class HelperMethods() {
         }
     }
 
-    
+    fun calculateCentralLocation(list: ArrayList<Listing>): LatLng {
+
+        var latSum: Double = 0.0
+        var longSum: Double = 0.0
+        var numberOfPoints = 0
+        for (listing in list) {
+            listing.listingLocation?.apply {
+                latSum += this.latitude
+                longSum += this.longitude
+                numberOfPoints++
+            }
+
+        }
+
+        val averageLatitude = (latSum / numberOfPoints)
+        val averageLongitude = (longSum / numberOfPoints)
+
+        return LatLng(averageLatitude, averageLongitude)
+
+    }
 }

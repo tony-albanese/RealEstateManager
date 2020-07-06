@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.openclassrooms.realestatemanager">
 
+    <!-- Required for foreground services on P+. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -12,12 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".Activities.ListingsMapActivity"></activity>
-        <activity android:name=".Activities.DisplayListingPortaitActivity"></activity>
+        <activity android:name=".Activities.ListingMapActivities.AllListingsMapActivity"></activity>
+        <activity android:name=".Activities.ListingMapActivities.SingleListingMapActivity" />
+        <activity android:name=".Activities.ListingMapActivities.GeocodeListingLocationActivity" />
+        <activity android:name=".Activities.ListingMapActivities.ListingMapBaseActivity" />
+        <activity android:name=".Activities.ListingMapActivities.ListingsMapActivity" />
+        <activity android:name=".Activities.DisplayListingPortaitActivity" />
         <activity
             android:name=".Activities.EditListingActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

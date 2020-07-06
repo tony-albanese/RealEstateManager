@@ -1,11 +1,10 @@
 package com.openclassrooms.realestatemanager.Utilities
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.openclassrooms.realestatemanager.Activities.ListingsMapActivity
+import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.GeocodeListingLocationActivity
 import com.openclassrooms.realestatemanager.Activities.MainActivity
 
 class CustomDialogBuilder(
@@ -69,7 +68,8 @@ class CustomDialogBuilder(
                     dialogInterface.dismiss()
                 })
                 .setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
-                    val intent = Intent(context, ListingsMapActivity::class.java)
+                    //val intent = Intent(context, ListingsMapActivity::class.java)
+                    val intent = Intent(context, GeocodeListingLocationActivity::class.java)
                     intent.putExtra(LISTING_ID, listingId)
                     intent.putExtra(ACTIVITY_TASK, TASK_SELECT_LISTING_LOCATION)
                     context.startActivity(intent)
