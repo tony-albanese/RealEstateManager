@@ -53,10 +53,9 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
     private fun requestForegroundPermission() {
 
-        val provideRationale = isForegroundPermissionGranted()
         val mapLayout = findViewById<ConstraintLayout>(R.id.map_activity_layout)
 
-        if (provideRationale) {
+        if (!isForegroundPermissionGranted()) {
             Snackbar.make(
                     mapLayout,
                     "You need to grant permission to see the listings near you",
@@ -70,11 +69,7 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
                     }
                     .show()
         } else {
-            ActivityCompat.requestPermissions(
-                    this@AllListingsMapActivity,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
-            )
+            centerMapOnUser()
         }
     }
 
