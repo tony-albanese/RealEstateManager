@@ -196,8 +196,11 @@ class HelperMethods() {
         val popupWindow = PopupWindow(popupContentView, 400, ConstraintLayout.LayoutParams.WRAP_CONTENT, true)
 
 
-        popupContentView.findViewById<TextView>(R.id.pop_tv_price).setText("$200322")
-        popupContentView.findViewById<TextView>(R.id.pop_tv_address).setText("This is the address.")
+        popupContentView.findViewById<TextView>(R.id.pop_tv_price).setText(listing?.listingPrice.toString())
+        popupContentView.findViewById<TextView>(R.id.pop_tv_address).setText(listing?.listingStreetAddress
+                ?: "No Address")
+
+
         popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0)
         popupWindow.update(0, 0, popupWindow.getWidth(), popupWindow.getHeight())
         popupWindow.showAsDropDown(anchorView)
