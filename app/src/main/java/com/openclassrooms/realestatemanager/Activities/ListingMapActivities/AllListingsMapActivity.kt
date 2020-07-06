@@ -84,7 +84,13 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
                 }
 
                 else -> {
-                    //TODO Load all of the listings. Center the camera in the middle of all the listings.
+                    val centerPoint = helperMethods.calculateCentralLocation(allListings)
+
+                    val position = CameraPosition.Builder()
+                            .target(centerPoint)
+                            .zoom(12.toDouble())
+                            .build()
+                    map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1500)
 
                 }
 
