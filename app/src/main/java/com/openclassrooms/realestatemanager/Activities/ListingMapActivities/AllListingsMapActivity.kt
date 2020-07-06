@@ -24,6 +24,8 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
     var allListings = ArrayList<Listing>()
     lateinit var mapLayout: ConstraintLayout
+    var markerListingMap: HashMap<Long, Listing> = HashMap<Long, Listing>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mapLayout = findViewById(R.id.map_activity_layout)
@@ -39,7 +41,7 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
                 listingViewModel.publishedListings.observe(this@AllListingsMapActivity, androidx.lifecycle.Observer {
                     allListings = it as ArrayList
-                    helperMethods.placeListingMarkersOnMap(map, allListings)
+                    helperMethods.placeListingMarkersOnMap(map, allListings, markerListingMap)
                 })
 
                 requestForegroundPermission()
@@ -120,7 +122,9 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
     //TODO () Pass listing in.
     val markerClickListener = object : MapboxMap.OnMarkerClickListener {
         override fun onMarkerClick(marker: Marker): Boolean {
-            helperMethods.createListingDetailPopup(this@AllListingsMapActivity, mapLayout)
+            // Toast.makeText(this@AllListingsMapActivity, marker.id.toString(), Toast.LENGTH_SHORT).show()
+            val selectedListing = markerListingMap.get(marker.id)
+            helperMethods.createListingDetailPopup(this@AllListingsMapActivity, mapLayout, selectedListing)
             return true
         }
     }

@@ -102,14 +102,17 @@ class HelperMethods() {
     }
 
     @Suppress("DEPRECATION")
-    fun placeListingMarkersOnMap(map: MapboxMap, list: List<Listing>) {
+    fun placeListingMarkersOnMap(map: MapboxMap, list: List<Listing>, hashMap: HashMap<Long, Listing>) {
         for (listing in list) {
 
             listing.listingLocation?.apply {
                 map.addMarker(
                         MarkerOptions()
                                 .position(this)
-                )
+                ).apply {
+                    hashMap.put(this.id, listing)
+                }
+
             }
 
         }
@@ -185,9 +188,8 @@ class HelperMethods() {
 
     }
 
-    //TODO () Pass a listing into the method.
     //TODO () Add data from listing.
-    fun createListingDetailPopup(context: Context, anchorView: View) {
+    fun createListingDetailPopup(context: Context, anchorView: View, listing: Listing?) {
 
         val layoutInflater = context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupContentView: View = layoutInflater.inflate(R.layout.popup_layout, null)
@@ -197,8 +199,9 @@ class HelperMethods() {
         popupContentView.findViewById<TextView>(R.id.pop_tv_price).setText("$200322")
         popupContentView.findViewById<TextView>(R.id.pop_tv_address).setText("This is the address.")
         popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0)
+        popupWindow.update(0, 0, popupWindow.getWidth(), popupWindow.getHeight())
         popupWindow.showAsDropDown(anchorView)
-        
+
         val closeButton = popupContentView.findViewById<Button>(R.id.pop_btn_close)
         closeButton.setOnClickListener {
             popupWindow.dismiss()
