@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -22,8 +23,12 @@ private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
 class AllListingsMapActivity : ListingMapBaseActivity() {
 
     var allListings = ArrayList<Listing>()
+    lateinit var mapLayout: ConstraintLayout
+    var markerListingMap: HashMap<Long, Listing> = HashMap<Long, Listing>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mapLayout = findViewById(R.id.map_activity_layout)
         initializeActivity()
     }
 
@@ -31,11 +36,12 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
         val mapReadyCallback = object : OnMapReadyCallback {
             override fun onMapReady(mapboxMap: MapboxMap) {
                 map = mapboxMap
+                map.setOnMarkerClickListener(markerClickListener)
                 mapboxMap.setStyle(Style.MAPBOX_STREETS)
 
                 listingViewModel.publishedListings.observe(this@AllListingsMapActivity, androidx.lifecycle.Observer {
                     allListings = it as ArrayList
-                    helperMethods.placeListingMarkersOnMap(map, allListings)
+                    helperMethods.placeListingMarkersOnMap(map, allListings, markerListingMap)
                 })
 
                 requestForegroundPermission()
@@ -113,4 +119,13 @@ class AllListingsMapActivity : ListingMapBaseActivity() {
 
     }
 
+    //TODO () Pass listing in.
+    val markerClickListener = object : MapboxMap.OnMarkerClickListener {
+        override fun onMarkerClick(marker: Marker): Boolean {
+            // Toast.makeText(this@AllListingsMapActivity, marker.id.toString(), Toast.LENGTH_SHORT).show()
+            val selectedListing = markerListingMap.get(marker.id)
+            helperMethods.createListingDetailPopup(this@AllListingsMapActivity, mapLayout, selectedListing)
+            return true
+        }
+    }
 }

@@ -1,10 +1,18 @@
 package com.openclassrooms.realestatemanager.Utilities
 
 import android.content.Context
+import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.Menu
+import android.view.View
+import android.widget.Button
+import android.widget.PopupWindow
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.mapbox.api.staticmap.v1.MapboxStaticMap
 import com.mapbox.api.staticmap.v1.StaticMapCriteria
 import com.mapbox.api.staticmap.v1.models.StaticMarkerAnnotation
@@ -17,6 +25,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.openclassrooms.realestatemanager.Activities.EditListingActivity
 import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing
 import java.io.BufferedInputStream
 import java.io.IOException
@@ -93,14 +102,17 @@ class HelperMethods() {
     }
 
     @Suppress("DEPRECATION")
-    fun placeListingMarkersOnMap(map: MapboxMap, list: List<Listing>) {
+    fun placeListingMarkersOnMap(map: MapboxMap, list: List<Listing>, hashMap: HashMap<Long, Listing>) {
         for (listing in list) {
 
             listing.listingLocation?.apply {
                 map.addMarker(
                         MarkerOptions()
                                 .position(this)
-                )
+                ).apply {
+                    hashMap.put(this.id, listing)
+                }
+
             }
 
         }
@@ -174,5 +186,34 @@ class HelperMethods() {
 
         return LatLng(averageLatitude, averageLongitude)
 
+    }
+
+    //TODO () Add data from listing.
+    fun createListingDetailPopup(context: Context, anchorView: View, listing: Listing?) {
+
+        val layoutInflater = context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupContentView: View = layoutInflater.inflate(R.layout.popup_layout, null)
+        val popupWindow = PopupWindow(popupContentView, ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT, true)
+
+        popupContentView.apply {
+            findViewById<TextView>(R.id.pop_tv_price).setText(ConversionUtilities.formatCurrencyIntToString(listing?.listingPrice
+                    ?: 0))
+            findViewById<TextView>(R.id.pop_tv_address).setText(listing?.listingStreetAddress
+                    ?: "No Address")
+            findViewById<TextView>(R.id.pop_tv_area).setText("Area: ${listing?.listingArea}")
+            findViewById<TextView>(R.id.pop_tv_bathrooms).setText("Bathrooms: ${listing?.numberBathrooms}")
+            findViewById<TextView>(R.id.pop_tv_bedrooms).setText("Bedrooms: ${listing?.numberOfBedrooms}")
+            findViewById<TextView>(R.id.pop_tv_rooms).setText("Rooms: ${listing?.numberOfRooms}")
+            findViewById<TextView>(R.id.pop_tv_description).setText(listing?.listingDescription)
+        }
+
+        popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0)
+        popupWindow.update(0, 0, popupWindow.getWidth(), popupWindow.getHeight())
+        popupWindow.showAsDropDown(anchorView)
+
+        val closeButton = popupContentView.findViewById<Button>(R.id.pop_btn_close)
+        closeButton.setOnClickListener {
+            popupWindow.dismiss()
+        }
     }
 }
