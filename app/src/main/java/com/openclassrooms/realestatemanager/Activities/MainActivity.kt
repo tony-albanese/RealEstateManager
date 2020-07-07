@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -32,11 +33,14 @@ import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
+import kotlinx.android.synthetic.main.listing_information_detail_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnLongClickListener {
+
+    val REQUEST_IMAGE_CAPTURE = 1253
 
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
@@ -79,6 +83,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         if (landscapeMode) {
             setListingDescriptionListeners()
             setupImageRecyclerView()
+            iv_take_photo?.setOnClickListener {
+                sendTakePictureIntent()
+            }
         }
         setObservers()
     }
@@ -136,7 +143,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         return true
     }
 
-    //TODO: See if you can move this out of the activity.
     fun setListingDescriptionListeners() {
         val descriptionTextView = findViewById<TextView>(R.id.tv_description_body)
         val confirmImageButton = findViewById<ImageButton>(R.id.ib_confirm_description)
@@ -211,6 +217,15 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecyclerView.adapter = photoAdapter
 
+    }
+
+    private fun sendTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent: Intent ->
+            pictureIntent.resolveActivity(packageManager)?.also {
+                startActivityForResult(pictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+
+        }
     }
 
 }
