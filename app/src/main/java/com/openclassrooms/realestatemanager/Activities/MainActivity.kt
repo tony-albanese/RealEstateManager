@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var adapter: ListingAdapter
     lateinit var helper: HelperMethods
 
+    var currentPhotoPath = ""
     var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
 
@@ -217,9 +218,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         val photoAdapter = ListingPhotoAdapter(this)
         photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecyclerView.adapter = photoAdapter
-
     }
-
-
-
+    
 }
