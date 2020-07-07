@@ -2,19 +2,22 @@ package com.openclassrooms.realestatemanager.Activities.ListingMapActivities
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class SingleListingMapActivity : ListingMapBaseActivity() {
+    lateinit var mapLayout: ConstraintLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        mapLayout = findViewById(R.id.map_activity_layout)
         incomingIntent = intent
         incomingIntent?.let {
             listingId = it.getLongExtra(LISTING_ID, 0)
@@ -44,11 +47,11 @@ class SingleListingMapActivity : ListingMapBaseActivity() {
             }
         }
         map_view.getMapAsync(mapReadyCallback)
-
     }
 
     val markerClickListener = object : MapboxMap.OnMarkerClickListener {
         override fun onMarkerClick(marker: Marker): Boolean {
+            helperMethods.createListingDetailPopup(this@SingleListingMapActivity, mapLayout, listing)
             return true
         }
     }
