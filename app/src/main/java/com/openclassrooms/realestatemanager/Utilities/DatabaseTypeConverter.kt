@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Utilities
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -25,5 +26,17 @@ class DatabaseTypeConverter {
             return Gson().fromJson<LatLng>(latLngJson, type)
         }
 
+    }
+
+    @TypeConverter
+    fun uriToString(uri: Uri?): String {
+
+        return ""
+    }
+
+    @TypeConverter
+    fun stringToUri(uriString: String): Uri? {
+
+        return null
     }
 }
