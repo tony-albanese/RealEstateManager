@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoAdapter
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
@@ -75,7 +76,10 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 "listing-db")
                 .build()
 
-        if (landscapeMode) setListingDescriptionListeners()
+        if (landscapeMode) {
+            setListingDescriptionListeners()
+            setupImageRecyclerView()
+        }
         setObservers()
     }
 
@@ -200,5 +204,13 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         }
 
     }
-    
+
+    fun setupImageRecyclerView() {
+        val photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
+        val photoAdapter = ListingPhotoAdapter(this)
+        photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        photoRecyclerView.adapter = photoAdapter
+
+    }
+
 }
