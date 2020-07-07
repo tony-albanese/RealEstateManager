@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -25,6 +24,7 @@ import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllL
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoAdapter
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
@@ -40,8 +40,8 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
-    val REQUEST_IMAGE_CAPTURE = 1253
 
+    lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var listingViewModel: ListingViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         recyclerView = findViewById(R.id.rv_listings)
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
         helper = HelperMethods()
+        photoUtilities = ListingPhotoUtilities(this)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         val itemDecor = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
             setListingDescriptionListeners()
             setupImageRecyclerView()
             iv_take_photo?.setOnClickListener {
-                sendTakePictureIntent()
+                photoUtilities.sendTakePictureIntent(this)
             }
         }
         setObservers()
@@ -219,13 +220,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     }
 
-    private fun sendTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent: Intent ->
-            pictureIntent.resolveActivity(packageManager)?.also {
-                startActivityForResult(pictureIntent, REQUEST_IMAGE_CAPTURE)
-            }
 
-        }
-    }
 
 }
