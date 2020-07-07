@@ -1,15 +1,19 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 
-class ListingPhotoAdapter : RecyclerView.Adapter<ListingPhotoAdapter.PhotoViewHolder>() {
+class ListingPhotoAdapter(val context: Context) : RecyclerView.Adapter<ListingPhotoAdapter.PhotoViewHolder>() {
 
 
     inner class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageView = itemView.findViewById<ImageView>(R.id.iv_listing_photo)
     }
 
 
@@ -19,11 +23,13 @@ class ListingPhotoAdapter : RecyclerView.Adapter<ListingPhotoAdapter.PhotoViewHo
     }
 
     override fun getItemCount(): Int {
-        return 1
+        return 30
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-
+        Glide.with(context)
+                .load(R.drawable.placeholder_image)
+                .into(holder.imageView)
     }
 
 
