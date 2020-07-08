@@ -25,7 +25,7 @@ import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listing_information_detail_layout.*
-
+//TODO () Implement recycler view and camera feature in this activity.
 class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener {
 
     lateinit var listingViewModel: ListingViewModel

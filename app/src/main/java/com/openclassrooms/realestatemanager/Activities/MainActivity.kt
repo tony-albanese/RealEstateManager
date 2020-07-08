@@ -41,6 +41,10 @@ import java.util.*
 class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     //TODO() Ask for camera and storage permission.
+    //TODO () Implement onPermissionResult()
+
+    //TODO () Implement interface to handle photo from camera.
+    
 
     lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var listingViewModel: ListingViewModel
