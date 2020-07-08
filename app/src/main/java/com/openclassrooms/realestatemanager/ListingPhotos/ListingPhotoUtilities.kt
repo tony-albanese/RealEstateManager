@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.IOException
@@ -14,6 +15,7 @@ import java.util.*
 
 class ListingPhotoUtilities(val context: Context) {
 
+    val TAG: String = "PHOTO"
     val REQUEST_IMAGE_CAPTURE = 1253
     var currentPhotoPath = ""
 
@@ -29,8 +31,9 @@ class ListingPhotoUtilities(val context: Context) {
                 }
 
                 photoFile?.also {
-                    val photoUri: Uri = FileProvider.getUriForFile(context, "com.test.authority", it)
+                    val photoUri: Uri = FileProvider.getUriForFile(context, "com.openclassrooms.realestatemanager.provider", it)
                     pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                    Log.i(TAG, photoUri.toString())
                     activity.startActivityForResult(pictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
 
@@ -55,6 +58,7 @@ class ListingPhotoUtilities(val context: Context) {
                 storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
+            Log.i(TAG, currentPhotoPath.toString())
             currentPhotoPath = absolutePath
         }
 
