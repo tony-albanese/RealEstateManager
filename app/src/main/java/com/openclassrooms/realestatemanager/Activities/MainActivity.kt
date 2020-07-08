@@ -1,16 +1,15 @@
 package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -40,11 +39,10 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
-    //TODO() Ask for camera and storage permission.
     //TODO () Implement onPermissionResult()
 
     //TODO () Implement interface to handle photo from camera.
-    
+
 
     lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var listingViewModel: ListingViewModel
@@ -55,6 +53,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     var currentPhotoPath = ""
     var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
+
+    val REQUEST_CAMERA_PERMISSION: Int = 9832
 
     companion object {
         var database: AppDatabase? = null
@@ -224,5 +224,42 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecyclerView.adapter = photoAdapter
     }
-    
+
+    fun hasCameraPermission(): Boolean {
+        return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
+        )
+    }
+
+    fun requestCameraPermission() {
+
+        if (!hasCameraPermission()) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    REQUEST_CAMERA_PERMISSION
+            )
+        } else {
+
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_CAMERA_PERMISSION -> {
+                when {
+
+                    grantResults.isEmpty() -> Toast.makeText(this, "Action cancelled", Toast.LENGTH_LONG).show()
+
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
+                        //TODO () Make the camera icon visible.
+                        //TODO () Set the click listener on the button to take photo.
+                    }
+                    else -> {//TODO() Set the click listener to set the image from the gallery.
+                    }
+                }
+            }
+        }
+    }
 }
