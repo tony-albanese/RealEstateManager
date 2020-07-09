@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     //TODO () Implement interface to handle photo from camera.
 
+    //TODO () Add check for camera hardware.
+
 
     lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var listingViewModel: ListingViewModel
@@ -91,7 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
             setListingDescriptionListeners()
             setupImageRecyclerView()
             iv_take_photo?.setOnClickListener {
-                photoUtilities.sendTakePictureIntent(this)
+                takePhoto()
             }
         }
         setObservers()
@@ -232,7 +234,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         )
     }
 
-    fun requestCameraPermission() {
+    fun takePhoto() {
 
         if (!hasCameraPermission()) {
             ActivityCompat.requestPermissions(this,
@@ -240,7 +242,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                     REQUEST_CAMERA_PERMISSION
             )
         } else {
-
+            photoUtilities.sendTakePictureIntent(this)
         }
     }
 
@@ -255,8 +257,10 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                     grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
                         //TODO () Make the camera icon visible.
                         //TODO () Set the click listener on the button to take photo.
+                        photoUtilities.sendTakePictureIntent(this)
                     }
                     else -> {//TODO() Set the click listener to set the image from the gallery.
+                        Toast.makeText(this, "Take from the gallery instead.", Toast.LENGTH_LONG).show()
                     }
                 }
             }
