@@ -4,4 +4,7 @@
     <files-path
         name="listing_images"
         path="listing_images/" />
+    <root-path
+        name="root"
+        path="." />
 </paths>
