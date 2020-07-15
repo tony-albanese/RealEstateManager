@@ -21,11 +21,10 @@ class ListingPhotoUtilities(val context: Context, val activity: Activity) : Acti
     val TAG: String = "PHOTO"
     var currentPhotoPath = ""
 
-    var externalWritePermission: Boolean
+
     lateinit var storageDir: File
 
     init {
-        externalWritePermission = getWritePermission()
         setStorageDirectory()
     }
 
@@ -82,7 +81,7 @@ class ListingPhotoUtilities(val context: Context, val activity: Activity) : Acti
     }
 
     private fun setStorageDirectory() {
-        if (externalWritePermission) {
+        if (getWritePermission()) {
             storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
         } else {
             storageDir = context.filesDir
@@ -91,6 +90,17 @@ class ListingPhotoUtilities(val context: Context, val activity: Activity) : Acti
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_EXTERNAL_WRITE_PERMISSION -> {
+                when {
+                    grantResults.isEmpty() -> storageDir = context.filesDir
+
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+
+                    else -> storageDir = context.filesDir
+                }
+            }
+        }
 
     }
 
