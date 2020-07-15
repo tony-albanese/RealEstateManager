@@ -16,7 +16,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ListingPhotoUtilities(val context: Context, val activity: Activity) : ActivityCompat.OnRequestPermissionsResultCallback {
+class ListingPhotoUtilities(val context: Context, val activity: Activity) {
 
     val TAG: String = "PHOTO"
     var currentPhotoPath = ""
@@ -82,26 +82,12 @@ class ListingPhotoUtilities(val context: Context, val activity: Activity) : Acti
 
     private fun setStorageDirectory() {
         if (getWritePermission()) {
-            storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+            //storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+            storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         } else {
             storageDir = context.filesDir
             requestWritePermission()
         }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            REQUEST_EXTERNAL_WRITE_PERMISSION -> {
-                when {
-                    grantResults.isEmpty() -> storageDir = context.filesDir
-
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
-
-                    else -> storageDir = context.filesDir
-                }
-            }
-        }
-
     }
 
     private fun requestWritePermission() {

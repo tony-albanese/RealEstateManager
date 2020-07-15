@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -26,10 +27,7 @@ import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utilities.HelperMethods
-import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
-import com.openclassrooms.realestatemanager.Utilities.REQUEST_CAMERA_PERMISSION
-import com.openclassrooms.realestatemanager.Utilities.REQUEST_IMAGE_CAPTURE
+import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
@@ -266,6 +264,16 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                     else -> {//TODO() Set the click listener to set the image from the gallery.
                         Toast.makeText(this, "Take from the gallery instead.", Toast.LENGTH_LONG).show()
                     }
+                }
+            }
+
+            REQUEST_EXTERNAL_WRITE_PERMISSION -> {
+                when {
+                    grantResults.isEmpty() -> photoUtilities.storageDir = filesDir
+
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> photoUtilities.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+                    else -> photoUtilities.storageDir = filesDir
                 }
             }
         }
