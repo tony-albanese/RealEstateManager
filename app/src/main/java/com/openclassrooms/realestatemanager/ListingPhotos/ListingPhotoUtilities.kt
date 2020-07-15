@@ -7,6 +7,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.core.content.FileProvider
+import com.openclassrooms.realestatemanager.Utilities.REQUEST_IMAGE_CAPTURE
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -15,7 +16,6 @@ import java.util.*
 class ListingPhotoUtilities(val context: Context) {
 
     val TAG: String = "PHOTO"
-    val REQUEST_IMAGE_CAPTURE = 1253
     var currentPhotoPath = ""
 
 
@@ -32,7 +32,7 @@ class ListingPhotoUtilities(val context: Context) {
                 photoFile?.also {
                     val photoUri: Uri = FileProvider.getUriForFile(context, "com.openclassrooms.realestatemanager.provider", it)
                     pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                    Log.i(TAG, photoUri.toString())
+                    Log.i(TAG, "Photo URI " + photoUri.toString())
                     activity.startActivityForResult(pictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
 
@@ -52,13 +52,14 @@ class ListingPhotoUtilities(val context: Context) {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         //val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val storageDir: File? = context.filesDir
+        Log.i(TAG, "Storage Directory: " + storageDir.toString())
         return File.createTempFile(
                 "JPEG_${timeStamp}_", /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
-            Log.i(TAG, currentPhotoPath.toString())
+            Log.i(TAG, "Current Photo Path: " + currentPhotoPath.toString())
             currentPhotoPath = absolutePath
         }
 
