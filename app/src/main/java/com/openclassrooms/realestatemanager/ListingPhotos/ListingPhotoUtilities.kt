@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -57,9 +58,15 @@ class ListingPhotoUtilities(val context: Context) {
 
     }
 
-    fun addPhotoToGallery() {
-
+    fun addPhotoToGallery(activity: Activity, uri: Uri) {
+        @Suppress("DEPRECATION")
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+            mediaScanIntent.data = uri
+            activity.sendBroadcast(mediaScanIntent)
+        }
     }
+
+
 }
     //TODO () Declare interfaces: one to handle the photo captured from the camera.
     //TODO () Declare an interface to handle any errors.
