@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         recyclerView = findViewById(R.id.rv_listings)
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
         helper = HelperMethods()
-        photoUtilities = ListingPhotoUtilities(this)
+        photoUtilities = ListingPhotoUtilities(this, this)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         val itemDecor = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
