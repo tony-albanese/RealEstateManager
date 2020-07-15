@@ -277,7 +277,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (imageFile?.exists() ?: false) {
-                listing_image_view?.setImageURI(Uri.fromFile(imageFile))
+                val uri = Uri.fromFile(imageFile)
+                listing_image_view?.setImageURI(uri)
+                photoUtilities.addPhotoToGallery(this, uri)
             }
         }
 
