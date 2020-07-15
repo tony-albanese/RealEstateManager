@@ -3,19 +3,29 @@ package com.openclassrooms.realestatemanager.ListingPhotos
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ListingPhotoUtilities(val context: Context) {
+class ListingPhotoUtilities(val context: Context) : ActivityCompat.OnRequestPermissionsResultCallback {
 
     val TAG: String = "PHOTO"
     var currentPhotoPath = ""
+
+    var externalWritePermission: Boolean
+    lateinit var storageDir: File
+
+    init {
+        externalWritePermission = getWritePermission()
+        setStorageDirectory()
+    }
 
     fun createTakePictureIntent(): Pair<Intent, File?> {
 
@@ -66,6 +76,18 @@ class ListingPhotoUtilities(val context: Context) {
         }
     }
 
+
+    private fun getWritePermission(): Boolean {
+        return ActivityCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun setStorageDirectory() {
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        
+    }
 
 }
     //TODO () Declare interfaces: one to handle the photo captured from the camera.
