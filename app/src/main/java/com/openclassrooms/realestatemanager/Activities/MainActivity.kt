@@ -280,11 +280,11 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 listing_image_view?.setImageURI(Uri.fromFile(imageFile))
             }
         }
-        
+
     }
 
     fun launchPhotoActivity() {
-        val (intent, file) = photoUtilities.createTakePictureIntent(this)
+        val (intent, file) = photoUtilities.createTakePictureIntent()
         imageFile = file
         intent.resolveActivity(packageManager)?.also {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)

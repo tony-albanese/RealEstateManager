@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -17,7 +16,7 @@ class ListingPhotoUtilities(val context: Context) {
     val TAG: String = "PHOTO"
     var currentPhotoPath = ""
 
-    fun createTakePictureIntent(activity: Activity): Pair<Intent, File?> {
+    fun createTakePictureIntent(): Pair<Intent, File?> {
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val photoFile: File? = try {
@@ -58,6 +57,9 @@ class ListingPhotoUtilities(val context: Context) {
 
     }
 
+    fun addPhotoToGallery() {
+
+    }
 }
     //TODO () Declare interfaces: one to handle the photo captured from the camera.
     //TODO () Declare an interface to handle any errors.
