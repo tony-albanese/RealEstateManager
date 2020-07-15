@@ -34,7 +34,6 @@ import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listing_information_detail_layout.*
-import kotlinx.android.synthetic.main.listing_information_grid_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.io.File
@@ -55,7 +54,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var adapter: ListingAdapter
     lateinit var helper: HelperMethods
 
-    var currentPhotoPath = ""
     var imageFile: File? = null
     var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
@@ -98,7 +96,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 takePhoto()
             }
         }
-        // setObservers()
+        setObservers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -286,7 +284,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (imageFile?.exists() ?: false) {
                 val uri = Uri.fromFile(imageFile)
-                listing_image_view?.setImageURI(uri)
                 photoUtilities.addPhotoToGallery(this, uri)
             }
         }
