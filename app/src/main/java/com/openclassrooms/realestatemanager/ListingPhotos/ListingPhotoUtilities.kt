@@ -7,7 +7,6 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.core.content.FileProvider
-import com.openclassrooms.realestatemanager.Utilities.REQUEST_IMAGE_CAPTURE
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -18,8 +17,21 @@ class ListingPhotoUtilities(val context: Context) {
     val TAG: String = "PHOTO"
     var currentPhotoPath = ""
 
+    fun createTakePictureIntent(activity: Activity): Pair<Intent, File?> {
 
-    fun sendTakePictureIntent(activity: Activity) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val photoFile: File? = try {
+            createImageFile()
+        } catch (e: IOException) {
+            null
+        }
+
+        photoFile?.also {
+            val photoUri: Uri = FileProvider.getUriForFile(context, "com.openclassrooms.realestatemanager.provider", it)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+        }
+        return Pair(intent, photoFile)
+        /*
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent: Intent ->
             pictureIntent.resolveActivity(context.packageManager)?.also {
 
@@ -33,12 +45,14 @@ class ListingPhotoUtilities(val context: Context) {
                     val photoUri: Uri = FileProvider.getUriForFile(context, "com.openclassrooms.realestatemanager.provider", it)
                     pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                     Log.i(TAG, "Photo URI " + photoUri.toString())
-                    activity.startActivityForResult(pictureIntent, REQUEST_IMAGE_CAPTURE)
+                    //activity.startActivityForResult(pictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
 
             }
 
         }
+
+         */
     }
 
     /*
@@ -63,9 +77,11 @@ class ListingPhotoUtilities(val context: Context) {
             currentPhotoPath = absolutePath
         }
 
+
     }
 
+}
     //TODO () Declare interfaces: one to handle the photo captured from the camera.
     //TODO () Declare an interface to handle any errors.
-}
+
 
