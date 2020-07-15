@@ -31,28 +31,6 @@ class ListingPhotoUtilities(val context: Context) {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
         }
         return Pair(intent, photoFile)
-        /*
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent: Intent ->
-            pictureIntent.resolveActivity(context.packageManager)?.also {
-
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (e: IOException) {
-                    null
-                }
-
-                photoFile?.also {
-                    val photoUri: Uri = FileProvider.getUriForFile(context, "com.openclassrooms.realestatemanager.provider", it)
-                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                    Log.i(TAG, "Photo URI " + photoUri.toString())
-                    //activity.startActivityForResult(pictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-
-            }
-
-        }
-
-         */
     }
 
     /*
