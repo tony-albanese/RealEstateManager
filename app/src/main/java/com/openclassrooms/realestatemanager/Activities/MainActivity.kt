@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -27,14 +28,18 @@ import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
+import com.openclassrooms.realestatemanager.Utilities.REQUEST_CAMERA_PERMISSION
+import com.openclassrooms.realestatemanager.Utilities.REQUEST_IMAGE_CAPTURE
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listing_information_detail_layout.*
+import kotlinx.android.synthetic.main.listing_information_grid_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
+import java.io.File
 import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnLongClickListener {
@@ -53,10 +58,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var helper: HelperMethods
 
     var currentPhotoPath = ""
+    var imageFile: File? = null
     var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
-
-    val REQUEST_CAMERA_PERMISSION: Int = 9832
 
     companion object {
         var database: AppDatabase? = null
@@ -96,7 +100,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 takePhoto()
             }
         }
-        setObservers()
+        // setObservers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -242,7 +246,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                     REQUEST_CAMERA_PERMISSION
             )
         } else {
-            photoUtilities.sendTakePictureIntent(this)
+            launchPhotoActivity()
         }
     }
 
@@ -257,7 +261,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                     grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
                         //TODO () Make the camera icon visible.
                         //TODO () Set the click listener on the button to take photo.
-                        photoUtilities.sendTakePictureIntent(this)
+                        launchPhotoActivity()
                     }
                     else -> {//TODO() Set the click listener to set the image from the gallery.
                         Toast.makeText(this, "Take from the gallery instead.", Toast.LENGTH_LONG).show()
@@ -270,5 +274,20 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            if (imageFile?.exists() ?: false) {
+                listing_image_view?.setImageURI(Uri.fromFile(imageFile))
+            }
+        }
+        
+    }
+
+    fun launchPhotoActivity() {
+        val (intent, file) = photoUtilities.createTakePictureIntent(this)
+        imageFile = file
+        intent.resolveActivity(packageManager)?.also {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        }
     }
 }
