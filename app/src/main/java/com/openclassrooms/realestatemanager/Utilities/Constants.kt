@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.Utilities
 
+val LISTING_ID_KEY: String = "listing_id_intent_key"
+val LISTING_SAVE_FILE: String = "listing_save_file.txt"
 
 val ACTIVITY_TASK: String = "activity_task"
 val TASK_DISPLAY_ALL_LISTINGS: Int = 1000
