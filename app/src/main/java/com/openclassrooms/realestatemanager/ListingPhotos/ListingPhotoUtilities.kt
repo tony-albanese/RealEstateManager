@@ -5,16 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import com.openclassrooms.realestatemanager.Utilities.REQUEST_EXTERNAL_WRITE_PERMISSION
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ListingPhotoUtilities(val context: Context) : ActivityCompat.OnRequestPermissionsResultCallback {
+class ListingPhotoUtilities(val context: Context, val activity: Activity) : ActivityCompat.OnRequestPermissionsResultCallback {
 
     val TAG: String = "PHOTO"
     var currentPhotoPath = ""
@@ -52,8 +54,6 @@ class ListingPhotoUtilities(val context: Context) : ActivityCompat.OnRequestPerm
 
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        //val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val storageDir: File? = context.filesDir
         Log.i(TAG, "Storage Directory: " + storageDir.toString())
         return File.createTempFile(
                 "JPEG_${timeStamp}_", /* prefix */
@@ -82,11 +82,24 @@ class ListingPhotoUtilities(val context: Context) : ActivityCompat.OnRequestPerm
     }
 
     private fun setStorageDirectory() {
-
+        if (externalWritePermission) {
+            storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        } else {
+            storageDir = context.filesDir
+            requestWritePermission()
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        
+
+    }
+
+    private fun requestWritePermission() {
+
+        ActivityCompat.requestPermissions(activity,
+                arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                REQUEST_EXTERNAL_WRITE_PERMISSION
+        )
     }
 
 }
