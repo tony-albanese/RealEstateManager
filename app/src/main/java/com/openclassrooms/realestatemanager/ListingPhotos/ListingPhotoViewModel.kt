@@ -1,6 +1,18 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
-class ListingPhotoViewModel {
+import android.app.Application
+import androidx.lifecycle.ViewModel
+import com.openclassrooms.realestatemanager.database_files.AppDatabase
+
+class ListingPhotoViewModel(val application: Application) : ViewModel(
+
+) {
+    val repository: ListingPhotoRepository
+
+    init {
+        val listingPhotoDao = AppDatabase.getDatabase(application).listingPhotoDao()
+        repository = ListingPhotoRepository(listingPhotoDao)
+    }
 
     //TODO () Need a method to save a ListingPhoto object.
     //TODO () Need a method to fetch all of the listing photo objects for a particular listing (by Id)
