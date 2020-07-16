@@ -310,7 +310,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         listingPhotoViewModel.saveListingPhoto(photo)
     }
 
-    override fun onInsdertPhoto(row: Int) {
+    override fun onInsdertPhoto(row: Long) {
         Toast.makeText(this, row.toString(), Toast.LENGTH_LONG).show()
     }
 }
