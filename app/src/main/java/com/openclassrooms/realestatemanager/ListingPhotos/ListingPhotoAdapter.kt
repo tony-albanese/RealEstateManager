@@ -36,4 +36,6 @@ class ListingPhotoAdapter(val context: Context, var photoList: ArrayList<Listing
     }
 
 
+    //TODO: Need method to shrink bitmaps when displayed.
+    //TODO: Implement click listener to display the images.
 }
