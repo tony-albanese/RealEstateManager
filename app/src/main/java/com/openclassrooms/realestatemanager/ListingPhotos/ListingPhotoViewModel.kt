@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlin.coroutines.CoroutineContext
 
 class ListingPhotoViewModel(val application: Application) : ViewModel(
 
-) {
+), CoroutineScope {
     val repository: ListingPhotoRepository
 
     private val _listingPhotos = MutableLiveData<List<ListingPhoto>>()
@@ -28,6 +31,9 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
     fun getPhotosForLisiting(listingId: Long) {
         //_listingPhotos.postValue()
     }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
 
     //TODO () Need a method to save a ListingPhoto object.
