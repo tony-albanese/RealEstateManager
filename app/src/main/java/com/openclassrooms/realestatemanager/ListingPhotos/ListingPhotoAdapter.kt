@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 
-class ListingPhotoAdapter(val context: Context) : RecyclerView.Adapter<ListingPhotoAdapter.PhotoViewHolder>() {
+class ListingPhotoAdapter(val context: Context, var photoList: ArrayList<ListingPhoto>) : RecyclerView.Adapter<ListingPhotoAdapter.PhotoViewHolder>() {
 
 
     inner class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,13 +23,16 @@ class ListingPhotoAdapter(val context: Context) : RecyclerView.Adapter<ListingPh
     }
 
     override fun getItemCount(): Int {
-        return 30
+        return photoList.size
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         Glide.with(context)
-                .load(R.drawable.placeholder_image)
+                .load(photoList[position].photoUri)
+                .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
+                .error(context.resources.getDrawable(R.drawable.placeholder_image))
                 .into(holder.imageView)
+
     }
 
 
