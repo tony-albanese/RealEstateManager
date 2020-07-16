@@ -8,7 +8,7 @@ class ListingPhotoRepository(
 
     val allPhotos = listingPhotoDao.getAllListingPhotos()
 
-    suspend fun insertPhoto(photo: ListingPhoto): Int {
+    suspend fun insertPhoto(photo: ListingPhoto): Long {
         return listingPhotoDao.insertListingPhoto(photo)
     }
 

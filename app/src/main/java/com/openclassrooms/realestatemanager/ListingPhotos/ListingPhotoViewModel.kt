@@ -45,6 +45,6 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
 
 
     interface OnDatabaseActionResult {
-        fun onInsdertPhoto(row: Int)
+        fun onInsdertPhoto(row: Long)
     }
 }
