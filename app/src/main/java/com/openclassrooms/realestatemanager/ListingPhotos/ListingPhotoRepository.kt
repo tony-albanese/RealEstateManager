@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
-class ListingPhotoRepository {
+class ListingPhotoRepository(
+        private val listingPhotoDao: ListingPhotoDao
+) {
 
     //TODO () Declare the methods.
 }
