@@ -54,6 +54,7 @@ class ListingPhotoWindow(
 
         okButton.setOnClickListener {
             createListingPhoto()
+            popupWindow.dismiss()
         }
 
         @Suppress("DEPRECATION")
