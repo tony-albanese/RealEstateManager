@@ -22,6 +22,8 @@ class ListingPhotoWindow(
 
 ) {
 
+    val listener: PhotoSelectionListener? = null
+
     val layoutInflater: LayoutInflater
     val popupWindow: PopupWindow
 
@@ -50,6 +52,10 @@ class ListingPhotoWindow(
             popupWindow.dismiss()
         }
 
+        okButton.setOnClickListener {
+            createListingPhoto()
+        }
+
         @Suppress("DEPRECATION")
         Glide.with(context)
                 .load(photoUri)
@@ -62,5 +68,14 @@ class ListingPhotoWindow(
         popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0)
     }
 
+    interface PhotoSelectionListener {
 
+        fun onPhotoSelection(photo: ListingPhoto)
+    }
+
+
+    private fun createListingPhoto() {
+        val photo = ListingPhoto(0, listing.id, photoDescriptionEditText?.text.toString(), photoUri)
+        listener?.onPhotoSelection(photo)
+    }
 }
