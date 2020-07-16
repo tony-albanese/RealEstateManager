@@ -31,7 +31,7 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
     fun saveListingPhoto(photo: ListingPhoto) {
         viewModelScope.launch {
             val id = async { repository.insertPhoto(photo) }.await()
-            listener?.onInsdertPhoto(id)
+            listener?.onInsertPhoto(id)
         }
 
     }
@@ -45,6 +45,6 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
 
 
     interface OnDatabaseActionResult {
-        fun onInsdertPhoto(row: Long)
+        fun onInsertPhoto(row: Long)
     }
 }
