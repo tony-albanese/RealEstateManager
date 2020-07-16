@@ -39,9 +39,9 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener {
+class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult {
     //TODO () Add check for camera hardware.
-    
+
     lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var listingViewModel: ListingViewModel
     lateinit var listingPhotoViewModel: ListingPhotoViewModel
@@ -308,5 +308,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     override fun onPhotoSelection(photo: ListingPhoto) {
         listingPhotoViewModel.saveListingPhoto(photo)
+    }
+
+    override fun onInsdertPhoto(row: Int) {
+        Toast.makeText(this, row.toString(), Toast.LENGTH_LONG).show()
     }
 }
