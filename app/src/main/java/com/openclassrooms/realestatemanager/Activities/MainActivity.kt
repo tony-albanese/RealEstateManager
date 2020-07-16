@@ -24,10 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
-import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhoto
-import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoAdapter
-import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
-import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoWindow
+import com.openclassrooms.realestatemanager.ListingPhotos.*
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
@@ -52,6 +49,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var listingViewModel: ListingViewModel
+    lateinit var listingPhotoViewModel: ListingPhotoViewModel
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
     lateinit var helper: HelperMethods
@@ -67,6 +65,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val factory = PhotoViewModelFactory(application, this, null)
+        listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
+        
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
         val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
         binding.lifecycleOwner = this
