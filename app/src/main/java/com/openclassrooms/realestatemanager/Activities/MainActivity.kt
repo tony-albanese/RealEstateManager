@@ -40,14 +40,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener {
-
-    //TODO () Implement onPermissionResult()
-
-    //TODO () Implement interface to handle photo from camera.
-
     //TODO () Add check for camera hardware.
-
-
+    
     lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var listingViewModel: ListingViewModel
     lateinit var listingPhotoViewModel: ListingPhotoViewModel
