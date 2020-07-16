@@ -11,8 +11,8 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
 ) {
     val repository: ListingPhotoRepository
 
-    private val _listingPhotos = MutableLiveData<ListingPhoto>()
-    val listingPhotos: LiveData<ListingPhoto>
+    private val _listingPhotos = MutableLiveData<List<ListingPhoto>>()
+    val listingPhotos: LiveData<List<ListingPhoto>>
         get() = _listingPhotos
 
     init {
@@ -24,6 +24,12 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
     fun saveListingPhoto(photo: ListingPhoto) {
         //repository.insertPhoto(photo)
     }
+
+    fun getPhotosForLisiting(listingId: Long) {
+        //_listingPhotos.postValue()
+    }
+
+
     //TODO () Need a method to save a ListingPhoto object.
     //TODO () Need a method to fetch all of the listing photo objects for a particular listing (by Id)
     //TODO () Expose all of the listing photos for a listing via LiveData.
