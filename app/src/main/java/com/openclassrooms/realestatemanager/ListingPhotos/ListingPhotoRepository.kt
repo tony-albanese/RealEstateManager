@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 class ListingPhotoRepository(
         private val listingPhotoDao: ListingPhotoDao
 ) {
-    
+
     val allPhotos = listingPhotoDao.getAllListingPhotos()
 
-    suspend fun insertPhoto(photo: ListingPhoto) {
-        listingPhotoDao.insertListingPhoto(photo)
+    suspend fun insertPhoto(photo: ListingPhoto): Int {
+        return listingPhotoDao.insertListingPhoto(photo)
     }
 
     suspend fun getPhotosForListing(listingId: Long): LiveData<List<ListingPhoto>> {

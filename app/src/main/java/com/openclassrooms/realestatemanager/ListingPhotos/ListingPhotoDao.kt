@@ -13,7 +13,7 @@ interface ListingPhotoDao {
     fun getListingPhotosByListingId(listingId: Long = 0): LiveData<List<ListingPhoto>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertListingPhoto(photo: ListingPhoto): Long
+    fun insertListingPhoto(photo: ListingPhoto): Int
 
     @Query("SELECT * from table_listing_photos")
     fun getAllListingPhotos(): LiveData<List<ListingPhoto>>
