@@ -140,7 +140,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
 
     fun setObservers() {
         val listingBodyTextView = findViewById<TextView>(R.id.tv_description_body)
-        val imageView = findViewById<ImageView>(R.id.listing_image_view)
+        val imageView = findViewById<ImageView>(R.id.listing_static_map_image_view)
         listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
             listingBodyTextView.text = it.listingDescription
             Glide.with(this)
