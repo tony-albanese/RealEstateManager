@@ -4,15 +4,19 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class ListingPhotoViewModel(val application: Application) : ViewModel(
 
 ), CoroutineScope {
     val repository: ListingPhotoRepository
+    var listener: OnDatabaseActionResult? = null
 
     private val _listingPhotos = MutableLiveData<List<ListingPhoto>>()
     val listingPhotos: LiveData<List<ListingPhoto>>
@@ -25,7 +29,11 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
 
 
     fun saveListingPhoto(photo: ListingPhoto) {
-        //repository.insertPhoto(photo)
+        viewModelScope.launch {
+            val id = async { repository.insertPhoto(photo) }.await()
+            listener?.onInsdertPhoto(id)
+        }
+
     }
 
     fun getPhotosForLisiting(listingId: Long) {
@@ -36,4 +44,7 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
         get() = Dispatchers.Main
 
 
+    interface OnDatabaseActionResult {
+        fun onInsdertPhoto(row: Int)
+    }
 }
