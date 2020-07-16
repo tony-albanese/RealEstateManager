@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhoto
 import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
 import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoWindow
@@ -40,7 +41,7 @@ import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.io.File
 import java.util.*
 
-class MainActivity : AppCompatActivity(), View.OnLongClickListener {
+class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener {
 
     //TODO () Implement onPermissionResult()
 
@@ -298,5 +299,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         intent.resolveActivity(packageManager)?.also {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
+    }
+
+    override fun onPhotoSelection(photo: ListingPhoto) {
+
     }
 }
