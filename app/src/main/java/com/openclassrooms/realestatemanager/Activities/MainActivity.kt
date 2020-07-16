@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.Menu
@@ -283,10 +284,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (imageFile?.exists() ?: false) {
-                val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout))
+                val uri = Uri.fromFile(imageFile)
+                val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri)
                 photoWindow.show()
-                //val uri = Uri.fromFile(imageFile)
-                //photoUtilities.addPhotoToGallery(this, uri)
             }
         }
 
