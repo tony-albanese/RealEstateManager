@@ -9,7 +9,7 @@
         android:id="@+id/iv_photo_select"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/ed_photo_description_input_layout"
+        app:layout_constraintBottom_toTopOf="@+id/et_photo_description_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,13 +36,18 @@
         app:layout_constraintTop_toTopOf="@+id/btn_select_photo" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ed_photo_description_input_layout"
+        android:id="@+id/et_photo_description_input_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Photo Description"
         app:layout_constraintBottom_toTopOf="@+id/btn_select_photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_listing_photo_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
