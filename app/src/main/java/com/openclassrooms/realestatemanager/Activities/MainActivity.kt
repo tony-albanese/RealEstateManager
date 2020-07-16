@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.Menu
@@ -26,6 +25,7 @@ import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.Sing
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoWindow
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
@@ -283,8 +283,10 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (imageFile?.exists() ?: false) {
-                val uri = Uri.fromFile(imageFile)
-                photoUtilities.addPhotoToGallery(this, uri)
+                val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout))
+                photoWindow.show()
+                //val uri = Uri.fromFile(imageFile)
+                //photoUtilities.addPhotoToGallery(this, uri)
             }
         }
 
