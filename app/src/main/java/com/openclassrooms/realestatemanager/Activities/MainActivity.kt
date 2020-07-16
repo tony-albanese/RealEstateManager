@@ -37,6 +37,7 @@ import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener {
 
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     lateinit var adapter: ListingAdapter
     lateinit var helper: HelperMethods
 
+    var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
     var imageFile: File? = null
     var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
         val factory = PhotoViewModelFactory(application, this, null)
         listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
-        
+
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
         val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
         binding.lifecycleOwner = this
@@ -224,10 +226,18 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     fun setupImageRecyclerView() {
+
         val photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
-        val photoAdapter = ListingPhotoAdapter(this)
+        val photoAdapter = ListingPhotoAdapter(this, photos)
         photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecyclerView.adapter = photoAdapter
+
+        listingPhotoViewModel.listingPhotos.observe(this, androidx.lifecycle.Observer {
+            photos = it as ArrayList<ListingPhoto>
+            photoAdapter.photoList = photos
+            photoAdapter.notifyDataSetChanged()
+        })
+
     }
 
     fun hasCameraPermission(): Boolean {
@@ -303,6 +313,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun onPhotoSelection(photo: ListingPhoto) {
-
+        listingPhotoViewModel.saveListingPhoto(photo)
     }
 }
