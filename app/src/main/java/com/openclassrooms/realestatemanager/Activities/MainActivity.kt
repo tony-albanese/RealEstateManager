@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
         val factory = PhotoViewModelFactory(application, this, null)
         listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
+        listingPhotoViewModel.listener = this
 
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
         val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
@@ -292,6 +293,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
             if (imageFile?.exists() ?: false) {
                 val uri = Uri.fromFile(imageFile)
                 val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri)
+                photoWindow.listener = this
                 photoWindow.show()
             }
         }
@@ -311,6 +313,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun onInsertPhoto(row: Long) {
-        Toast.makeText(this, row.toString(), Toast.LENGTH_LONG).show()
+        runOnUiThread {
+            Toast.makeText(this, row.toString(), Toast.LENGTH_LONG).show()
+        }
+
     }
 }
