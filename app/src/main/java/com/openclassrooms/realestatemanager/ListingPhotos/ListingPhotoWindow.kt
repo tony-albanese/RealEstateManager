@@ -18,7 +18,7 @@ class ListingPhotoWindow(
         val context: Context,
         val anchorView: View,
         val photoUri: Uri,
-        val listing: Listing = Listing()
+        val listing: Listing? = Listing()
 ) {
 
     var listener: PhotoSelectionListener? = null
@@ -75,7 +75,8 @@ class ListingPhotoWindow(
 
 
     private fun createListingPhoto() {
-        val photo = ListingPhoto(0, listing.id, photoDescriptionEditText?.text.toString(), photoUri)
+        val photo = ListingPhoto(0, listing?.id
+                ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
         listener?.onPhotoSelection(photo)
     }
 }
