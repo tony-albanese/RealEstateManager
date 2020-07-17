@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -17,6 +18,10 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
 ), CoroutineScope {
     val repository: ListingPhotoRepository
     var listener: OnDatabaseActionResult? = null
+
+    private val _selectedListing = MutableLiveData<Listing>()
+    val selectedListing: LiveData<Listing>
+        get() = _selectedListing
 
     private val _listingPhotos = MutableLiveData<List<ListingPhoto>>()
     val listingPhotos: LiveData<List<ListingPhoto>>
@@ -37,7 +42,16 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
     }
 
     fun getPhotosForLisiting(listingId: Long) {
-        //_listingPhotos.postValue()
+        viewModelScope.launch(Dispatchers.IO) {
+            val photos = async { repository.getPhotosForListing(listingId) }.await()
+            _listingPhotos.postValue(photos)
+        }
+
+    }
+
+    fun setSelectedListing(listing: Listing) {
+        _selectedListing.postValue(listing)
+        getPhotosForLisiting(listing.id)
     }
 
     override val coroutineContext: CoroutineContext
