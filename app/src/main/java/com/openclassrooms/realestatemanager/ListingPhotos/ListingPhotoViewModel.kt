@@ -29,7 +29,7 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
 
 
     fun saveListingPhoto(photo: ListingPhoto) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val id = async { repository.insertPhoto(photo) }.await()
             listener?.onInsertPhoto(id)
         }
@@ -41,7 +41,7 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
     }
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.IO
 
 
     interface OnDatabaseActionResult {
