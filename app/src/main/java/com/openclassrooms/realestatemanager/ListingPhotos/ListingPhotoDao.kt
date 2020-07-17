@@ -10,7 +10,7 @@ import androidx.room.Query
 interface ListingPhotoDao {
 
     @Query("SELECT * FROM table_listing_photos WHERE listing_id = :listingId")
-    fun getListingPhotosByListingId(listingId: Long = 0): LiveData<List<ListingPhoto>>
+    fun getListingPhotosByListingId(listingId: Long = 0): List<ListingPhoto>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertListingPhoto(photo: ListingPhoto): Long

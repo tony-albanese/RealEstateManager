@@ -1,7 +1,5 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
-import androidx.lifecycle.LiveData
-
 class ListingPhotoRepository(
         private val listingPhotoDao: ListingPhotoDao
 ) {
@@ -12,7 +10,7 @@ class ListingPhotoRepository(
         return listingPhotoDao.insertListingPhoto(photo)
     }
 
-    suspend fun getPhotosForListing(listingId: Long): LiveData<List<ListingPhoto>> {
+    suspend fun getPhotosForListing(listingId: Long): List<ListingPhoto> {
         return listingPhotoDao.getListingPhotosByListingId(listingId)
     }
 
