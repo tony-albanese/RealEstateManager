@@ -141,6 +141,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     val itemViewOnClickListenerCallback: (Listing) -> Unit = {
         listingViewModel.setCurrentListing(it)
+        listingPhotoViewModel.setSelectedListing(it)
     }
 
     override fun onLongClick(view: View?): Boolean {
