@@ -19,10 +19,9 @@ class ListingPhotoWindow(
         val anchorView: View,
         val photoUri: Uri,
         val listing: Listing = Listing()
-
 ) {
 
-    val listener: PhotoSelectionListener? = null
+    var listener: PhotoSelectionListener? = null
 
     val layoutInflater: LayoutInflater
     val popupWindow: PopupWindow
