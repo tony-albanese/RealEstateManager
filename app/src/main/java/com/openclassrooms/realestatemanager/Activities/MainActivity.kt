@@ -33,13 +33,14 @@ import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listing_information_detail_layout.*
+import kotlinx.android.synthetic.main.listing_item_layout.view.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult {
+class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingAdapter.InitialSelection {
     //TODO () Add check for camera hardware.
 
     lateinit var photoUtilities: ListingPhotoUtilities
@@ -71,9 +72,12 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         binding.lifecycleOwner = this
         binding.listingViewModel = listingViewModel
 
+        globalVariables = application as GlobalVariableApplication
+
         landscapeMode = listing_info_landscape_frame_layout != null
         recyclerView = findViewById(R.id.rv_listings)
-        adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
+        adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, globalVariables, itemViewOnClickListenerCallback)
+        adapter.initialSelectionCallack = this
         helper = HelperMethods()
         photoUtilities = ListingPhotoUtilities(this, this)
 
@@ -90,7 +94,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
                 "listing-db")
                 .build()
 
-        globalVariables = application as GlobalVariableApplication
 
         if (landscapeMode) {
             setListingDescriptionListeners()
@@ -322,5 +325,13 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
             Toast.makeText(this, row.toString(), Toast.LENGTH_LONG).show()
         }
 
+    }
+
+    override fun initializeInitialSelection(itemView: View, position: Int, listing: Listing) {
+        listingViewModel.setCurrentListing(listing)
+        recyclerView.scrollToPosition(position)
+        itemView.setBackgroundColor(resources.getColor(R.color.colorAccent))
+        itemView.tv_listing_item_listing_price
+                ?.setTextColor(resources.getColor(R.color.white))
     }
 }
