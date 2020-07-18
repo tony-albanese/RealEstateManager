@@ -145,6 +145,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     val itemViewOnClickListenerCallback: (Listing) -> Unit = {
         listingViewModel.setCurrentListing(it)
         listingPhotoViewModel.setSelectedListing(it)
+        globalVariables.selectedListingId = it.id
+        globalVariables.selectedPosition = adapter.selectedPosition
     }
 
     override fun onLongClick(view: View?): Boolean {
@@ -288,7 +290,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
             }
         }
     }//Curly brace for onRequestPermissionResult()
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
