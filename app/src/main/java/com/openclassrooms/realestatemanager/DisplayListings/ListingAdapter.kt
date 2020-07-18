@@ -24,6 +24,8 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val globalVar
     var selectedView: View? = null
     var initialSelectionCallack: InitialSelection? = null
 
+    var initialSelectionInitializedFlag: Boolean = false
+
     inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val listingItemType = itemView.findViewById<MaterialTextView>(R.id.tv_listing_item_listing_type)
         val listingItemCity = itemView.findViewById<MaterialTextView>(R.id.tv_listing_item_listing_city)
@@ -77,7 +79,7 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val globalVar
 
         }
 
-        if (position == globalVariabales.selectedPosition && isLandscape) {
+        if (position == globalVariabales.selectedPosition && isLandscape && !initialSelectionInitializedFlag) {
             this.initialSelectionCallack?.initializeInitialSelection(holder.itemView, position, currentListing)
         }
 
