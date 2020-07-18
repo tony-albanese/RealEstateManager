@@ -328,6 +328,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun initializeInitialSelection(itemView: View, position: Int, listing: Listing) {
+        adapter.initialSelectionInitializedFlag = true
+        adapter.selectedView = itemView
+        adapter.selectedPosition = position
         listingViewModel.setCurrentListing(listing)
         recyclerView.scrollToPosition(position)
         itemView.setBackgroundColor(resources.getColor(R.color.colorAccent))
