@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
     lateinit var helper: HelperMethods
+    lateinit var globalVariables: GlobalVariableApplication
 
     var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
     var imageFile: File? = null
@@ -88,6 +89,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
                 AppDatabase::class.java,
                 "listing-db")
                 .build()
+
+        globalVariables = application as GlobalVariableApplication
 
         if (landscapeMode) {
             setListingDescriptionListeners()
