@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,15 +29,40 @@ class ListingPhotoAdapter(val context: Context, var photoList: ArrayList<Listing
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        Glide.with(context)
-                .load(photoList[position].photoUri)
-                .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
-                .error(context.resources.getDrawable(R.drawable.placeholder_image))
-                .into(holder.imageView)
-
+        val selectedPhoto = photoList[position]
+        setPic(holder.imageView, selectedPhoto.photoUri)
+        //TODO: Implement click listener to display the images.
+        //TODO: Add description.
     }
 
+    private fun setPic(imageView: ImageView, photoUri: Uri?) {
+        // Get the dimensions of the View
+        val targetW: Int = imageView.width
+        val targetH: Int = imageView.height
 
-    //TODO: Need method to shrink bitmaps when displayed.
-    //TODO: Implement click listener to display the images.
+        val bmOptions = BitmapFactory.Options().apply {
+            // Get the dimensions of the bitmap
+            inJustDecodeBounds = true
+
+            val photoW: Int = outWidth
+            val photoH: Int = outHeight
+
+            // Determine how much to scale down the image
+            val scaleFactor: Int = Math.min(photoW / targetW, photoH / targetH)
+
+            // Decode the image file into a Bitmap sized to fill the View
+            inJustDecodeBounds = false
+            inSampleSize = scaleFactor
+            inPurgeable = true
+        }
+        BitmapFactory.decodeFile(photoUri?.path, bmOptions)?.also { bitmap ->
+            Glide.with(context)
+                    .load(bitmap)
+                    .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
+                    .error(context.resources.getDrawable(R.drawable.placeholder_image))
+                    .into(imageView)
+
+            //imageView.setImageBitmap(bitmap)
+        }
+    }
 }
