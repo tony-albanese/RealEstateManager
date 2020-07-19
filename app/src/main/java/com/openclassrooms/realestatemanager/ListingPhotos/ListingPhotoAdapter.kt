@@ -30,11 +30,15 @@ class ListingPhotoAdapter(val context: Context, var photoList: ArrayList<Listing
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val selectedPhoto = photoList[position]
-        setPic(holder.imageView, selectedPhoto.photoUri)
-        //TODO: Implement click listener to display the images.
-        //TODO: Add description.
+        Glide.with(context)
+                .load(selectedPhoto.photoUri)
+                .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
+                .error(context.resources.getDrawable(R.drawable.placeholder_image))
+                .into(holder.imageView)
+
     }
 
+    //TODO: Fix this method.
     private fun setPic(imageView: ImageView, photoUri: Uri?) {
         // Get the dimensions of the View
         val targetW: Int = imageView.width
@@ -48,11 +52,16 @@ class ListingPhotoAdapter(val context: Context, var photoList: ArrayList<Listing
             val photoH: Int = outHeight
 
             // Determine how much to scale down the image
-            val scaleFactor: Int = Math.min(photoW / targetW, photoH / targetH)
-
+            try {
+                val scaleFactor: Int = Math.min(photoW / targetW, photoH / targetH)
+                inSampleSize = scaleFactor
+            } catch (e: ArithmeticException) {
+                val scaleFactor: Int = Math.min(photoW / 150, photoH / 150)
+                inSampleSize = scaleFactor
+            }
+            
             // Decode the image file into a Bitmap sized to fill the View
             inJustDecodeBounds = false
-            inSampleSize = scaleFactor
             inPurgeable = true
         }
         BitmapFactory.decodeFile(photoUri?.path, bmOptions)?.also { bitmap ->
