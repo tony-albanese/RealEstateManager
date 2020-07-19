@@ -12,13 +12,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.database_files.Listing
 
 class ListingPhotoWindow(
         val context: Context,
         val anchorView: View,
         val photoUri: Uri,
-        val listing: Listing? = Listing()
+        val listingId: Long
 ) {
 
     var listener: PhotoSelectionListener? = null
@@ -75,7 +74,7 @@ class ListingPhotoWindow(
 
 
     private fun createListingPhoto() {
-        val photo = ListingPhoto(0, listing?.id
+        val photo = ListingPhoto(0, listingId
                 ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
         listener?.onPhotoSelection(photo)
     }
