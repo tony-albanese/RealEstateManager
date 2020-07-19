@@ -47,7 +47,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     lateinit var listingViewModel: ListingViewModel
     lateinit var listingPhotoViewModel: ListingPhotoViewModel
     lateinit var recyclerView: RecyclerView
+    lateinit var photoRecyclerView: RecyclerView
     lateinit var adapter: ListingAdapter
+    lateinit var photoAdapter: ListingPhotoAdapter
     lateinit var helper: HelperMethods
     lateinit var globalVariables: GlobalVariableApplication
 
@@ -85,6 +87,10 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         val itemDecor = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
         recyclerView.addItemDecoration(itemDecor)
         recyclerView.adapter = adapter
+
+        photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
+        photoAdapter = ListingPhotoAdapter(this, photos)
+
 
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -231,8 +237,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     fun setupImageRecyclerView() {
 
-        val photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
-        val photoAdapter = ListingPhotoAdapter(this, photos)
         photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecyclerView.adapter = photoAdapter
 
@@ -321,10 +325,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun onInsertPhoto(row: Long) {
-        runOnUiThread {
-            Toast.makeText(this, row.toString(), Toast.LENGTH_LONG).show()
-        }
-
+        listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedListingId)
     }
 
     override fun initializeInitialSelection(itemView: View, position: Int, listing: Listing) {
@@ -336,5 +337,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         itemView.setBackgroundColor(resources.getColor(R.color.colorAccent))
         itemView.tv_listing_item_listing_price
                 ?.setTextColor(resources.getColor(R.color.white))
+
+        listingPhotoViewModel.getPhotosForLisiting(listing.id)
     }
 }
