@@ -45,7 +45,6 @@ class ListingPhotoWindow(
 
         popupWindow = PopupWindow(popupContentView, CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT, true)
 
-
         cancelButton.setOnClickListener {
             popupWindow.dismiss()
         }
@@ -68,7 +67,6 @@ class ListingPhotoWindow(
     }
 
     interface PhotoSelectionListener {
-
         fun onPhotoSelection(photo: ListingPhoto)
     }
 
