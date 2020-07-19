@@ -18,6 +18,7 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
 ), CoroutineScope {
     val repository: ListingPhotoRepository
     var listener: OnDatabaseActionResult? = null
+    val globalVariables = application as GlobalVariableApplication
 
     private val _selectedListing = MutableLiveData<Listing>()
     val selectedListing: LiveData<Listing>
@@ -30,9 +31,10 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
     init {
         val listingPhotoDao = AppDatabase.getDatabase(application).listingPhotoDao()
         repository = ListingPhotoRepository(listingPhotoDao)
+        getPhotosForLisiting(globalVariables.selectedListingId)
+
     }
-
-
+    
     fun saveListingPhoto(photo: ListingPhoto) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = async { repository.insertPhoto(photo) }.await()
