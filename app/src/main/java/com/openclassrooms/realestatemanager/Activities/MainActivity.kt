@@ -300,7 +300,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (imageFile?.exists() ?: false) {
                 val uri = Uri.fromFile(imageFile)
-                val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri)
+                val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, globalVariables.selectedListingId)
                 photoWindow.listener = this
                 photoWindow.show()
             }
