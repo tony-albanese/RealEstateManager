@@ -28,16 +28,13 @@ class DatabaseTypeConverter {
 
     }
 
-    //TODO() Implement these methods in full.
     @TypeConverter
     fun uriToString(uri: Uri?): String {
-
         return uri.toString()
     }
 
     @TypeConverter
     fun stringToUri(uriString: String): Uri? {
-
         return Uri.parse(uriString)
     }
 }
