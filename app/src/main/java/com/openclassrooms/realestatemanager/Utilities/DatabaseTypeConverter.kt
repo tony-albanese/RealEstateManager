@@ -32,12 +32,12 @@ class DatabaseTypeConverter {
     @TypeConverter
     fun uriToString(uri: Uri?): String {
 
-        return ""
+        return uri.toString()
     }
 
     @TypeConverter
     fun stringToUri(uriString: String): Uri? {
 
-        return null
+        return Uri.parse(uriString)
     }
 }
