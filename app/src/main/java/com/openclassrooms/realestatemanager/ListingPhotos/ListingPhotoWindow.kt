@@ -15,7 +15,12 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class ListingPhotoWindow(
         val context: Context,
@@ -73,12 +78,16 @@ class ListingPhotoWindow(
             popupWindow.dismiss()
         }
 
+        initializeButtonStates()
+
         @Suppress("DEPRECATION")
         Glide.with(context)
                 .load(photoUri)
                 .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
                 .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
                 .into(imageView)
+
+
     }
 
     fun show() {
@@ -94,4 +103,26 @@ class ListingPhotoWindow(
                 ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
         listener?.onPhotoSelection(photo)
     }
+
+    private fun initializeButtonStates() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val listing = async { listingRepository.getListing(listingId) }.await()
+            val listingPhoto = async { listingPhotoRepository.getPhotoByUri(photoUri) }.await()
+            initializeUI(listing, listingPhoto)
+        }
+
+    }
+
+    private fun initializeUI(listing: Listing, photo: ListingPhoto) {
+        CoroutineScope(Dispatchers.Main).launch {
+            //Set the state of the text view to say whether the current photo is the home photo.
+            if (photoUri == listing.listingMainPhotoUri) {
+                homeImageTextView.visibility == View.GONE
+            } else {
+                homeImageTextView.visibility == View.VISIBLE
+            }
+        }
+        //TODO: Set the state of the editing buttons if the current user is the user that owns the listing.
+    }
+
 }
