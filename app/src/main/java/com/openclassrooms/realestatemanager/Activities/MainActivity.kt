@@ -296,7 +296,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
             (REQUEST_IMAGE_CAPTURE == requestCode && resultCode == RESULT_OK) -> {
                 if (imageFile?.exists() ?: false) {
                     val uri = Uri.fromFile(imageFile)
-                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, globalVariables.selectedListingId)
+                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, listingViewModel.selectedListing.value)
                     photoWindow.listener = this
                     photoWindow.show()
                 }
@@ -304,7 +304,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
             (REQUEST_IMAGE_FROM_GALLERY == requestCode && resultCode == Activity.RESULT_OK) -> {
                 data?.data?.apply {
-                    val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), this, globalVariables.selectedListingId)
+                    val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), this, listingViewModel.selectedListing.value)
                     photoWindow.listener = this@MainActivity
                     photoWindow.show()
                 }
