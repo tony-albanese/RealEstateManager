@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -291,15 +292,25 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if (imageFile?.exists() ?: false) {
-                val uri = Uri.fromFile(imageFile)
-                val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, globalVariables.selectedListingId)
-                photoWindow.listener = this
-                photoWindow.show()
+        when {
+            (REQUEST_IMAGE_CAPTURE == requestCode && resultCode == RESULT_OK) -> {
+                if (imageFile?.exists() ?: false) {
+                    val uri = Uri.fromFile(imageFile)
+                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, globalVariables.selectedListingId)
+                    photoWindow.listener = this
+                    photoWindow.show()
+                }
             }
-        }
 
+            (REQUEST_IMAGE_FROM_GALLERY == requestCode && resultCode == Activity.RESULT_OK) -> {
+                data?.data?.apply {
+                    val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), this, globalVariables.selectedListingId)
+                    photoWindow.listener = this@MainActivity
+                    photoWindow.show()
+                }
+            }
+
+        }
     }
 
     fun takePhoto() {
@@ -326,7 +337,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
     }
-    
+
     override fun onPhotoSelection(photo: ListingPhoto) {
         listingPhotoViewModel.saveListingPhoto(photo)
     }
