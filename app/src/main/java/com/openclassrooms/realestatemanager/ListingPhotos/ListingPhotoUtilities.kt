@@ -98,8 +98,8 @@ class ListingPhotoUtilities(val context: Context, val activity: Activity) {
         )
     }
 
+    
 }
-    //TODO () Declare interfaces: one to handle the photo captured from the camera.
-    //TODO () Declare an interface to handle any errors.
+
 
 
