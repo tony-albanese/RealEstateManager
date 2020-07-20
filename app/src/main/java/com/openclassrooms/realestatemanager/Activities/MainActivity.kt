@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     lateinit var listingViewModel: ListingViewModel
     lateinit var listingPhotoViewModel: ListingPhotoViewModel
     lateinit var recyclerView: RecyclerView
-    lateinit var photoRecyclerView: RecyclerView
+    var photoRecyclerView: RecyclerView? = null
     lateinit var adapter: ListingAdapter
     lateinit var photoAdapter: ListingPhotoAdapter
     lateinit var helper: HelperMethods
@@ -240,8 +240,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     fun setupImageRecyclerView() {
 
-        photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        photoRecyclerView.adapter = photoAdapter
+        photoRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        photoRecyclerView?.adapter = photoAdapter
 
         listingPhotoViewModel.listingPhotos.observe(this, androidx.lifecycle.Observer {
             photos = it as ArrayList<ListingPhoto>
