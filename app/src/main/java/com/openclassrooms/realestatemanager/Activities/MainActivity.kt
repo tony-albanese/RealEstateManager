@@ -338,8 +338,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
     }
 
-    override fun onPhotoSelection(photo: ListingPhoto) {
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
         listingPhotoViewModel.saveListingPhoto(photo)
+        //TODO: Find way to update the recycler view holding the list of listings.
     }
 
     override fun onInsertPhoto(row: Long) {
