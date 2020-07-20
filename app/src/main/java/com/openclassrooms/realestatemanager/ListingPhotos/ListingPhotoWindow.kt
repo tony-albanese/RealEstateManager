@@ -78,6 +78,14 @@ class ListingPhotoWindow(
             popupWindow.dismiss()
         }
 
+        setHomePhotoButton.setOnClickListener {
+            if (homeImageTextView.visibility == View.VISIBLE) {
+                homeImageTextView.visibility = View.GONE
+            } else {
+                homeImageTextView.visibility = View.VISIBLE
+            }
+        }
+
         initializeButtonStates()
 
         @Suppress("DEPRECATION")
@@ -86,8 +94,6 @@ class ListingPhotoWindow(
                 .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
                 .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
                 .into(imageView)
-
-
     }
 
     fun show() {
@@ -125,4 +131,9 @@ class ListingPhotoWindow(
         //TODO: Set the state of the editing buttons if the current user is the user that owns the listing.
     }
 
+    private fun setHomeImage() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+        }
+    }
 }
