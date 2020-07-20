@@ -340,6 +340,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
         listingPhotoViewModel.saveListingPhoto(photo)
+        //TODO Update the listing object with the new photoUrl
         //TODO: Find way to update the recycler view holding the list of listings.
     }
 
