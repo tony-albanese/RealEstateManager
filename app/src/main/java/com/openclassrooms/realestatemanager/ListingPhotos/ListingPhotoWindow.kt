@@ -5,7 +5,10 @@ import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
@@ -72,9 +75,6 @@ class ListingPhotoWindow(
 
         okButton.setOnClickListener {
             createListingPhoto()
-            if (homeImageTextView.visibility == View.VISIBLE) {
-                setHomeImage()
-            }
             popupWindow.dismiss()
         }
 
@@ -101,13 +101,14 @@ class ListingPhotoWindow(
     }
 
     interface PhotoSelectionListener {
-        fun onPhotoSelection(photo: ListingPhoto)
+        fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean)
     }
 
     private fun createListingPhoto() {
+        val isHomeImage = homeImageTextView.visibility == View.VISIBLE
         val photo = ListingPhoto(0, selectedListing?.id
                 ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
-        listener?.onPhotoSelection(photo)
+        listener?.onPhotoSelection(photo, isHomeImage)
     }
 
     private fun initializeButtonStates() {
@@ -128,12 +129,5 @@ class ListingPhotoWindow(
             }
         }
         //TODO: Set the state of the editing buttons if the current user is the user that owns the listing.
-    }
-
-    private fun setHomeImage() {
-        CoroutineScope(Dispatchers.Main).launch {
-            Toast.makeText(context, "setHomeImage run", Toast.LENGTH_LONG).show()
-
-        }
     }
 }
