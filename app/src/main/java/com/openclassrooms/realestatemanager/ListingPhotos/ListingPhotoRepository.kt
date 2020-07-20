@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
+import android.net.Uri
+
 class ListingPhotoRepository(
         private val listingPhotoDao: ListingPhotoDao
 ) {
@@ -14,4 +16,7 @@ class ListingPhotoRepository(
         return listingPhotoDao.getListingPhotosByListingId(listingId)
     }
 
+    suspend fun getPhotoByUri(uri: Uri): ListingPhoto {
+        return listingPhotoDao.getPhotoByUri(uri)
+    }
 }

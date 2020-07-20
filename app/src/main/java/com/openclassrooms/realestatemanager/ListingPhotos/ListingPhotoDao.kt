@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ListingPhotos
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -17,4 +18,7 @@ interface ListingPhotoDao {
 
     @Query("SELECT * from table_listing_photos")
     fun getAllListingPhotos(): LiveData<List<ListingPhoto>>
+
+    @Query("SELECT * FROM table_listing_photos WHERE photo_uri = :uri")
+    fun getPhotoByUri(uri: Uri): ListingPhoto
 }
