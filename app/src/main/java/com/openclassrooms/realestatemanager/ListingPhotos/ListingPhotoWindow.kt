@@ -5,10 +5,7 @@ import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.PopupWindow
-import android.widget.TextView
+import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
@@ -26,7 +23,7 @@ class ListingPhotoWindow(
         val context: Context,
         val anchorView: View,
         val photoUri: Uri,
-        val listingId: Long
+        val selectedListing: Listing?
 ) {
 
     var listener: PhotoSelectionListener? = null
@@ -75,6 +72,9 @@ class ListingPhotoWindow(
 
         okButton.setOnClickListener {
             createListingPhoto()
+            if (homeImageTextView.visibility == View.VISIBLE) {
+                setHomeImage()
+            }
             popupWindow.dismiss()
         }
 
@@ -105,24 +105,23 @@ class ListingPhotoWindow(
     }
 
     private fun createListingPhoto() {
-        val photo = ListingPhoto(0, listingId
+        val photo = ListingPhoto(0, selectedListing?.id
                 ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
         listener?.onPhotoSelection(photo)
     }
 
     private fun initializeButtonStates() {
         CoroutineScope(Dispatchers.IO).launch {
-            val listing = async { listingRepository.getListing(listingId) }.await()
             val listingPhoto = async { listingPhotoRepository.getPhotoByUri(photoUri) }.await()
-            initializeUI(listing, listingPhoto)
+            initializeUI(selectedListing, listingPhoto)
         }
 
     }
 
-    private fun initializeUI(listing: Listing, photo: ListingPhoto) {
+    private fun initializeUI(listing: Listing?, photo: ListingPhoto) {
         CoroutineScope(Dispatchers.Main).launch {
             //Set the state of the text view to say whether the current photo is the home photo.
-            if (photoUri == listing.listingMainPhotoUri) {
+            if (photoUri == listing?.listingMainPhotoUri) {
                 homeImageTextView.visibility == View.GONE
             } else {
                 homeImageTextView.visibility == View.VISIBLE
@@ -132,7 +131,8 @@ class ListingPhotoWindow(
     }
 
     private fun setHomeImage() {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
+            Toast.makeText(context, "setHomeImage run", Toast.LENGTH_LONG).show()
 
         }
     }
