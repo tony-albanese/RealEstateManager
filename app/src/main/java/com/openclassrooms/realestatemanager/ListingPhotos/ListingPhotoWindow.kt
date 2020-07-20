@@ -5,8 +5,10 @@ import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
@@ -29,6 +31,9 @@ class ListingPhotoWindow(
     val photoDescriptionEditText: TextInputEditText?
     val okButton: MaterialButton
     val cancelButton: MaterialButton
+    val deletePhotoButton: ImageButton
+    val setHomePhotoButton: ImageButton
+    val homeImageTextView: TextView
 
 
     init {
@@ -41,6 +46,10 @@ class ListingPhotoWindow(
             photoDescriptionEditText = findViewById<TextInputEditText>(R.id.et_listing_photo_description)
             okButton = findViewById(R.id.btn_select_photo)
             cancelButton = findViewById(R.id.btn_cancel_photo)
+
+            deletePhotoButton = findViewById(R.id.ib_delete_photo)
+            setHomePhotoButton = findViewById(R.id.ib_set_main_photo)
+            homeImageTextView = findViewById(R.id.tv_showcase_photo_set)
         }
 
         popupWindow = PopupWindow(popupContentView, CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT, true)
