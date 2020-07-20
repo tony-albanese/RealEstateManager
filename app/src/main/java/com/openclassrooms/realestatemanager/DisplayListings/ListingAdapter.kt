@@ -5,7 +5,9 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
 import com.openclassrooms.realestatemanager.Activities.DisplayListingPortaitActivity
 import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
@@ -30,6 +32,7 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val globalVar
         val listingItemType = itemView.findViewById<MaterialTextView>(R.id.tv_listing_item_listing_type)
         val listingItemCity = itemView.findViewById<MaterialTextView>(R.id.tv_listing_item_listing_city)
         val listingItemPrice = itemView.findViewById<MaterialTextView>(R.id.tv_listing_item_listing_price)
+        val listingHomeImageView = itemView.findViewById<ImageView>(R.id.iv_listing_item_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListingViewHolder {
@@ -48,6 +51,12 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val globalVar
         holder.listingItemCity.text = currentListing.listingCity
         holder.listingItemType.text = currentListing.listingType
         holder.listingItemPrice.text = ConversionUtilities.formatCurrencyIntToString(currentListing.listingPrice, locale)
+
+        Glide.with(holder.itemView.context)
+                .load(currentListing.listingMainPhotoUri)
+                .placeholder(holder.itemView.context.resources.getDrawable(R.drawable.placeholder_image))
+                .error(holder.itemView.context.resources.getDrawable(R.drawable.placeholder_image))
+                .into(holder.listingHomeImageView)
 
         holder.itemView.setOnClickListener {
             if (isLandscape) {
