@@ -107,6 +107,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
             ib_take_photo?.setOnClickListener {
                 takePhoto()
             }
+            ib_add_photo_gallery?.setOnClickListener {
+                getPhotoFromGallery()
+            }
         }
         setObservers()
     }
@@ -120,7 +123,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        //return super.onPrepareOptionsMenu(menu)
         helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
@@ -255,18 +257,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         )
     }
 
-    fun takePhoto() {
-
-        if (!hasCameraPermission()) {
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(android.Manifest.permission.CAMERA),
-                    REQUEST_CAMERA_PERMISSION
-            )
-        } else {
-            launchPhotoActivity()
-        }
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -276,11 +266,11 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
                     grantResults.isEmpty() -> Toast.makeText(this, "Action cancelled", Toast.LENGTH_LONG).show()
 
                     grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
-                        //TODO () Make the camera icon visible.
-                        //TODO () Set the click listener on the button to take photo.
+                        ib_take_photo?.visibility = View.VISIBLE
                         launchPhotoActivity()
                     }
-                    else -> {//TODO() Set the click listener to set the image from the gallery.
+                    else -> {
+                        ib_take_photo?.isEnabled = false
                         Toast.makeText(this, "Take from the gallery instead.", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -312,12 +302,28 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     }
 
+    fun takePhoto() {
+
+        if (!hasCameraPermission()) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    REQUEST_CAMERA_PERMISSION
+            )
+        } else {
+            launchPhotoActivity()
+        }
+    }
+    
     fun launchPhotoActivity() {
         val (intent, file) = photoUtilities.createTakePictureIntent()
         imageFile = file
         intent.resolveActivity(packageManager)?.also {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
+    }
+
+    fun getPhotoFromGallery() {
+
     }
 
     override fun onPhotoSelection(photo: ListingPhoto) {
