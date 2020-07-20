@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.database_files.AppDatabase
+import com.openclassrooms.realestatemanager.database_files.ListingRepository
 
 class ListingPhotoWindow(
         val context: Context,
@@ -35,6 +37,8 @@ class ListingPhotoWindow(
     val setHomePhotoButton: ImageButton
     val homeImageTextView: TextView
 
+    val listingRepository: ListingRepository
+    val listingPhotoRepository: ListingPhotoRepository
 
     init {
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -50,6 +54,12 @@ class ListingPhotoWindow(
             deletePhotoButton = findViewById(R.id.ib_delete_photo)
             setHomePhotoButton = findViewById(R.id.ib_set_main_photo)
             homeImageTextView = findViewById(R.id.tv_showcase_photo_set)
+
+            val listingDao = AppDatabase.getDatabase(context).listingDao()
+            val listingPhotoDao = AppDatabase.getDatabase(context).listingPhotoDao()
+
+            listingRepository = ListingRepository(listingDao)
+            listingPhotoRepository = ListingPhotoRepository(listingPhotoDao)
         }
 
         popupWindow = PopupWindow(popupContentView, CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT, true)
@@ -78,7 +88,6 @@ class ListingPhotoWindow(
     interface PhotoSelectionListener {
         fun onPhotoSelection(photo: ListingPhoto)
     }
-
 
     private fun createListingPhoto() {
         val photo = ListingPhoto(0, listingId
