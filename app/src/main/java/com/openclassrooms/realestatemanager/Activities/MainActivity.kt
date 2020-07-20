@@ -323,13 +323,10 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     fun getPhotoFromGallery() {
-
+        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
     }
-
-    fun launchGalleryChooser() {
-        
-    }
-
+    
     override fun onPhotoSelection(photo: ListingPhoto) {
         listingPhotoViewModel.saveListingPhoto(photo)
     }
