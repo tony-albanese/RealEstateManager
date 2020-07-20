@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -104,8 +105,11 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         if (landscapeMode) {
             setListingDescriptionListeners()
             setupImageRecyclerView()
-            iv_take_photo?.setOnClickListener {
+            ib_take_photo?.setOnClickListener {
                 takePhoto()
+            }
+            ib_add_photo_gallery?.setOnClickListener {
+                getPhotoFromGallery()
             }
         }
         setObservers()
@@ -120,7 +124,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        //return super.onPrepareOptionsMenu(menu)
         helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
@@ -255,18 +258,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         )
     }
 
-    fun takePhoto() {
-
-        if (!hasCameraPermission()) {
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(android.Manifest.permission.CAMERA),
-                    REQUEST_CAMERA_PERMISSION
-            )
-        } else {
-            launchPhotoActivity()
-        }
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -276,11 +267,11 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
                     grantResults.isEmpty() -> Toast.makeText(this, "Action cancelled", Toast.LENGTH_LONG).show()
 
                     grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
-                        //TODO () Make the camera icon visible.
-                        //TODO () Set the click listener on the button to take photo.
+                        ib_take_photo?.visibility = View.VISIBLE
                         launchPhotoActivity()
                     }
-                    else -> {//TODO() Set the click listener to set the image from the gallery.
+                    else -> {
+                        ib_take_photo?.isEnabled = false
                         Toast.makeText(this, "Take from the gallery instead.", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -301,15 +292,37 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if (imageFile?.exists() ?: false) {
-                val uri = Uri.fromFile(imageFile)
-                val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, globalVariables.selectedListingId)
-                photoWindow.listener = this
-                photoWindow.show()
+        when {
+            (REQUEST_IMAGE_CAPTURE == requestCode && resultCode == RESULT_OK) -> {
+                if (imageFile?.exists() ?: false) {
+                    val uri = Uri.fromFile(imageFile)
+                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, globalVariables.selectedListingId)
+                    photoWindow.listener = this
+                    photoWindow.show()
+                }
             }
-        }
 
+            (REQUEST_IMAGE_FROM_GALLERY == requestCode && resultCode == Activity.RESULT_OK) -> {
+                data?.data?.apply {
+                    val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), this, globalVariables.selectedListingId)
+                    photoWindow.listener = this@MainActivity
+                    photoWindow.show()
+                }
+            }
+
+        }
+    }
+
+    fun takePhoto() {
+
+        if (!hasCameraPermission()) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    REQUEST_CAMERA_PERMISSION
+            )
+        } else {
+            launchPhotoActivity()
+        }
     }
 
     fun launchPhotoActivity() {
@@ -318,6 +331,11 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         intent.resolveActivity(packageManager)?.also {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
+    }
+
+    fun getPhotoFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
     }
 
     override fun onPhotoSelection(photo: ListingPhoto) {
