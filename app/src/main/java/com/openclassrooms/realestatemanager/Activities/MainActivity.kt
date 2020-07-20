@@ -313,7 +313,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
             launchPhotoActivity()
         }
     }
-    
+
     fun launchPhotoActivity() {
         val (intent, file) = photoUtilities.createTakePictureIntent()
         imageFile = file
@@ -324,6 +324,10 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     fun getPhotoFromGallery() {
 
+    }
+
+    fun launchGalleryChooser() {
+        
     }
 
     override fun onPhotoSelection(photo: ListingPhoto) {
