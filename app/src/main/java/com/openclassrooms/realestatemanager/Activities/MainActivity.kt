@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         if (landscapeMode) {
             setListingDescriptionListeners()
             setupImageRecyclerView()
-            iv_take_photo?.setOnClickListener {
+            ib_take_photo?.setOnClickListener {
                 takePhoto()
             }
         }
