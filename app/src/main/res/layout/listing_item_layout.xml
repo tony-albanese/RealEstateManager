@@ -10,9 +10,9 @@
 
     <ImageView
         android:id="@+id/iv_listing_item_image"
-        android:visibility="gone"
+        android:layout_height="0dp"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:visibility="visible"
         android:layout_marginStart="8dp"
         android:minHeight="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
