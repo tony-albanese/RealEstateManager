@@ -37,6 +37,10 @@ import kotlinx.android.synthetic.main.listing_information_detail_layout.*
 import kotlinx.android.synthetic.main.listing_item_layout.view.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -340,8 +344,17 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
     override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
         listingPhotoViewModel.saveListingPhoto(photo)
-        //TODO Update the listing object with the new photoUrl
-        //TODO: Find way to update the recycler view holding the list of listings.
+
+        if (isHomeImage) {
+            listingViewModel.selectedListing.value?.apply {
+                this.listingMainPhotoUri = photo.photoUri
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    async { listingViewModel.updateListing(this@apply) }.await()
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        }
     }
 
     override fun onInsertPhoto(row: Long) {
