@@ -351,7 +351,10 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
                 CoroutineScope(Dispatchers.IO).launch {
                     async { listingViewModel.updateListing(this@apply) }.await()
-                    adapter.notifyDataSetChanged()
+                    runOnUiThread {
+                        adapter.notifyDataSetChanged()
+                    }
+
                 }
             }
         }
