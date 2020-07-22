@@ -21,9 +21,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
-import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhoto
-import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoAdapter
-import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
+import com.openclassrooms.realestatemanager.ListingPhotos.*
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
@@ -45,6 +43,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
     lateinit var listingPhotoUtilities: ListingPhotoUtilities
     lateinit var photoRecyclerView: RecyclerView
     lateinit var photoAdapter: ListingPhotoAdapter
+    lateinit var listingPhotoViewModel: ListingPhotoViewModel
 
     var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
     var imageFile: File? = null
@@ -58,6 +57,9 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         super.onCreate(savedInstanceState)
 
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
+
+        val factory = PhotoViewModelFactory(application, this, null)
+        listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
 
         val binding: ListingInformationDetailLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_information_detail_layout)
         binding.viewModel = listingViewModel
