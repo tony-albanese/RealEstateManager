@@ -37,6 +37,10 @@ import kotlinx.android.synthetic.main.listing_information_detail_layout.*
 import kotlinx.android.synthetic.main.listing_item_layout.view.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -296,7 +300,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
             (REQUEST_IMAGE_CAPTURE == requestCode && resultCode == RESULT_OK) -> {
                 if (imageFile?.exists() ?: false) {
                     val uri = Uri.fromFile(imageFile)
-                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, globalVariables.selectedListingId)
+                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, listingViewModel.selectedListing.value)
                     photoWindow.listener = this
                     photoWindow.show()
                 }
@@ -304,7 +308,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
 
             (REQUEST_IMAGE_FROM_GALLERY == requestCode && resultCode == Activity.RESULT_OK) -> {
                 data?.data?.apply {
-                    val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), this, globalVariables.selectedListingId)
+                    val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), this, listingViewModel.selectedListing.value)
                     photoWindow.listener = this@MainActivity
                     photoWindow.show()
                 }
@@ -338,8 +342,22 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
     }
 
-    override fun onPhotoSelection(photo: ListingPhoto) {
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
         listingPhotoViewModel.saveListingPhoto(photo)
+
+        if (isHomeImage) {
+            listingViewModel.selectedListing.value?.apply {
+                this.listingMainPhotoUri = photo.photoUri
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    async { listingViewModel.updateListing(this@apply) }.await()
+                    runOnUiThread {
+                        adapter.notifyDataSetChanged()
+                    }
+
+                }
+            }
+        }
     }
 
     override fun onInsertPhoto(row: Long) {
