@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -79,6 +80,14 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
 
         setListingDescriptionListeners()
         setObservers()
+
+        ib_take_photo?.setOnClickListener {
+            takePhoto()
+        }
+        ib_add_photo_gallery?.setOnClickListener {
+            getPhotoFromGallery()
+        }
+        setupImageRecyclerView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -178,5 +187,18 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
             intent.putExtra(LISTING_ID, listingViewModel.selectedListing.value?.id)
             startActivity(intent)
         }
+    }
+
+    fun setupImageRecyclerView() {
+
+        photoRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        photoRecyclerView?.adapter = photoAdapter
+
+        listingPhotoViewModel.listingPhotos.observe(this, androidx.lifecycle.Observer {
+            photos = it as ArrayList<ListingPhoto>
+            photoAdapter.photoList = photos
+            photoAdapter.notifyDataSetChanged()
+        })
+
     }
 }
