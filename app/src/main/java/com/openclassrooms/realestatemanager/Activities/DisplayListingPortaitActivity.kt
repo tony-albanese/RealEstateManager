@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.listing_information_detail_layout.*
 import java.io.File
 
 //TODO () Implement recycler view and camera feature in this activity.
-class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener {
+class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoViewModel.OnDatabaseActionResult {
 
     lateinit var listingViewModel: ListingViewModel
     lateinit var helper: HelperMethods
@@ -41,6 +41,8 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
     lateinit var photoRecyclerView: RecyclerView
     lateinit var photoAdapter: ListingPhotoAdapter
     lateinit var listingPhotoViewModel: ListingPhotoViewModel
+
+    lateinit var globalVariables: GlobalVariableApplication
 
     var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
     var imageFile: File? = null
@@ -69,10 +71,12 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         portrait_app_bar.visibility = View.VISIBLE
 
         helper = HelperMethods()
+        globalVariables = application as GlobalVariableApplication
 
         val intent = intent
         intent.getLongExtra("LISTING_ID", 0).let {
             if (it != 0.toLong()) {
+                globalVariables.selectedPortraitListingId = it
                 listingViewModel.getListingForPortraitMode(it)
             }
         }
@@ -236,6 +240,10 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
     fun getPhotoFromGallery() {
         val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
+    }
+
+    override fun onInsertPhoto(row: Long) {
+        listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedPortraitListingId)
     }
 
 }
