@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -27,6 +28,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
 import com.openclassrooms.realestatemanager.Utilities.REQUEST_CAMERA_PERMISSION
+import com.openclassrooms.realestatemanager.Utilities.REQUEST_IMAGE_CAPTURE
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
@@ -216,5 +218,19 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         }
     }
 
-    
+    fun hasCameraPermission(): Boolean {
+        return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
+        )
+    }
+
+    fun launchPhotoActivity() {
+        val (intent, file) = listingPhotoUtilities.createTakePictureIntent()
+        imageFile = file
+        intent.resolveActivity(packageManager)?.also {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        }
+    }
+
 }
