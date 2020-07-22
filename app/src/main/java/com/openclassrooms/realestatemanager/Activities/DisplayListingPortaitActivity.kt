@@ -76,13 +76,13 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         globalVariables = application as GlobalVariableApplication
 
         val intent = intent
-        intent.getLongExtra("LISTING_ID", 0).let {
-            if (it != 0.toLong()) {
-                globalVariables.selectedPortraitListingId = it
-                listingViewModel.getListingForPortraitMode(it)
-            } else {
-                listingViewModel.getListingForPortraitMode(globalVariables.selectedPortraitListingId)
-            }
+        val selectedListingId = intent.getLongExtra("LISTING_ID", 0)
+
+        if (selectedListingId != 0.toLong()) {
+            globalVariables.selectedPortraitListingId = selectedListingId
+            listingViewModel.getListingForPortraitMode(selectedListingId)
+        } else {
+            listingViewModel.getListingForPortraitMode(globalVariables.selectedPortraitListingId)
         }
 
         photoUtilities = ListingPhotoUtilities(this, this)
