@@ -29,15 +29,18 @@ import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listing_information_detail_layout.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 
 //TODO () Implement recycler view and camera feature in this activity.
-class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoViewModel.OnDatabaseActionResult {
+class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingPhotoWindow.PhotoSelectionListener {
 
     lateinit var listingViewModel: ListingViewModel
     lateinit var helper: HelperMethods
 
-    lateinit var listingPhotoUtilities: ListingPhotoUtilities
+    lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var photoRecyclerView: RecyclerView
     lateinit var photoAdapter: ListingPhotoAdapter
     lateinit var listingPhotoViewModel: ListingPhotoViewModel
@@ -81,7 +84,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
             }
         }
 
-        listingPhotoUtilities = ListingPhotoUtilities(this, this)
+        photoUtilities = ListingPhotoUtilities(this, this)
         photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
         photoAdapter = ListingPhotoAdapter(this, photos)
 
@@ -230,7 +233,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
     }
 
     fun launchPhotoActivity() {
-        val (intent, file) = listingPhotoUtilities.createTakePictureIntent()
+        val (intent, file) = photoUtilities.createTakePictureIntent()
         imageFile = file
         intent.resolveActivity(packageManager)?.also {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
@@ -299,6 +302,19 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
                 }
             }
 
+        }
+    }
+
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
+        listingPhotoViewModel.saveListingPhoto(photo)
+
+        if (isHomeImage) {
+            listingViewModel.selectedListing.value?.apply {
+                this.listingMainPhotoUri = photo.photoUri
+                CoroutineScope(Dispatchers.IO).launch {
+                    listingViewModel.updateListing(this@apply)
+                }
+            }
         }
     }
 
