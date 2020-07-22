@@ -5,12 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhoto
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoDao
 import com.openclassrooms.realestatemanager.Utilities.DatabaseTypeConverter
 
-@Database(entities = [Listing::class], version = 1)
+@Database(entities = [Listing::class, ListingPhoto::class], version = 1)
 @TypeConverters(DatabaseTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun listingDao(): ListingDao
+    abstract fun listingPhotoDao(): ListingPhotoDao
 
     companion object {
 

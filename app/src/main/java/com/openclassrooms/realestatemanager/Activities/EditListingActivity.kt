@@ -12,7 +12,6 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.databinding.ListingEditLayoutBinding

@@ -5,27 +5,34 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
 import com.openclassrooms.realestatemanager.Activities.DisplayListingPortaitActivity
+import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.ConversionUtilities
 import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.android.synthetic.main.listing_item_layout.view.*
 import java.util.*
 
-class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val callback: (Listing) -> Unit) : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
+class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val globalVariabales: GlobalVariableApplication, val callback: (Listing) -> Unit) : RecyclerView.Adapter<ListingAdapter.ListingViewHolder>() {
 
     private var listings = emptyList<Listing>()
     var previousView: View? = null
     var previousPosition = -1
     var selectedPosition = -1
     var selectedView: View? = null
+    var initialSelectionCallack: InitialSelection? = null
+
+    var initialSelectionInitializedFlag: Boolean = false
 
     inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val listingItemType = itemView.findViewById<MaterialTextView>(R.id.tv_listing_item_listing_type)
         val listingItemCity = itemView.findViewById<MaterialTextView>(R.id.tv_listing_item_listing_city)
         val listingItemPrice = itemView.findViewById<MaterialTextView>(R.id.tv_listing_item_listing_price)
+        val listingHomeImageView = itemView.findViewById<ImageView>(R.id.iv_listing_item_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListingViewHolder {
@@ -44,6 +51,12 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val callback:
         holder.listingItemCity.text = currentListing.listingCity
         holder.listingItemType.text = currentListing.listingType
         holder.listingItemPrice.text = ConversionUtilities.formatCurrencyIntToString(currentListing.listingPrice, locale)
+
+        Glide.with(holder.itemView.context)
+                .load(currentListing.listingMainPhotoUri)
+                .placeholder(holder.itemView.context.resources.getDrawable(R.drawable.placeholder_image))
+                .error(holder.itemView.context.resources.getDrawable(R.drawable.placeholder_image))
+                .into(holder.listingHomeImageView)
 
         holder.itemView.setOnClickListener {
             if (isLandscape) {
@@ -75,10 +88,18 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val callback:
 
         }
 
+        if (position == globalVariabales.selectedPosition && isLandscape && !initialSelectionInitializedFlag) {
+            this.initialSelectionCallack?.initializeInitialSelection(holder.itemView, position, currentListing)
+        }
+
     }
 
     internal fun setListings(listings: List<Listing>) {
         this.listings = listings
         notifyDataSetChanged()
+    }
+
+    interface InitialSelection {
+        fun initializeInitialSelection(itemView: View, position: Int, listing: Listing)
     }
 }

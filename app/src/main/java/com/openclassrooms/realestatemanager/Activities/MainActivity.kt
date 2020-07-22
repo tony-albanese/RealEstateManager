@@ -1,16 +1,18 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,25 +25,41 @@ import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
+import com.openclassrooms.realestatemanager.ListingPhotos.*
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utilities.HelperMethods
-import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
+import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
+import kotlinx.android.synthetic.main.listing_information_detail_layout.*
+import kotlinx.android.synthetic.main.listing_item_layout.view.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), View.OnLongClickListener {
+class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingAdapter.InitialSelection {
+    //TODO () Add check for camera hardware.
 
+    lateinit var photoUtilities: ListingPhotoUtilities
     lateinit var listingViewModel: ListingViewModel
+    lateinit var listingPhotoViewModel: ListingPhotoViewModel
     lateinit var recyclerView: RecyclerView
+    var photoRecyclerView: RecyclerView? = null
     lateinit var adapter: ListingAdapter
+    lateinit var photoAdapter: ListingPhotoAdapter
     lateinit var helper: HelperMethods
+    lateinit var globalVariables: GlobalVariableApplication
 
+    var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
+    var imageFile: File? = null
     var unpublishedListings = listOf<Listing>()
     var landscapeMode: Boolean = false
 
@@ -52,20 +70,32 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val factory = PhotoViewModelFactory(application, this, null)
+        listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
+        listingPhotoViewModel.listener = this
+
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
         val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
         binding.lifecycleOwner = this
         binding.listingViewModel = listingViewModel
 
+        globalVariables = application as GlobalVariableApplication
+
         landscapeMode = listing_info_landscape_frame_layout != null
         recyclerView = findViewById(R.id.rv_listings)
-        adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, itemViewOnClickListenerCallback)
+        adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, globalVariables, itemViewOnClickListenerCallback)
+        adapter.initialSelectionCallack = this
         helper = HelperMethods()
+        photoUtilities = ListingPhotoUtilities(this, this)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         val itemDecor = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
         recyclerView.addItemDecoration(itemDecor)
         recyclerView.adapter = adapter
+
+        photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
+        photoAdapter = ListingPhotoAdapter(this, photos)
+
 
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -75,7 +105,17 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
                 "listing-db")
                 .build()
 
-        if (landscapeMode) setListingDescriptionListeners()
+
+        if (landscapeMode) {
+            setListingDescriptionListeners()
+            setupImageRecyclerView()
+            ib_take_photo?.setOnClickListener {
+                takePhoto()
+            }
+            ib_add_photo_gallery?.setOnClickListener {
+                getPhotoFromGallery()
+            }
+        }
         setObservers()
     }
 
@@ -88,7 +128,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        //return super.onPrepareOptionsMenu(menu)
         helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
@@ -121,6 +160,9 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     val itemViewOnClickListenerCallback: (Listing) -> Unit = {
         listingViewModel.setCurrentListing(it)
+        listingPhotoViewModel.setSelectedListing(it)
+        globalVariables.selectedListingId = it.id
+        globalVariables.selectedPosition = adapter.selectedPosition
     }
 
     override fun onLongClick(view: View?): Boolean {
@@ -132,7 +174,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         return true
     }
 
-    //TODO: See if you can move this out of the activity.
     fun setListingDescriptionListeners() {
         val descriptionTextView = findViewById<TextView>(R.id.tv_description_body)
         val confirmImageButton = findViewById<ImageButton>(R.id.ib_confirm_description)
@@ -156,7 +197,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
         if (landscapeMode) {
             val listingBodyTextView = findViewById<TextView>(R.id.tv_description_body)
-            val imageView = findViewById<ImageView>(R.id.listing_image_view)
+            val imageView = findViewById<ImageView>(R.id.listing_static_map_image_view)
             listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
                 listingBodyTextView.text = it.listingDescription
 
@@ -200,5 +241,139 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         }
 
     }
-    
+
+    fun setupImageRecyclerView() {
+
+        photoRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        photoRecyclerView?.adapter = photoAdapter
+
+        listingPhotoViewModel.listingPhotos.observe(this, androidx.lifecycle.Observer {
+            photos = it as ArrayList<ListingPhoto>
+            photoAdapter.photoList = photos
+            photoAdapter.notifyDataSetChanged()
+        })
+
+    }
+
+    fun hasCameraPermission(): Boolean {
+        return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
+        )
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_CAMERA_PERMISSION -> {
+                when {
+
+                    grantResults.isEmpty() -> Toast.makeText(this, "Action cancelled", Toast.LENGTH_LONG).show()
+
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
+                        ib_take_photo?.visibility = View.VISIBLE
+                        launchPhotoActivity()
+                    }
+                    else -> {
+                        ib_take_photo?.isEnabled = false
+                        Toast.makeText(this, "Take from the gallery instead.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+
+            REQUEST_EXTERNAL_WRITE_PERMISSION -> {
+                when {
+                    grantResults.isEmpty() -> photoUtilities.storageDir = filesDir
+
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> photoUtilities.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+                    else -> photoUtilities.storageDir = filesDir
+                }
+            }
+        }
+    }//Curly brace for onRequestPermissionResult()
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when {
+            (REQUEST_IMAGE_CAPTURE == requestCode && resultCode == RESULT_OK) -> {
+                if (imageFile?.exists() ?: false) {
+                    val uri = Uri.fromFile(imageFile)
+                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, listingViewModel.selectedListing.value)
+                    photoWindow.listener = this
+                    photoWindow.show()
+                }
+            }
+
+            (REQUEST_IMAGE_FROM_GALLERY == requestCode && resultCode == Activity.RESULT_OK) -> {
+                data?.data?.apply {
+                    val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), this, listingViewModel.selectedListing.value)
+                    photoWindow.listener = this@MainActivity
+                    photoWindow.show()
+                }
+            }
+
+        }
+    }
+
+    fun takePhoto() {
+
+        if (!hasCameraPermission()) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    REQUEST_CAMERA_PERMISSION
+            )
+        } else {
+            launchPhotoActivity()
+        }
+    }
+
+    fun launchPhotoActivity() {
+        val (intent, file) = photoUtilities.createTakePictureIntent()
+        imageFile = file
+        intent.resolveActivity(packageManager)?.also {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        }
+    }
+
+    fun getPhotoFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
+    }
+
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
+        listingPhotoViewModel.saveListingPhoto(photo)
+
+        if (isHomeImage) {
+            listingViewModel.selectedListing.value?.apply {
+                this.listingMainPhotoUri = photo.photoUri
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    async { listingViewModel.updateListing(this@apply) }.await()
+                    runOnUiThread {
+                        adapter.notifyDataSetChanged()
+                    }
+
+                }
+            }
+        }
+    }
+
+    override fun onInsertPhoto(row: Long) {
+        listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedListingId)
+    }
+
+    override fun initializeInitialSelection(itemView: View, position: Int, listing: Listing) {
+        adapter.initialSelectionInitializedFlag = true
+        adapter.selectedView = itemView
+        adapter.selectedPosition = position
+        listingViewModel.setCurrentListing(listing)
+        recyclerView.scrollToPosition(position)
+        itemView.setBackgroundColor(resources.getColor(R.color.colorAccent))
+        itemView.tv_listing_item_listing_price
+                ?.setTextColor(resources.getColor(R.color.white))
+
+        listingPhotoViewModel.getPhotosForLisiting(listing.id)
+    }
 }

@@ -23,7 +23,6 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.openclassrooms.realestatemanager.Activities.EditListingActivity
-import com.openclassrooms.realestatemanager.Constants.LISTING_ID_KEY
 import com.openclassrooms.realestatemanager.Geolocation.GeocodingModel.ForwardGeocodeResponse
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing

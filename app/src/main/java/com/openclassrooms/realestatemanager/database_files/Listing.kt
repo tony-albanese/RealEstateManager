@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.database_files
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -25,7 +26,8 @@ data class Listing(
         @ColumnInfo(name = "listing_agent_name") var listingAgentName: String = "",
         @ColumnInfo(name = "listing_is_published") var listingIsPublished: Boolean = false,
         @ColumnInfo(name = "listing_lat_long") var listingLocation: LatLng? = null,
-        @ColumnInfo(name = "listing_image_url") var listingImageUrl: String = ""
+        @ColumnInfo(name = "listing_image_url") var listingImageUrl: String = "",
+        @ColumnInfo(name = "listing_main_photo") var listingMainPhotoUri: Uri? = null
 
         //TODO: Still need a way to record POIs.
 

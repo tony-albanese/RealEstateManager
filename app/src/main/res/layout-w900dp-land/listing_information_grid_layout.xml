@@ -76,7 +76,7 @@
             tools:text="Location" />
 
         <ImageView
-            android:id="@+id/listing_image_view"
+            android:id="@+id/listing_static_map_image_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

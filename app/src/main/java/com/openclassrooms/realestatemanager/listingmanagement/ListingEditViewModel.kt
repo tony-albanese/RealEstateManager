@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.openclassrooms.realestatemanager.Constants.LISTING_SAVE_FILE
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.CustomDialogBuilder
 import com.openclassrooms.realestatemanager.Utilities.DateUtilities
+import com.openclassrooms.realestatemanager.Utilities.LISTING_SAVE_FILE
 import com.openclassrooms.realestatemanager.Utilities.ListingDataTypeConverters
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
