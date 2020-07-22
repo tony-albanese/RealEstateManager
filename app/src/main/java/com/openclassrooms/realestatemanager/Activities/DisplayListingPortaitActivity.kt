@@ -80,6 +80,8 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
             if (it != 0.toLong()) {
                 globalVariables.selectedPortraitListingId = it
                 listingViewModel.getListingForPortraitMode(it)
+            } else {
+                listingViewModel.getListingForPortraitMode(globalVariables.selectedPortraitListingId)
             }
         }
 
