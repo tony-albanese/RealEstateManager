@@ -1,16 +1,16 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -245,5 +245,62 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
     override fun onInsertPhoto(row: Long) {
         listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedPortraitListingId)
     }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_CAMERA_PERMISSION -> {
+                when {
+
+                    grantResults.isEmpty() -> Toast.makeText(this, "Action cancelled", Toast.LENGTH_LONG).show()
+
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
+                        ib_take_photo?.visibility = View.VISIBLE
+                        launchPhotoActivity()
+                    }
+                    else -> {
+                        ib_take_photo?.isEnabled = false
+                        Toast.makeText(this, "Take from the gallery instead.", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+
+            REQUEST_EXTERNAL_WRITE_PERMISSION -> {
+                when {
+                    grantResults.isEmpty() -> photoUtilities.storageDir = filesDir
+
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED -> photoUtilities.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+                    else -> photoUtilities.storageDir = filesDir
+                }
+            }
+        }
+    }//Curly brace for onRequestPermissionResult()
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when {
+            (REQUEST_IMAGE_CAPTURE == requestCode && resultCode == RESULT_OK) -> {
+                if (imageFile?.exists() ?: false) {
+                    val uri = Uri.fromFile(imageFile)
+                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, listingViewModel.selectedListing.value)
+                    photoWindow.listener = this
+                    photoWindow.show()
+                }
+            }
+
+            (REQUEST_IMAGE_FROM_GALLERY == requestCode && resultCode == Activity.RESULT_OK) -> {
+                data?.data?.apply {
+                    val photoWindow = ListingPhotoWindow(this@DisplayListingPortaitActivity, findViewById(R.id.listing_activity_coordinator_layout), this, listingViewModel.selectedListing.value)
+                    photoWindow.listener = this@DisplayListingPortaitActivity
+                    photoWindow.show()
+                }
+            }
+
+        }
+    }
+
 
 }
