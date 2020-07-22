@@ -34,7 +34,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
-//TODO () Implement recycler view and camera feature in this activity.
 class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingPhotoWindow.PhotoSelectionListener {
 
     lateinit var listingViewModel: ListingViewModel
@@ -249,7 +248,6 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedPortraitListingId)
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -316,6 +314,8 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
                 }
             }
         }
+
+
     }
 
 
