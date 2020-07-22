@@ -13,10 +13,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhoto
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoAdapter
+import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
@@ -25,13 +29,22 @@ import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listing_information_detail_layout.*
+import java.io.File
+
 //TODO () Implement recycler view and camera feature in this activity.
 class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener {
 
     lateinit var listingViewModel: ListingViewModel
     lateinit var helper: HelperMethods
 
+    lateinit var listingPhotoUtilities: ListingPhotoUtilities
+    lateinit var photoRecyclerView: RecyclerView
+    lateinit var photoAdapter: ListingPhotoAdapter
+
+    var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
+    var imageFile: File? = null
     var unpublishedListings = listOf<Listing>()
+
     /*
     This is the activity that will be launched if the device is in portrait mode.
     It will display the info for a selected listing.
@@ -58,6 +71,11 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
                 listingViewModel.getListingForPortraitMode(it)
             }
         }
+
+        listingPhotoUtilities = ListingPhotoUtilities(this, this)
+        photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
+        photoAdapter = ListingPhotoAdapter(this, photos)
+
 
         setListingDescriptionListeners()
         setObservers()
