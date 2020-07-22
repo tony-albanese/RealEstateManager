@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,7 @@ import com.openclassrooms.realestatemanager.ListingPhotos.ListingPhotoUtilities
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
+import com.openclassrooms.realestatemanager.Utilities.REQUEST_CAMERA_PERMISSION
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
@@ -201,4 +203,18 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         })
 
     }
+
+    fun takePhoto() {
+
+        if (!hasCameraPermission()) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    REQUEST_CAMERA_PERMISSION
+            )
+        } else {
+            launchPhotoActivity()
+        }
+    }
+
+    
 }
