@@ -23,10 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.ListingPhotos.*
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utilities.HelperMethods
-import com.openclassrooms.realestatemanager.Utilities.LISTING_ID
-import com.openclassrooms.realestatemanager.Utilities.REQUEST_CAMERA_PERMISSION
-import com.openclassrooms.realestatemanager.Utilities.REQUEST_IMAGE_CAPTURE
+import com.openclassrooms.realestatemanager.Utilities.*
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingInformationDetailLayoutBinding
@@ -60,6 +57,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
 
         val factory = PhotoViewModelFactory(application, this, null)
         listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
+        listingPhotoViewModel.listener = this
 
         val binding: ListingInformationDetailLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listing_information_detail_layout)
         binding.viewModel = listingViewModel
@@ -233,6 +231,11 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         intent.resolveActivity(packageManager)?.also {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
+    }
+
+    fun getPhotoFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
     }
 
 }
