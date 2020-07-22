@@ -81,8 +81,10 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         if (selectedListingId != 0.toLong()) {
             globalVariables.selectedPortraitListingId = selectedListingId
             listingViewModel.getListingForPortraitMode(selectedListingId)
+            listingPhotoViewModel.getPhotosForLisiting(selectedListingId)
         } else {
             listingViewModel.getListingForPortraitMode(globalVariables.selectedPortraitListingId)
+            listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedListingId)
         }
 
         photoUtilities = ListingPhotoUtilities(this, this)
@@ -248,6 +250,9 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
 
     override fun onInsertPhoto(row: Long) {
         listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedPortraitListingId)
+        runOnUiThread {
+            photoAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -288,7 +293,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
             (REQUEST_IMAGE_CAPTURE == requestCode && resultCode == RESULT_OK) -> {
                 if (imageFile?.exists() ?: false) {
                     val uri = Uri.fromFile(imageFile)
-                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, listingViewModel.selectedListing.value)
+                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.display_listing_constraint_layout), uri, listingViewModel.selectedListing.value)
                     photoWindow.listener = this
                     photoWindow.show()
                 }
@@ -296,7 +301,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
 
             (REQUEST_IMAGE_FROM_GALLERY == requestCode && resultCode == Activity.RESULT_OK) -> {
                 data?.data?.apply {
-                    val photoWindow = ListingPhotoWindow(this@DisplayListingPortaitActivity, findViewById(R.id.listing_activity_coordinator_layout), this, listingViewModel.selectedListing.value)
+                    val photoWindow = ListingPhotoWindow(this@DisplayListingPortaitActivity, findViewById(R.id.display_listing_constraint_layout), this, listingViewModel.selectedListing.value)
                     photoWindow.listener = this@DisplayListingPortaitActivity
                     photoWindow.show()
                 }
