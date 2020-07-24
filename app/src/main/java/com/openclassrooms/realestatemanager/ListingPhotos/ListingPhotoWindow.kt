@@ -86,6 +86,10 @@ class ListingPhotoWindow(
             }
         }
 
+        deletePhotoButton.setOnClickListener {
+            deletePhoto(photoUri)
+        }
+
         initializeButtonStates()
 
         @Suppress("DEPRECATION")
@@ -102,6 +106,7 @@ class ListingPhotoWindow(
 
     interface PhotoSelectionListener {
         fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean)
+        fun onPhotoDelete(uri: Uri, resultCode: Int)
     }
 
     private fun createListingPhoto() {
@@ -129,5 +134,20 @@ class ListingPhotoWindow(
             }
         }
         //TODO: Set the state of the editing buttons if the current user is the user that owns the listing.
+    }
+
+    private fun deletePhoto(uri: Uri) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = async { listingPhotoRepository.deleteListingPhoto(uri) }.await()
+            if (result == 1) {
+                selectedListing?.apply {
+                    listingMainPhotoUri = null
+                    val result = async { listingRepository.updateListing(this@apply) }.await()
+                    listener?.onPhotoDelete(uri, result)
+                }
+            } else {
+                listener?.onPhotoDelete(uri, result)
+            }
+        }
     }
 }
