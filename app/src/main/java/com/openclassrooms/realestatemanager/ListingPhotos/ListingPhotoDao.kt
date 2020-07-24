@@ -21,4 +21,7 @@ interface ListingPhotoDao {
 
     @Query("SELECT * FROM table_listing_photos WHERE photo_uri = :uri")
     fun getPhotoByUri(uri: Uri): ListingPhoto
+
+    @Query("DELETE FROM table_listing_photos WHERE photo_uri = :uri")
+    fun deleteListingPhoto(uri: Uri): Int
 }

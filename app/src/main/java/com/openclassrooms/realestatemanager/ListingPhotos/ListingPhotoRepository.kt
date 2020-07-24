@@ -19,4 +19,8 @@ class ListingPhotoRepository(
     suspend fun getPhotoByUri(uri: Uri): ListingPhoto {
         return listingPhotoDao.getPhotoByUri(uri)
     }
+
+    suspend fun deleteListingPhoto(uri: Uri): Int {
+        return listingPhotoDao.deleteListingPhoto(uri)
+    }
 }
