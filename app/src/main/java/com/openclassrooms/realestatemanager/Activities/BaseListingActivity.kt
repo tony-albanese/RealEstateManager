@@ -3,6 +3,8 @@ package com.openclassrooms.realestatemanager.Activities
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
@@ -12,6 +14,7 @@ import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
+import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import java.io.File
 
 class BaseListingActivity : AppCompatActivity() {
@@ -27,7 +30,7 @@ class BaseListingActivity : AppCompatActivity() {
 
     //Declare references to objects related to the selected listing.
     lateinit var listingViewModel: ListingViewModel
-    lateinit var recyclerView: RecyclerView
+    var recyclerView: RecyclerView? = null
     lateinit var adapter: ListingAdapter
     var unpublishedListings = listOf<Listing>()
 
@@ -45,7 +48,7 @@ class BaseListingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        setContentView(R.layout.listings_activity_layout)
+        //setContentView(R.layout.listings_activity_layout)
 
         //Initialize the Room database.
         MainActivity.database = Room.databaseBuilder(this,
@@ -53,6 +56,13 @@ class BaseListingActivity : AppCompatActivity() {
                 "listing-db")
                 .build()
 
-        
+        //Initialize the objects for displaying the listings.
+        listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
+        val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
+        binding.apply {
+            lifecycleOwner = this@BaseListingActivity
+            listingViewModel = this@BaseListingActivity.listingViewModel
+        }
+
     }
 }
