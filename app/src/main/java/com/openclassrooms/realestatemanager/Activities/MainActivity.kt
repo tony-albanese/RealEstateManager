@@ -391,7 +391,12 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun onPhotoLongPress(selectedPhoto: ListingPhoto) {
-
+        //TODO: Only set this if the current user owns the listing.
+        selectedPhoto.photoUri?.let {
+            val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), it, listingViewModel.selectedListing.value)
+            photoWindow.listener = this@MainActivity
+            photoWindow.show()
+        }
     }
 
     override fun onPhotoTap(selectedPhoto: ListingPhoto) {
