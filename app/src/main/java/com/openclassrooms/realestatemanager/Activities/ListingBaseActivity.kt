@@ -1,6 +1,10 @@
 package com.openclassrooms.realestatemanager.Activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.bumptech.glide.Glide
+import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
 import com.openclassrooms.realestatemanager.R
@@ -132,4 +137,50 @@ class ListingBaseActivity : AppCompatActivity() {
     private fun setupImageRecyclerView() {
 
     }
+
+
+    //region Initialize menus
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        menu?.getItem(1)?.setEnabled(landscapeMode)
+        menu?.getItem(1)?.setVisible(landscapeMode)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        helperMethods.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_item_add_listing -> {
+                helperMethods.onAddNewListingClick(this)
+                finish()
+                return true
+            }
+            R.id.menu_item_edit_listing -> {
+                helperMethods.onEditListingClick(this, listingViewModel.selectedListing.value?.id
+                        ?: 0.toLong())
+                finish()
+                return true
+            }
+            R.id.menu_item_map_view -> {
+                val intent = Intent(this, AllListingsMapActivity::class.java)
+                startActivity(intent)
+                finish()
+                return true
+            }
+            R.id.menu_item_search_listings -> {
+                return true
+            }
+            else -> {
+                helperMethods.onUnpublishedListingClick(this, unpublishedListings, item.itemId.toLong())
+                return true
+            }
+        }
+    }
+
+    //endregion
 }
