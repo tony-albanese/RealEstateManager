@@ -338,19 +338,23 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         }
     }
 
-    override fun onPhotoDelete(uri: Uri, resultCode: Boolean) {
-        if (resultCode) {
-            Toast.makeText(this, "Photo removed.", Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show()
+    override fun onPhotoDelete(uri: Uri, listingId: Long, resultCode: Boolean) {
+        runOnUiThread {
+            if (resultCode) {
+                Toast.makeText(this, "Photo removed.", Toast.LENGTH_LONG).show()
+                listingPhotoViewModel.getPhotosForLisiting(listingId)
+            } else {
+                Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show()
+            }
         }
+
     }
 
     override fun onPhotoLongPress(selectedPhoto: ListingPhoto) {
 
         //TODO: Only set this if the current user owns the listing.
         selectedPhoto.photoUri?.let {
-            val photoWindow = ListingPhotoWindow(this@DisplayListingPortaitActivity, findViewById(R.id.display_listing_constraint_layout), it, listingViewModel.selectedListing.value)
+            val photoWindow = ListingPhotoWindow(this@DisplayListingPortaitActivity, findViewById(R.id.display_listing_constraint_layout), it, listingViewModel.selectedListing.value, selectedPhoto)
             photoWindow.listener = this@DisplayListingPortaitActivity
             photoWindow.show()
         }

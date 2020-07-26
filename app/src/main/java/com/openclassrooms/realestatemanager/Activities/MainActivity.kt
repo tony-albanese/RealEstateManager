@@ -381,10 +381,11 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedListingId)
     }
 
-    override fun onPhotoDelete(uri: Uri, resultCode: Boolean) {
+    override fun onPhotoDelete(uri: Uri, listingId: Long, resultCode: Boolean) {
         runOnUiThread {
             if (resultCode) {
                 Toast.makeText(this, "Photo removed.", Toast.LENGTH_LONG).show()
+                listingPhotoViewModel.getPhotosForLisiting(listingId)
             } else {
                 Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show()
             }

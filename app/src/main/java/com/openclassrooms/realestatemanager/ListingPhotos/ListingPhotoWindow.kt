@@ -113,7 +113,7 @@ class ListingPhotoWindow(
 
     interface PhotoSelectionListener {
         fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, isNewPhoto: Boolean = true)
-        fun onPhotoDelete(uri: Uri, resultStatus: Boolean)
+        fun onPhotoDelete(uri: Uri, listingId: Long, resultStatus: Boolean)
     }
 
     private fun createListingPhoto() {
@@ -159,13 +159,13 @@ class ListingPhotoWindow(
                         listingMainPhotoUri = null
                     }
                     val updateResult = async { listingRepository.updateListing(this@apply) }.await()
-                    listener?.onPhotoDelete(uri, updateResult == 1)
+                    listener?.onPhotoDelete(uri, this.id, updateResult == 1)
 
                 }
             } else {
                 val file = File(uri.path ?: "")
                 val fileDeleteResult = file.delete()
-                listener?.onPhotoDelete(uri, fileDeleteResult)
+                listener?.onPhotoDelete(uri, selectedListing?.id ?: 0, fileDeleteResult)
             }
         }
     }
