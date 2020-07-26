@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
@@ -18,6 +20,10 @@ import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.util.*
 
 class ListingBaseActivity : AppCompatActivity() {
+
+    companion object {
+        var database: AppDatabase? = null
+    }
 
     //References to utility objects.
     lateinit var globalVariables: GlobalVariableApplication
@@ -33,6 +39,13 @@ class ListingBaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Initialize the database.
+        database = Room.databaseBuilder(this,
+                AppDatabase::class.java,
+                "listing-db")
+                .build()
+
 
         //Initialize helper and utility objects.
         globalVariables = application as GlobalVariableApplication
