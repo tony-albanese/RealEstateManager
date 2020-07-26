@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.Activities
 
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
 import com.openclassrooms.realestatemanager.R
@@ -34,6 +37,7 @@ class ListingBaseActivity : AppCompatActivity() {
     lateinit var listingViewModel: ListingViewModel
     var recyclerView: RecyclerView? = null
     lateinit var adapter: ListingAdapter
+    var unpublishedListings = listOf<Listing>()
 
 
     //Misc data about state
@@ -79,6 +83,7 @@ class ListingBaseActivity : AppCompatActivity() {
             adapter = adapter
         }
 
+        setListingObservers()
 
     }
 
@@ -88,5 +93,43 @@ class ListingBaseActivity : AppCompatActivity() {
         //listingPhotoViewModel.setSelectedListing(it)
         globalVariables.selectedListingId = it.id
         globalVariables.selectedPosition = adapter.selectedPosition
+    }
+
+    //This method sets all the observers that have to do with displaying the listing.
+    private fun setListingObservers() {
+        listingViewModel.publishedListings.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+                adapter.setListings(it)
+                adapter.notifyDataSetChanged()
+            }
+        })
+
+        listingViewModel.unpublishedListings.observe(this, androidx.lifecycle.Observer {
+            unpublishedListings = it
+            invalidateOptionsMenu()
+        })
+
+        val listingBodyTextView: TextView? = findViewById<TextView>(R.id.tv_description_body)
+        val staticMapImageView: ImageView? = findViewById<ImageView>(R.id.listing_static_map_image_view)
+        listingViewModel.selectedListing.observe(this, androidx.lifecycle.Observer {
+            listingBodyTextView?.text = it.listingDescription
+
+            staticMapImageView?.apply {
+                Glide.with(this@ListingBaseActivity)
+                        .load(it.listingImageUrl)
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.placeholder_image)
+                        .into(this)
+            }
+        })
+
+    }
+
+    private fun setListingPhotoObservers() {
+
+    }
+
+    private fun setupImageRecyclerView() {
+
     }
 }
