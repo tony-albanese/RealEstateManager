@@ -311,9 +311,23 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         }
     }
 
-    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
-        listingPhotoViewModel.saveListingPhoto(photo)
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, newPhoto: Boolean) {
+        if (newPhoto) {
+            listingPhotoViewModel.saveListingPhoto(photo)
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                val result = listingPhotoViewModel.updateListingPhoto(photo)
+                runOnUiThread {
+                    if (result != 0) {
+                        Toast.makeText(this@DisplayListingPortaitActivity, "Photo Update: ${result}", Toast.LENGTH_LONG).show()
+                        listingPhotoViewModel.getPhotosForLisiting(photo.listingId)
+                    } else {
+                        Toast.makeText(this@DisplayListingPortaitActivity, "Photo update failed", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
 
+        }
         if (isHomeImage) {
             listingViewModel.selectedListing.value?.apply {
                 this.listingMainPhotoUri = photo.photoUri
@@ -322,8 +336,6 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
                 }
             }
         }
-
-
     }
 
     override fun onPhotoDelete(uri: Uri, resultCode: Boolean) {

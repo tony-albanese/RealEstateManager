@@ -344,8 +344,23 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
     }
 
-    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
-        listingPhotoViewModel.saveListingPhoto(photo)
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, newPhoto: Boolean) {
+        if (newPhoto) {
+            listingPhotoViewModel.saveListingPhoto(photo)
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                val result = listingPhotoViewModel.updateListingPhoto(photo)
+                runOnUiThread {
+                    if (result != 0) {
+                        Toast.makeText(this@MainActivity, "Photo Update: ${result}", Toast.LENGTH_LONG).show()
+                        listingPhotoViewModel.getPhotosForLisiting(photo.listingId)
+                    } else {
+                        Toast.makeText(this@MainActivity, "Photo update failed", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+
+        }
 
         if (isHomeImage) {
             listingViewModel.selectedListing.value?.apply {
@@ -393,7 +408,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     override fun onPhotoLongPress(selectedPhoto: ListingPhoto) {
         //TODO: Only set this if the current user owns the listing.
         selectedPhoto.photoUri?.let {
-            val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), it, listingViewModel.selectedListing.value)
+            val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), it, listingViewModel.selectedListing.value, selectedPhoto)
             photoWindow.listener = this@MainActivity
             photoWindow.show()
         }
