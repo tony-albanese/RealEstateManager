@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listings_information_layout.*
@@ -39,7 +40,7 @@ class ListingBaseActivity : AppCompatActivity() {
         landscapeMode = listing_info_landscape_frame_layout != null
 
         //Setup the recyclerview and adapter for the listings.
-        adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, globalVariables, itemViewOnClickListenerCallback)
+        adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, globalVariables, listingAdapterItemViewClickCallback)
 
         //This recyclerview might be null.
         recyclerView = findViewById(R.id.rv_listings)
@@ -49,5 +50,15 @@ class ListingBaseActivity : AppCompatActivity() {
             addItemDecoration(itemDecor)
             adapter = adapter
         }
+
+
+    }
+
+    //This is the callback that will run when the user clicks on a listing. 
+    val listingAdapterItemViewClickCallback: (Listing) -> Unit = {
+        listingViewModel.setCurrentListing(it)
+        listingPhotoViewModel.setSelectedListing(it)
+        globalVariables.selectedListingId = it.id
+        globalVariables.selectedPosition = adapter.selectedPosition
     }
 }
