@@ -13,6 +13,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
+import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.util.*
 
@@ -44,7 +45,8 @@ class ListingBaseActivity : AppCompatActivity() {
         binding.listingViewModel = listingViewModel
 
         //Setup the toolbar.
-        
+        setSupportActionBar(toolbar)
+        toolbar.title = title
 
         //Determine if we're in landscape mode.
         landscapeMode = listing_info_landscape_frame_layout != null
