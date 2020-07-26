@@ -364,12 +364,15 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedListingId)
     }
 
-    override fun onPhotoDelete(uri: Uri, resultCode: Int) {
-        if (resultCode == 1) {
-            Toast.makeText(this, "All deleted OK", Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(this, "Something failed", Toast.LENGTH_LONG).show()
+    override fun onPhotoDelete(uri: Uri, resultCode: Boolean) {
+        runOnUiThread {
+            if (resultCode) {
+                Toast.makeText(this, "Photo removed.", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show()
+            }
         }
+
     }
 
     override fun initializeInitialSelection(itemView: View, position: Int, listing: Listing) {
