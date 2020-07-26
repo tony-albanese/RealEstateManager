@@ -90,7 +90,15 @@ class ListingPhotoWindow(
 
         initializeButtonStates()
 
-        
+        photo?.let {
+            photoDescriptionEditText?.setText(it.photoDescription)
+        }
+
+        if ((selectedListing?.listingMainPhotoUri != photo?.photoUri)) {
+            homeImageTextView.visibility = View.GONE
+        } else {
+            homeImageTextView.visibility = View.VISIBLE
+        }
         @Suppress("DEPRECATION")
         Glide.with(context)
                 .load(photoUri)
@@ -144,16 +152,20 @@ class ListingPhotoWindow(
     private fun deletePhoto(uri: Uri) {
         CoroutineScope(Dispatchers.IO).launch {
             val result = async { listingPhotoRepository.deleteListingPhoto(uri) }.await()
+
             if (result == 1) {
                 selectedListing?.apply {
-                    listingMainPhotoUri = null
-                    val result = async { listingRepository.updateListing(this@apply) }.await()
-                    listener?.onPhotoDelete(uri, result == 1)
+                    if (this.listingMainPhotoUri == uri) {
+                        listingMainPhotoUri = null
+                    }
+                    val updateResult = async { listingRepository.updateListing(this@apply) }.await()
+                    listener?.onPhotoDelete(uri, updateResult == 1)
+
                 }
             } else {
-                val file = File(uri.path)
-                val result = file.delete()
-                listener?.onPhotoDelete(uri, result)
+                val file = File(uri.path ?: "")
+                val fileDeleteResult = file.delete()
+                listener?.onPhotoDelete(uri, fileDeleteResult)
             }
         }
     }
