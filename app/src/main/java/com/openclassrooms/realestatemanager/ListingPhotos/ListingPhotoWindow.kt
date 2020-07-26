@@ -57,6 +57,7 @@ class ListingPhotoWindow(
 
             deletePhotoButton = findViewById(R.id.btn_delete_photo)
             setHomePhotoButton = findViewById(R.id.ib_set_main_photo)
+            setHomePhotoButton.bringToFront()
             homeImageTextView = findViewById(R.id.tv_showcase_photo_set)
 
             val listingDao = AppDatabase.getDatabase(context).listingDao()
