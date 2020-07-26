@@ -38,7 +38,6 @@ class ListingPhotoWindow(
     val imageView: ImageView
     val photoDescriptionEditText: TextInputEditText?
     val okButton: MaterialButton
-    val cancelButton: MaterialButton
     val deletePhotoButton: ImageButton
     val setHomePhotoButton: ImageButton
     val homeImageTextView: TextView
@@ -55,9 +54,8 @@ class ListingPhotoWindow(
             imageView = findViewById<ImageView>(R.id.iv_photo_select)
             photoDescriptionEditText = findViewById<TextInputEditText>(R.id.et_listing_photo_description)
             okButton = findViewById(R.id.btn_select_photo)
-            cancelButton = findViewById(R.id.btn_cancel_photo)
 
-            deletePhotoButton = findViewById(R.id.ib_delete_photo)
+            deletePhotoButton = findViewById(R.id.btn_delete_photo)
             setHomePhotoButton = findViewById(R.id.ib_set_main_photo)
             homeImageTextView = findViewById(R.id.tv_showcase_photo_set)
 
@@ -69,10 +67,6 @@ class ListingPhotoWindow(
         }
 
         popupWindow = PopupWindow(popupContentView, CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT, true)
-
-        cancelButton.setOnClickListener {
-            popupWindow.dismiss()
-        }
 
         okButton.setOnClickListener {
             createListingPhoto()
