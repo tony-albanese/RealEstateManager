@@ -5,15 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/ib_delete_photo"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/ic_action_delete_listing"
-        app:layout_constraintEnd_toStartOf="@+id/ib_set_main_photo"
-        app:layout_constraintTop_toTopOf="@+id/ib_set_main_photo" />
-
 
     <ImageButton
         android:id="@+id/ib_set_main_photo"
@@ -61,11 +52,11 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_cancel_photo"
+        android:id="@+id/btn_delete_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="Cancel"
+        android:text="Delete"
         app:layout_constraintBottom_toBottomOf="@+id/btn_select_photo"
         app:layout_constraintEnd_toStartOf="@+id/btn_select_photo"
         app:layout_constraintTop_toTopOf="@+id/btn_select_photo" />

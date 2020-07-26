@@ -21,12 +21,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.io.File
 
 class ListingPhotoWindow(
         val context: Context,
         val anchorView: View,
         val photoUri: Uri,
-        val selectedListing: Listing?
+        val selectedListing: Listing?,
+        val photo: ListingPhoto? = null
 ) {
 
     var listener: PhotoSelectionListener? = null
@@ -37,8 +39,7 @@ class ListingPhotoWindow(
     val imageView: ImageView
     val photoDescriptionEditText: TextInputEditText?
     val okButton: MaterialButton
-    val cancelButton: MaterialButton
-    val deletePhotoButton: ImageButton
+    val deletePhotoButton: MaterialButton
     val setHomePhotoButton: ImageButton
     val homeImageTextView: TextView
 
@@ -54,10 +55,10 @@ class ListingPhotoWindow(
             imageView = findViewById<ImageView>(R.id.iv_photo_select)
             photoDescriptionEditText = findViewById<TextInputEditText>(R.id.et_listing_photo_description)
             okButton = findViewById(R.id.btn_select_photo)
-            cancelButton = findViewById(R.id.btn_cancel_photo)
 
-            deletePhotoButton = findViewById(R.id.ib_delete_photo)
+            deletePhotoButton = findViewById(R.id.btn_delete_photo)
             setHomePhotoButton = findViewById(R.id.ib_set_main_photo)
+            setHomePhotoButton.bringToFront()
             homeImageTextView = findViewById(R.id.tv_showcase_photo_set)
 
             val listingDao = AppDatabase.getDatabase(context).listingDao()
@@ -68,10 +69,6 @@ class ListingPhotoWindow(
         }
 
         popupWindow = PopupWindow(popupContentView, CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT, true)
-
-        cancelButton.setOnClickListener {
-            popupWindow.dismiss()
-        }
 
         okButton.setOnClickListener {
             createListingPhoto()
@@ -86,8 +83,22 @@ class ListingPhotoWindow(
             }
         }
 
+        deletePhotoButton.setOnClickListener {
+            deletePhoto(photoUri)
+            popupWindow.dismiss()
+        }
+
         initializeButtonStates()
 
+        photo?.let {
+            photoDescriptionEditText?.setText(it.photoDescription)
+        }
+
+        if ((selectedListing?.listingMainPhotoUri != photo?.photoUri)) {
+            homeImageTextView.visibility = View.GONE
+        } else {
+            homeImageTextView.visibility = View.VISIBLE
+        }
         @Suppress("DEPRECATION")
         Glide.with(context)
                 .load(photoUri)
@@ -101,14 +112,21 @@ class ListingPhotoWindow(
     }
 
     interface PhotoSelectionListener {
-        fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean)
+        fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, isNewPhoto: Boolean = true)
+        fun onPhotoDelete(uri: Uri, listingId: Long, resultStatus: Boolean)
     }
 
     private fun createListingPhoto() {
         val isHomeImage = homeImageTextView.visibility == View.VISIBLE
-        val photo = ListingPhoto(0, selectedListing?.id
-                ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
-        listener?.onPhotoSelection(photo, isHomeImage)
+        if (photo == null) {
+            val newPhoto = ListingPhoto(0, selectedListing?.id
+                    ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
+            listener?.onPhotoSelection(newPhoto, isHomeImage)
+        } else {
+            photo.photoDescription = photoDescriptionEditText?.text.toString()
+            listener?.onPhotoSelection(photo, isHomeImage, false)
+        }
+
     }
 
     private fun initializeButtonStates() {
@@ -129,5 +147,26 @@ class ListingPhotoWindow(
             }
         }
         //TODO: Set the state of the editing buttons if the current user is the user that owns the listing.
+    }
+
+    private fun deletePhoto(uri: Uri) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = async { listingPhotoRepository.deleteListingPhoto(uri) }.await()
+
+            if (result == 1) {
+                selectedListing?.apply {
+                    if (this.listingMainPhotoUri == uri) {
+                        listingMainPhotoUri = null
+                    }
+                    val updateResult = async { listingRepository.updateListing(this@apply) }.await()
+                    listener?.onPhotoDelete(uri, this.id, updateResult == 1)
+
+                }
+            } else {
+                val file = File(uri.path ?: "")
+                val fileDeleteResult = file.delete()
+                listener?.onPhotoDelete(uri, selectedListing?.id ?: 0, fileDeleteResult)
+            }
+        }
     }
 }

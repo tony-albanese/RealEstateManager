@@ -45,7 +45,7 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingAdapter.InitialSelection {
+class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingAdapter.InitialSelection, ListingPhotoAdapter.ImageClickCallback {
     //TODO () Add check for camera hardware.
 
     lateinit var photoUtilities: ListingPhotoUtilities
@@ -247,6 +247,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         photoRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecyclerView?.adapter = photoAdapter
 
+        photoAdapter.photoTapCallbacks = this
+
         listingPhotoViewModel.listingPhotos.observe(this, androidx.lifecycle.Observer {
             photos = it as ArrayList<ListingPhoto>
             photoAdapter.photoList = photos
@@ -342,8 +344,23 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         startActivityForResult(intent, REQUEST_IMAGE_FROM_GALLERY)
     }
 
-    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
-        listingPhotoViewModel.saveListingPhoto(photo)
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, newPhoto: Boolean) {
+        if (newPhoto) {
+            listingPhotoViewModel.saveListingPhoto(photo)
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                val result = listingPhotoViewModel.updateListingPhoto(photo)
+                runOnUiThread {
+                    if (result != 0) {
+                        Toast.makeText(this@MainActivity, "Photo Update: ${result}", Toast.LENGTH_LONG).show()
+                        listingPhotoViewModel.getPhotosForLisiting(photo.listingId)
+                    } else {
+                        Toast.makeText(this@MainActivity, "Photo update failed", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+
+        }
 
         if (isHomeImage) {
             listingViewModel.selectedListing.value?.apply {
@@ -364,6 +381,18 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedListingId)
     }
 
+    override fun onPhotoDelete(uri: Uri, listingId: Long, resultCode: Boolean) {
+        runOnUiThread {
+            if (resultCode) {
+                Toast.makeText(this, "Photo removed.", Toast.LENGTH_LONG).show()
+                listingPhotoViewModel.getPhotosForLisiting(listingId)
+            } else {
+                Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show()
+            }
+        }
+
+    }
+
     override fun initializeInitialSelection(itemView: View, position: Int, listing: Listing) {
         adapter.initialSelectionInitializedFlag = true
         adapter.selectedView = itemView
@@ -375,5 +404,19 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
                 ?.setTextColor(resources.getColor(R.color.white))
 
         listingPhotoViewModel.getPhotosForLisiting(listing.id)
+    }
+
+    override fun onPhotoLongPress(selectedPhoto: ListingPhoto) {
+        //TODO: Only set this if the current user owns the listing.
+        selectedPhoto.photoUri?.let {
+            val photoWindow = ListingPhotoWindow(this@MainActivity, findViewById(R.id.listing_activity_coordinator_layout), it, listingViewModel.selectedListing.value, selectedPhoto)
+            photoWindow.listener = this@MainActivity
+            photoWindow.show()
+        }
+    }
+
+    override fun onPhotoTap(selectedPhoto: ListingPhoto) {
+        val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), selectedPhoto.photoUri)
+        photoWindow.show()
     }
 }

@@ -34,7 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
-class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingPhotoWindow.PhotoSelectionListener {
+class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoAdapter.ImageClickCallback {
 
     lateinit var listingViewModel: ListingViewModel
     lateinit var helper: HelperMethods
@@ -90,6 +90,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         photoUtilities = ListingPhotoUtilities(this, this)
         photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
         photoAdapter = ListingPhotoAdapter(this, photos)
+        photoAdapter.photoTapCallbacks = this
 
 
         setListingDescriptionListeners()
@@ -310,9 +311,23 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         }
     }
 
-    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean) {
-        listingPhotoViewModel.saveListingPhoto(photo)
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, newPhoto: Boolean) {
+        if (newPhoto) {
+            listingPhotoViewModel.saveListingPhoto(photo)
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                val result = listingPhotoViewModel.updateListingPhoto(photo)
+                runOnUiThread {
+                    if (result != 0) {
+                        Toast.makeText(this@DisplayListingPortaitActivity, "Photo Update: ${result}", Toast.LENGTH_LONG).show()
+                        listingPhotoViewModel.getPhotosForLisiting(photo.listingId)
+                    } else {
+                        Toast.makeText(this@DisplayListingPortaitActivity, "Photo update failed", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
 
+        }
         if (isHomeImage) {
             listingViewModel.selectedListing.value?.apply {
                 this.listingMainPhotoUri = photo.photoUri
@@ -321,8 +336,33 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
                 }
             }
         }
+    }
 
+    override fun onPhotoDelete(uri: Uri, listingId: Long, resultCode: Boolean) {
+        runOnUiThread {
+            if (resultCode) {
+                Toast.makeText(this, "Photo removed.", Toast.LENGTH_LONG).show()
+                listingPhotoViewModel.getPhotosForLisiting(listingId)
+            } else {
+                Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show()
+            }
+        }
 
+    }
+
+    override fun onPhotoLongPress(selectedPhoto: ListingPhoto) {
+
+        //TODO: Only set this if the current user owns the listing.
+        selectedPhoto.photoUri?.let {
+            val photoWindow = ListingPhotoWindow(this@DisplayListingPortaitActivity, findViewById(R.id.display_listing_constraint_layout), it, listingViewModel.selectedListing.value, selectedPhoto)
+            photoWindow.listener = this@DisplayListingPortaitActivity
+            photoWindow.show()
+        }
+    }
+
+    override fun onPhotoTap(selectedPhoto: ListingPhoto) {
+        val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.display_listing_constraint_layout), selectedPhoto.photoUri)
+        photoWindow.show()
     }
 
 
