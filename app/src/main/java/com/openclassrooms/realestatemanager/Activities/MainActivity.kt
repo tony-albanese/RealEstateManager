@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     var photoRecyclerView: RecyclerView? = null
     lateinit var adapter: ListingAdapter
     lateinit var photoAdapter: ListingPhotoAdapter
-    lateinit var helper: HelperMethods
+    lateinit var helperMethods
+            : HelperMethods
     lateinit var globalVariables: GlobalVariableApplication
 
     var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         recyclerView = findViewById(R.id.rv_listings)
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, globalVariables, itemViewOnClickListenerCallback)
         adapter.initialSelectionCallack = this
-        helper = HelperMethods()
+        helperMethods = HelperMethods()
         photoUtilities = ListingPhotoUtilities(this, this)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -128,19 +129,19 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
+        helperMethods.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_add_listing -> {
-                helper.onAddNewListingClick(this)
+                helperMethods.onAddNewListingClick(this)
                 finish()
                 return true
             }
             R.id.menu_item_edit_listing -> {
-                helper.onEditListingClick(this, listingViewModel.selectedListing.value?.id
+                helperMethods.onEditListingClick(this, listingViewModel.selectedListing.value?.id
                         ?: 0.toLong())
                 finish()
                 return true
@@ -151,8 +152,13 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
                 finish()
                 return true
             }
+            R.id.menu_item_search_listings -> {
+                val intent = Intent(this, ListingBaseActivity::class.java)
+                startActivity(intent)
+                return true
+            }
             else -> {
-                helper.onUnpublishedListingClick(this, unpublishedListings, item.itemId.toLong())
+                helperMethods.onUnpublishedListingClick(this, unpublishedListings, item.itemId.toLong())
                 return true
             }
         }
