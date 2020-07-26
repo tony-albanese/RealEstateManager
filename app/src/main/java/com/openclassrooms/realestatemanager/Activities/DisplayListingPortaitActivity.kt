@@ -325,5 +325,13 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
 
     }
 
+    override fun onPhotoDelete(uri: Uri, resultCode: Int) {
+        if (resultCode == 1) {
+            Toast.makeText(this, "All deleted OK", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Something failed", Toast.LENGTH_LONG).show()
+        }
+    }
+
 
 }
