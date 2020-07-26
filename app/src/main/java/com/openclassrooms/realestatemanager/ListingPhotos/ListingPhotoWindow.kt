@@ -27,7 +27,8 @@ class ListingPhotoWindow(
         val context: Context,
         val anchorView: View,
         val photoUri: Uri,
-        val selectedListing: Listing?
+        val selectedListing: Listing?,
+        val photo: ListingPhoto? = null
 ) {
 
     var listener: PhotoSelectionListener? = null
@@ -89,6 +90,7 @@ class ListingPhotoWindow(
 
         initializeButtonStates()
 
+        
         @Suppress("DEPRECATION")
         Glide.with(context)
                 .load(photoUri)
@@ -102,15 +104,21 @@ class ListingPhotoWindow(
     }
 
     interface PhotoSelectionListener {
-        fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean)
+        fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, isNewPhoto: Boolean = true)
         fun onPhotoDelete(uri: Uri, resultStatus: Boolean)
     }
 
     private fun createListingPhoto() {
         val isHomeImage = homeImageTextView.visibility == View.VISIBLE
-        val photo = ListingPhoto(0, selectedListing?.id
-                ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
-        listener?.onPhotoSelection(photo, isHomeImage)
+        if (photo == null) {
+            val newPhoto = ListingPhoto(0, selectedListing?.id
+                    ?: 0, photoDescriptionEditText?.text.toString(), photoUri)
+            listener?.onPhotoSelection(newPhoto, isHomeImage)
+        } else {
+            photo.photoDescription = photoDescriptionEditText?.text.toString()
+            listener?.onPhotoSelection(photo, isHomeImage, false)
+        }
+
     }
 
     private fun initializeButtonStates() {
