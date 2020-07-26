@@ -12,6 +12,7 @@ import com.openclassrooms.realestatemanager.R
 
 class ListingPhotoAdapter(val context: Context, var photoList: ArrayList<ListingPhoto>) : RecyclerView.Adapter<ListingPhotoAdapter.PhotoViewHolder>() {
 
+    var photoTapCallbacks: ImageClickCallback? = null
 
     inner class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView = itemView.findViewById<ImageView>(R.id.iv_listing_photo)
@@ -37,5 +38,23 @@ class ListingPhotoAdapter(val context: Context, var photoList: ArrayList<Listing
                 .placeholder(context.resources.getDrawable(R.drawable.placeholder_image))
                 .error(context.resources.getDrawable(R.drawable.placeholder_image))
                 .into(holder.imageView)
+
+        addListeners(holder.imageView, selectedPhoto)
+    }
+
+    private fun addListeners(imageView: ImageView, selectedPhoto: ListingPhoto) {
+        imageView.setOnLongClickListener {
+            photoTapCallbacks?.onPhotoLongPress(selectedPhoto)
+            return@setOnLongClickListener true
+        }
+
+        imageView.setOnClickListener {
+            photoTapCallbacks?.onPhotoTap(selectedPhoto)
+        }
+    }
+
+    interface ImageClickCallback {
+        fun onPhotoLongPress(selectedPhoto: ListingPhoto)
+        fun onPhotoTap(selectedPhoto: ListingPhoto)
     }
 }
