@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.io.File
 
 class ListingPhotoWindow(
         val context: Context,
@@ -88,6 +89,7 @@ class ListingPhotoWindow(
 
         deletePhotoButton.setOnClickListener {
             deletePhoto(photoUri)
+            popupWindow.dismiss()
         }
 
         initializeButtonStates()
@@ -106,7 +108,7 @@ class ListingPhotoWindow(
 
     interface PhotoSelectionListener {
         fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean)
-        fun onPhotoDelete(uri: Uri, resultCode: Int)
+        fun onPhotoDelete(uri: Uri, resultStatus: Boolean)
     }
 
     private fun createListingPhoto() {
@@ -143,9 +145,11 @@ class ListingPhotoWindow(
                 selectedListing?.apply {
                     listingMainPhotoUri = null
                     val result = async { listingRepository.updateListing(this@apply) }.await()
-                    listener?.onPhotoDelete(uri, result)
+                    listener?.onPhotoDelete(uri, result == 1)
                 }
             } else {
+                val file = File(uri.path)
+                val result = file.delete()
                 listener?.onPhotoDelete(uri, result)
             }
         }
