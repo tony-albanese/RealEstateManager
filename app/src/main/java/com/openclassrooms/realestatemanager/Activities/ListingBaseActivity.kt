@@ -11,6 +11,7 @@ import androidx.room.Room
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
@@ -27,6 +28,7 @@ class ListingBaseActivity : AppCompatActivity() {
 
     //References to utility objects.
     lateinit var globalVariables: GlobalVariableApplication
+    lateinit var helperMethods: HelperMethods
 
     //Declare objects that are needed to display the listings.
     lateinit var listingViewModel: ListingViewModel
@@ -49,6 +51,7 @@ class ListingBaseActivity : AppCompatActivity() {
 
         //Initialize helper and utility objects.
         globalVariables = application as GlobalVariableApplication
+        helperMethods = HelperMethods()
 
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
 
