@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
+import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
@@ -16,6 +17,9 @@ import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.util.*
 
 class ListingBaseActivity : AppCompatActivity() {
+
+    //References to utility objects.
+    lateinit var globalVariables: GlobalVariableApplication
 
     //Declare objects that are needed to display the listings.
     lateinit var listingViewModel: ListingViewModel
@@ -29,12 +33,18 @@ class ListingBaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Initialize helper and utility objects.
+        globalVariables = application as GlobalVariableApplication
+
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
 
         //Inflate the layout first.
         val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
         binding.lifecycleOwner = this
         binding.listingViewModel = listingViewModel
+
+        //Setup the toolbar.
+        
 
         //Determine if we're in landscape mode.
         landscapeMode = listing_info_landscape_frame_layout != null
@@ -57,7 +67,7 @@ class ListingBaseActivity : AppCompatActivity() {
     //This is the callback that will run when the user clicks on a listing.
     val listingAdapterItemViewClickCallback: (Listing) -> Unit = {
         listingViewModel.setCurrentListing(it)
-        listingPhotoViewModel.setSelectedListing(it)
+        //listingPhotoViewModel.setSelectedListing(it)
         globalVariables.selectedListingId = it.id
         globalVariables.selectedPosition = adapter.selectedPosition
     }
