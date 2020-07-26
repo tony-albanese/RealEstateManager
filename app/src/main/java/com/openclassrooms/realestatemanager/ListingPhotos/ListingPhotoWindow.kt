@@ -38,7 +38,7 @@ class ListingPhotoWindow(
     val imageView: ImageView
     val photoDescriptionEditText: TextInputEditText?
     val okButton: MaterialButton
-    val deletePhotoButton: ImageButton
+    val deletePhotoButton: MaterialButton
     val setHomePhotoButton: ImageButton
     val homeImageTextView: TextView
 
