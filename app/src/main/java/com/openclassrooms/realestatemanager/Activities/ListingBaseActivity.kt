@@ -54,7 +54,7 @@ class ListingBaseActivity : AppCompatActivity() {
 
     }
 
-    //This is the callback that will run when the user clicks on a listing. 
+    //This is the callback that will run when the user clicks on a listing.
     val listingAdapterItemViewClickCallback: (Listing) -> Unit = {
         listingViewModel.setCurrentListing(it)
         listingPhotoViewModel.setSelectedListing(it)
