@@ -34,7 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
-class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingPhotoWindow.PhotoSelectionListener {
+class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoAdapter.ImageClickCallback {
 
     lateinit var listingViewModel: ListingViewModel
     lateinit var helper: HelperMethods
@@ -90,6 +90,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         photoUtilities = ListingPhotoUtilities(this, this)
         photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
         photoAdapter = ListingPhotoAdapter(this, photos)
+        photoAdapter.photoTapCallbacks = this
 
 
         setListingDescriptionListeners()
@@ -331,6 +332,15 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
         } else {
             Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onPhotoLongPress(selectedPhoto: ListingPhoto) {
+
+    }
+
+    override fun onPhotoTap(selectedPhoto: ListingPhoto) {
+        val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.display_listing_constraint_layout), selectedPhoto.photoUri)
+        photoWindow.show()
     }
 
 

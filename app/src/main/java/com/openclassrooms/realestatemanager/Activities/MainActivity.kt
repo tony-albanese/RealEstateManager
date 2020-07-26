@@ -45,7 +45,7 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingAdapter.InitialSelection {
+class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingAdapter.InitialSelection, ListingPhotoAdapter.ImageClickCallback {
     //TODO () Add check for camera hardware.
 
     lateinit var photoUtilities: ListingPhotoUtilities
@@ -247,6 +247,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         photoRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoRecyclerView?.adapter = photoAdapter
 
+        photoAdapter.photoTapCallbacks = this
+
         listingPhotoViewModel.listingPhotos.observe(this, androidx.lifecycle.Observer {
             photos = it as ArrayList<ListingPhoto>
             photoAdapter.photoList = photos
@@ -386,5 +388,14 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
                 ?.setTextColor(resources.getColor(R.color.white))
 
         listingPhotoViewModel.getPhotosForLisiting(listing.id)
+    }
+
+    override fun onPhotoLongPress(selectedPhoto: ListingPhoto) {
+
+    }
+
+    override fun onPhotoTap(selectedPhoto: ListingPhoto) {
+        val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), selectedPhoto.photoUri)
+        photoWindow.show()
     }
 }
