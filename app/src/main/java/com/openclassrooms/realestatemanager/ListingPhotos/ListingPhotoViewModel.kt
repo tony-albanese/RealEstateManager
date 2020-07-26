@@ -7,10 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class ListingPhotoViewModel(val application: Application) : ViewModel(
@@ -46,7 +43,9 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
     fun getPhotosForLisiting(listingId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val photos = async { repository.getPhotosForListing(listingId) }.await()
-            _listingPhotos.postValue(photos)
+            withContext(Dispatchers.Main) {
+                _listingPhotos.value = photos
+            }
         }
 
     }
@@ -56,10 +55,13 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
         getPhotosForLisiting(listing.id)
     }
 
+    suspend fun updateListingPhoto(photo: ListingPhoto): Int {
+        return repository.upddateListingPhoto(photo)
+    }
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
-
-
+    
     interface OnDatabaseActionResult {
         fun onInsertPhoto(row: Long)
     }
