@@ -28,6 +28,7 @@ import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
+import kotlinx.android.synthetic.main.listing_item_layout.view.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +38,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
-class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoAdapter.ImageClickCallback, ListingPhotoWindow.PhotoSelectionListener {
+class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoAdapter.ImageClickCallback, ListingPhotoWindow.PhotoSelectionListener, ListingAdapter.InitialSelection {
 
     companion object {
         var database: AppDatabase? = null
@@ -67,6 +68,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Toast.makeText(this, "ListingBaseActivity Launched", Toast.LENGTH_LONG).show()
         //Initialize the database.
         database = Room.databaseBuilder(this,
                 AppDatabase::class.java,
@@ -97,13 +99,11 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
 
         //This recyclerview might be null.
         recyclerView = findViewById(R.id.rv_listings)
-        recyclerView?.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            val itemDecor = DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL)
-            addItemDecoration(itemDecor)
-            adapter = adapter
-        }
 
+        recyclerView?.layoutManager = LinearLayoutManager(this)
+        val itemDecor = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        recyclerView?.addItemDecoration(itemDecor)
+        recyclerView?.adapter = adapter
         setListingObservers()
 
         //Initalize the objects needed for the listing photos.
@@ -152,6 +152,19 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
 
     }
 
+    //This method sets the initial selection (if in landscape mode. If in portrait mode, there is no listing selected.)
+    override fun initializeInitialSelection(itemView: View, position: Int, listing: Listing) {
+        adapter.initialSelectionInitializedFlag = true
+        adapter.selectedView = itemView
+        adapter.selectedPosition = position
+        listingViewModel.setCurrentListing(listing)
+        recyclerView?.scrollToPosition(position)
+        itemView.setBackgroundColor(resources.getColor(R.color.colorAccent))
+        itemView.tv_listing_item_listing_price
+                ?.setTextColor(resources.getColor(R.color.white))
+        listingPhotoViewModel.getPhotosForLisiting(listing.id)
+
+    }
     //endregion
 
     //region Listing Description Functionality
@@ -235,9 +248,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
                 finish()
                 return true
             }
-            R.id.menu_item_search_listings -> {
-                return true
-            }
+
             else -> {
                 helperMethods.onUnpublishedListingClick(this, unpublishedListings, item.itemId.toLong())
                 return true
