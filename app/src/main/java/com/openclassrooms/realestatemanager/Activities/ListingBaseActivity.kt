@@ -89,9 +89,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
 
         //Inflate the layout first.
-        val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
-        binding.lifecycleOwner = this
-        binding.listingViewModel = listingViewModel
+        setLayoutBinding()
 
         //Setup the toolbar.
         setSupportActionBar(toolbar)
@@ -132,6 +130,14 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         }
 
     }
+
+    //region initialize the binding.
+    fun setLayoutBinding() {
+        val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
+        binding.lifecycleOwner = this
+        binding.listingViewModel = listingViewModel
+    }
+    //endregion
 
     //region Display a listing functionality
     //This is the callback that will run when the user clicks on a listing.
