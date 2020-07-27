@@ -78,7 +78,6 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val globalVar
                             ?.setTextColor(context.resources.getColor(R.color.white))
 
                 }
-                callback(currentListing)
             } else {
                 val context = holder.itemView.context
                 val intent = Intent(context, DisplayListingPortaitActivity::class.java)
@@ -86,6 +85,7 @@ class ListingAdapter(val locale: Locale, val isLandscape: Boolean, val globalVar
                 context.startActivity(intent)
             }
 
+            callback(currentListing)
         }
 
         if (position == globalVariabales.selectedPosition && isLandscape && !initialSelectionInitializedFlag) {

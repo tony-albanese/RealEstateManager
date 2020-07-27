@@ -215,7 +215,7 @@ class EditListingActivity : AppCompatActivity(), OnItemSelectedListener, SeekBar
     fun confirmDiscardChangesClickListener(): DialogInterface.OnClickListener {
         return DialogInterface.OnClickListener { dialogInterface, i ->
             viewModel.deleteListingFile()
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, ListingBaseActivity::class.java)
             startActivity(intent)
             finish()
         }

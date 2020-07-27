@@ -1,51 +1,13 @@
 package com.openclassrooms.realestatemanager.Activities
 
-import android.app.Activity
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
-import com.google.android.material.snackbar.Snackbar
-import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
-import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
-import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
-import com.openclassrooms.realestatemanager.ListingPhotos.*
-import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utilities.*
-import com.openclassrooms.realestatemanager.database_files.AppDatabase
-import com.openclassrooms.realestatemanager.database_files.Listing
-import com.openclassrooms.realestatemanager.database_files.ListingViewModel
-import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
-import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
-import kotlinx.android.synthetic.main.listing_information_detail_layout.*
-import kotlinx.android.synthetic.main.listing_item_layout.view.*
-import kotlinx.android.synthetic.main.listings_activity_layout.*
-import kotlinx.android.synthetic.main.listings_information_layout.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import java.io.File
-import java.util.*
-import kotlin.collections.ArrayList
+/*The code in this activity has been refactorede into ListingBaseActivity.kt. It is
+commented out for now just for record keeping purposes.
+ */
 
+
+/*
 class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoWindow.PhotoSelectionListener, ListingPhotoViewModel.OnDatabaseActionResult, ListingAdapter.InitialSelection, ListingPhotoAdapter.ImageClickCallback {
+
     //TODO () Add check for camera hardware.
 
     lateinit var photoUtilities: ListingPhotoUtilities
@@ -55,7 +17,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     var photoRecyclerView: RecyclerView? = null
     lateinit var adapter: ListingAdapter
     lateinit var photoAdapter: ListingPhotoAdapter
-    lateinit var helper: HelperMethods
+    lateinit var helperMethods: HelperMethods
     lateinit var globalVariables: GlobalVariableApplication
 
     var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
@@ -70,7 +32,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val factory = PhotoViewModelFactory(application, this, null)
+        Toast.makeText(this, "MainActivity", Toast.LENGTH_LONG).show()
+        val factory = PhotoViewModelFactory(application, 0, this, null)
         listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
         listingPhotoViewModel.listener = this
 
@@ -85,7 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         recyclerView = findViewById(R.id.rv_listings)
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, globalVariables, itemViewOnClickListenerCallback)
         adapter.initialSelectionCallack = this
-        helper = HelperMethods()
+        helperMethods = HelperMethods()
         photoUtilities = ListingPhotoUtilities(this, this)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -128,19 +91,19 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        helper.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
+        helperMethods.generateUnpublishedListingMenu(menu, 3, unpublishedListings)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_add_listing -> {
-                helper.onAddNewListingClick(this)
+                helperMethods.onAddNewListingClick(this)
                 finish()
                 return true
             }
             R.id.menu_item_edit_listing -> {
-                helper.onEditListingClick(this, listingViewModel.selectedListing.value?.id
+                helperMethods.onEditListingClick(this, listingViewModel.selectedListing.value?.id
                         ?: 0.toLong())
                 finish()
                 return true
@@ -151,8 +114,13 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
                 finish()
                 return true
             }
+            R.id.menu_item_search_listings -> {
+                val intent = Intent(this, ListingBaseActivity::class.java)
+                startActivity(intent)
+                return true
+            }
             else -> {
-                helper.onUnpublishedListingClick(this, unpublishedListings, item.itemId.toLong())
+                helperMethods.onUnpublishedListingClick(this, unpublishedListings, item.itemId.toLong())
                 return true
             }
         }
@@ -419,4 +387,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
         val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), selectedPhoto.photoUri)
         photoWindow.show()
     }
+
+
 }
+
+ */

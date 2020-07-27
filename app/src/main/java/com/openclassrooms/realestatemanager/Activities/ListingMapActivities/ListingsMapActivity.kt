@@ -11,7 +11,7 @@ import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
-import com.openclassrooms.realestatemanager.Activities.MainActivity
+import com.openclassrooms.realestatemanager.Activities.ListingBaseActivity
 import com.openclassrooms.realestatemanager.Geolocation.ListingGeocoder
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.*
@@ -86,7 +86,7 @@ class ListingsMapActivity : AppCompatActivity(), ListingGeocoder.OnConnectionRes
 
     override fun onBackPressed() {
         //super.onBackPressed()
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, ListingBaseActivity::class.java)
         startActivity(intent)
         finish()
     }
