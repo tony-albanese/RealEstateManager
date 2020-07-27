@@ -104,6 +104,11 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
 
         setListingObservers()
 
+        //Initalize the objects needed for the listing photos.
+        photoUtilities = ListingPhotoUtilities(this, this)
+        photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
+        photoAdapter = ListingPhotoAdapter(this, photos)
+
     }
 
     //region Display a listing functionality
@@ -246,7 +251,16 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
     }
 
     private fun setupImageRecyclerView() {
+        photoRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        photoRecyclerView?.adapter = photoAdapter
 
+        photoAdapter.photoTapCallbacks = this
+
+        listingPhotoViewModel.listingPhotos.observe(this, androidx.lifecycle.Observer {
+            photos = it as ArrayList<ListingPhoto>
+            photoAdapter.photoList = photos
+            photoAdapter.notifyDataSetChanged()
+        })
     }
 
     //endregion
