@@ -138,7 +138,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
     }
 
     //endregion
-    
+
     //region Listing Description Functionality
     //This method sets up the listener interfaces for the listing description functionality.
     fun setListingDescriptionListeners() {
@@ -187,15 +187,6 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
     }
     //endregion
 
-    private fun setListingPhotoObservers() {
-
-    }
-
-    private fun setupImageRecyclerView() {
-
-    }
-
-
     //region Initialize menus
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -237,6 +228,17 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
                 return true
             }
         }
+    }
+
+    //endregion
+
+    //region Listing Photos functionality.
+    private fun setListingPhotoObservers() {
+
+    }
+
+    private fun setupImageRecyclerView() {
+
     }
 
     //endregion
