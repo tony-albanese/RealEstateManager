@@ -3,6 +3,9 @@
 
     <string name="create_listing_title">New Listing</string>
 
+    <string name="update_ok_message">Description updated!</string>
+
+    <string name="update_failed_message">Something went wrong.</string>
     <string-array name="listing_type_array">
         <item>House</item>
         <item>Apartment</item>
@@ -13,7 +16,4 @@
         <item>Penthouse</item>
         <item>Commercial Space</item>
     </string-array>
-
-    <string name="update_ok_message">Description updated!</string>
-    <string name="update_failed_message">Something went wrong.</string>
 </resources>
