@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
@@ -24,11 +29,12 @@ import com.openclassrooms.realestatemanager.database_files.AppDatabase
 import com.openclassrooms.realestatemanager.database_files.Listing
 import com.openclassrooms.realestatemanager.database_files.ListingViewModel
 import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBinding
+import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.util.*
 
-class ListingBaseActivity : AppCompatActivity() {
+class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
 
     companion object {
         var database: AppDatabase? = null
@@ -130,6 +136,54 @@ class ListingBaseActivity : AppCompatActivity() {
 
     }
 
+    //region Listing Description Functionality
+    //This method sets up the listener interfaces for the listing description functionality.
+    fun setListingDescriptionListeners() {
+        val descriptionTextView = findViewById<TextView>(R.id.tv_description_body)
+        val confirmImageButton = findViewById<ImageButton>(R.id.ib_confirm_description)
+        val cancelImageButton = findViewById<ImageButton>(R.id.ib_cancel_description)
+        val editText = findViewById<EditText>(R.id.et_listing_description)
+
+        descriptionTextView.setOnLongClickListener(this)
+
+        confirmImageButton.setOnClickListener {
+            listingViewModel.updateListingDescription(editText.text.toString(), updateCallback)
+            listing_description_editor_layout?.visibility = View.GONE
+        }
+
+        cancelImageButton.setOnClickListener {
+            listing_description_editor_layout?.visibility = View.GONE
+        }
+
+    }
+
+    //This is the callback that for when the user long clicks on the description.
+    override fun onLongClick(view: View?): Boolean {
+        val editText = findViewById<EditText>(R.id.et_listing_description)
+        editText.setText(listingViewModel.selectedListing.value?.listingDescription ?: "")
+        editText.bringToFront()
+        listing_description_editor_layout.visibility = View.VISIBLE
+        listing_description_editor_layout.bringToFront()
+        return true
+    }
+
+    //This is the callback to let the user know updating the listing description was successful.
+    val updateCallback: (Int) -> Unit = {
+        val snackbar = Snackbar.make(
+                findViewById(R.id.listing_activity_coordinator_layout),
+                R.string.update_ok_message, BaseTransientBottomBar.LENGTH_LONG)
+
+        when (it) {
+            1 -> snackbar.show()
+            else -> {
+                snackbar.setText(R.string.update_failed_message)
+                        .show()
+            }
+        }
+
+    }
+    //endregion
+    
     private fun setListingPhotoObservers() {
 
     }
