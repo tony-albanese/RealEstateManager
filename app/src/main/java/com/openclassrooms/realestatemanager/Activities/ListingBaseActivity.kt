@@ -96,10 +96,10 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
 
         //Setup the recyclerview and adapter for the listings.
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, globalVariables, listingAdapterItemViewClickCallback)
-
+        adapter.initialSelectionCallack = this
+        
         //This recyclerview might be null.
         recyclerView = findViewById(R.id.rv_listings)
-
         recyclerView?.layoutManager = LinearLayoutManager(this)
         val itemDecor = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         recyclerView?.addItemDecoration(itemDecor)
@@ -162,7 +162,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         itemView.setBackgroundColor(resources.getColor(R.color.colorAccent))
         itemView.tv_listing_item_listing_price
                 ?.setTextColor(resources.getColor(R.color.white))
-        listingPhotoViewModel.getPhotosForLisiting(listing.id)
+        // listingPhotoViewModel.getPhotosForLisiting(listing.id)
 
     }
     //endregion
