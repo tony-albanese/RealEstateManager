@@ -26,14 +26,16 @@
         <activity android:name=".Activities.ListingMapActivities.GeocodeListingLocationActivity" />
         <activity android:name=".Activities.ListingMapActivities.ListingMapBaseActivity" />
         <activity android:name=".Activities.ListingMapActivities.ListingsMapActivity" />
-        <activity android:name=".Activities.DisplayListingPortaitActivity" />
+        <activity
+            android:name=".Activities.DisplayListingPortaitActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.EditListingActivity"
             android:windowSoftInputMode="stateHidden" />
+        <!--
         <activity android:name=".Activities.MainActivity">
-
         </activity>
-
+        -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
