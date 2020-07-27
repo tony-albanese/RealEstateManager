@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
+import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.SingleListingMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
 import com.openclassrooms.realestatemanager.ListingPhotos.*
 import com.openclassrooms.realestatemanager.R
@@ -182,6 +183,12 @@ open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, 
                         .into(this)
             }
         })
+
+        staticMapImageView?.setOnClickListener {
+            val intent = Intent(this, SingleListingMapActivity::class.java)
+            intent.putExtra(LISTING_ID, listingViewModel.selectedListing.value?.id)
+            startActivity(intent)
+        }
 
     }
 
