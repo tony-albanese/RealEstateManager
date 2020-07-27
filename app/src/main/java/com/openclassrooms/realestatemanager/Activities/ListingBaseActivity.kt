@@ -45,10 +45,10 @@ import java.util.*
 
 class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoAdapter.ImageClickCallback, ListingPhotoWindow.PhotoSelectionListener, ListingAdapter.InitialSelection, ListingPhotoViewModel.OnDatabaseActionResult {
 
+    //region Variable declaration
     companion object {
         var database: AppDatabase? = null
     }
-
     //References to utility objects.
     lateinit var globalVariables: GlobalVariableApplication
     lateinit var helperMethods: HelperMethods
@@ -69,6 +69,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
 
     //Misc data about state
     var landscapeMode: Boolean = false
+    //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -306,10 +307,10 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), selectedPhoto.photoUri)
         photoWindow.show()
     }
-    
+
     //Callbacks for when the user selects or deletes a photo from the DisplayPhotoWindow object.
-    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, newPhoto: Boolean) {
-        if (newPhoto) {
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, isNewPhoto: Boolean) {
+        if (isNewPhoto) {
             listingPhotoViewModel.saveListingPhoto(photo)
         } else {
             CoroutineScope(Dispatchers.IO).launch {
@@ -341,9 +342,9 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         }
     }
 
-    override fun onPhotoDelete(uri: Uri, listingId: Long, resultCode: Boolean) {
+    override fun onPhotoDelete(uri: Uri, listingId: Long, resultStatus: Boolean) {
         runOnUiThread {
-            if (resultCode) {
+            if (resultStatus) {
                 Toast.makeText(this, "Photo removed.", Toast.LENGTH_LONG).show()
                 listingPhotoViewModel.getPhotosForLisiting(listingId)
             } else {
