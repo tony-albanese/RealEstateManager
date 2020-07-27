@@ -97,7 +97,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         //Setup the recyclerview and adapter for the listings.
         adapter = ListingAdapter(Locale("EN", "US"), landscapeMode, globalVariables, listingAdapterItemViewClickCallback)
         adapter.initialSelectionCallack = this
-        
+
         //This recyclerview might be null.
         recyclerView = findViewById(R.id.rv_listings)
         recyclerView?.layoutManager = LinearLayoutManager(this)
@@ -107,6 +107,9 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         setListingObservers()
 
         //Initalize the objects needed for the listing photos.
+        val factory = PhotoViewModelFactory(application, this, null)
+        listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
+        //listingPhotoViewModel.listener = this
         photoUtilities = ListingPhotoUtilities(this, this)
         photoRecyclerView = findViewById<RecyclerView>(R.id.rv_listing_image_recycler_view)
         photoAdapter = ListingPhotoAdapter(this, photos)
@@ -162,7 +165,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         itemView.setBackgroundColor(resources.getColor(R.color.colorAccent))
         itemView.tv_listing_item_listing_price
                 ?.setTextColor(resources.getColor(R.color.white))
-        // listingPhotoViewModel.getPhotosForLisiting(listing.id)
+        listingPhotoViewModel.getPhotosForLisiting(listing.id)
 
     }
     //endregion
