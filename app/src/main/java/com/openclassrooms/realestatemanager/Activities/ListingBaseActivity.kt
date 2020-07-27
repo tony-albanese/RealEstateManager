@@ -1,15 +1,13 @@
 package com.openclassrooms.realestatemanager.Activities
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -32,10 +30,14 @@ import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBi
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
-class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoAdapter.ImageClickCallback {
+class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoAdapter.ImageClickCallback, ListingPhotoWindow.PhotoSelectionListener {
 
     companion object {
         var database: AppDatabase? = null
@@ -268,6 +270,52 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
             photoWindow.listener = this@ListingBaseActivity
             photoWindow.show()
         }
+    }
+
+    //Callbacks for when the user selects or deletes a photo from the DisplayPhotoWindow object.
+    override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, newPhoto: Boolean) {
+        if (newPhoto) {
+            listingPhotoViewModel.saveListingPhoto(photo)
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                val result = listingPhotoViewModel.updateListingPhoto(photo)
+                runOnUiThread {
+                    if (result != 0) {
+                        Toast.makeText(this@ListingBaseActivity, "Photo Update: ${result}", Toast.LENGTH_LONG).show()
+                        listingPhotoViewModel.getPhotosForLisiting(photo.listingId)
+                    } else {
+                        Toast.makeText(this@ListingBaseActivity, "Photo update failed", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+
+        }
+
+        if (isHomeImage) {
+            listingViewModel.selectedListing.value?.apply {
+                this.listingMainPhotoUri = photo.photoUri
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    async { listingViewModel.updateListing(this@apply) }.await()
+                    runOnUiThread {
+                        adapter.notifyDataSetChanged()
+                    }
+
+                }
+            }
+        }
+    }
+
+    override fun onPhotoDelete(uri: Uri, listingId: Long, resultCode: Boolean) {
+        runOnUiThread {
+            if (resultCode) {
+                Toast.makeText(this, "Photo removed.", Toast.LENGTH_LONG).show()
+                listingPhotoViewModel.getPhotosForLisiting(listingId)
+            } else {
+                Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show()
+            }
+        }
+
     }
 
     override fun onPhotoTap(selectedPhoto: ListingPhoto) {
