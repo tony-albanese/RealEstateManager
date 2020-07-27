@@ -10,7 +10,7 @@ import com.openclassrooms.realestatemanager.database_files.Listing
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class ListingPhotoViewModel(val application: Application) : ViewModel(
+class ListingPhotoViewModel(val application: Application, id: Long = 0) : ViewModel(
 
 ), CoroutineScope {
     val repository: ListingPhotoRepository
@@ -28,7 +28,12 @@ class ListingPhotoViewModel(val application: Application) : ViewModel(
     init {
         val listingPhotoDao = AppDatabase.getDatabase(application).listingPhotoDao()
         repository = ListingPhotoRepository(listingPhotoDao)
-        getPhotosForLisiting(globalVariables.selectedListingId)
+        if (!id.equals(0)) {
+            getPhotosForLisiting(id)
+        } else {
+            getPhotosForLisiting(globalVariables.selectedListingId)
+        }
+
 
     }
     

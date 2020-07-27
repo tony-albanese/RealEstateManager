@@ -59,7 +59,7 @@ class DisplayListingPortaitActivity : AppCompatActivity(), View.OnLongClickListe
 
         listingViewModel = ViewModelProvider(viewModelStore, ViewModelProvider.AndroidViewModelFactory(application)).get(ListingViewModel::class.java)
 
-        val factory = PhotoViewModelFactory(application, this, null)
+        val factory = PhotoViewModelFactory(application, 0, this, null)
         listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
         listingPhotoViewModel.listener = this
 

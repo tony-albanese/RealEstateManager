@@ -55,8 +55,7 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     var photoRecyclerView: RecyclerView? = null
     lateinit var adapter: ListingAdapter
     lateinit var photoAdapter: ListingPhotoAdapter
-    lateinit var helperMethods
-            : HelperMethods
+    lateinit var helperMethods: HelperMethods
     lateinit var globalVariables: GlobalVariableApplication
 
     var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
@@ -71,7 +70,8 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhoto
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val factory = PhotoViewModelFactory(application, this, null)
+        Toast.makeText(this, "MainActivity", Toast.LENGTH_LONG).show()
+        val factory = PhotoViewModelFactory(application, 0, this, null)
         listingPhotoViewModel = ViewModelProvider(this, factory).get(ListingPhotoViewModel::class.java)
         listingPhotoViewModel.listener = this
 

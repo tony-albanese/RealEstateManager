@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 
-class PhotoViewModelFactory(val application: Application, owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null) : AbstractSavedStateViewModelFactory(
+class PhotoViewModelFactory(val application: Application, val id: Long = 0, owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null) : AbstractSavedStateViewModelFactory(
         owner, defaultArgs
 ) {
 
@@ -16,6 +16,6 @@ class PhotoViewModelFactory(val application: Application, owner: SavedStateRegis
             modelClass: Class<T>,
             handle: SavedStateHandle
     ): T {
-        return ListingPhotoViewModel(application) as T
+        return ListingPhotoViewModel(application, id) as T
     }
 }
