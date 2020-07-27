@@ -302,6 +302,11 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
         }
     }
 
+    override fun onPhotoTap(selectedPhoto: ListingPhoto) {
+        val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), selectedPhoto.photoUri)
+        photoWindow.show()
+    }
+    
     //Callbacks for when the user selects or deletes a photo from the DisplayPhotoWindow object.
     override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, newPhoto: Boolean) {
         if (newPhoto) {
@@ -346,11 +351,6 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
             }
         }
 
-    }
-
-    override fun onPhotoTap(selectedPhoto: ListingPhoto) {
-        val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), selectedPhoto.photoUri)
-        photoWindow.show()
     }
 
     //endregion
