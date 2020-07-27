@@ -43,12 +43,13 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
-class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoAdapter.ImageClickCallback, ListingPhotoWindow.PhotoSelectionListener, ListingAdapter.InitialSelection, ListingPhotoViewModel.OnDatabaseActionResult {
+open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoAdapter.ImageClickCallback, ListingPhotoWindow.PhotoSelectionListener, ListingAdapter.InitialSelection, ListingPhotoViewModel.OnDatabaseActionResult {
 
     //region Variable declaration
     companion object {
         var database: AppDatabase? = null
     }
+
     //References to utility objects.
     lateinit var globalVariables: GlobalVariableApplication
     lateinit var helperMethods: HelperMethods
@@ -93,7 +94,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
 
         //Setup the toolbar.
         setSupportActionBar(toolbar)
-        toolbar.title = title
+        toolbar?.title = title
 
         //Determine if we're in landscape mode.
         landscapeMode = listing_info_landscape_frame_layout != null
@@ -132,7 +133,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
     }
 
     //region initialize the binding.
-    fun setLayoutBinding() {
+    open fun setLayoutBinding() {
         val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
         binding.lifecycleOwner = this
         binding.listingViewModel = listingViewModel
@@ -428,7 +429,6 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, Listi
     override fun onInsertPhoto(row: Long) {
         listingPhotoViewModel.getPhotosForLisiting(globalVariables.selectedListingId)
     }
-
 
     fun takePhoto() {
 
