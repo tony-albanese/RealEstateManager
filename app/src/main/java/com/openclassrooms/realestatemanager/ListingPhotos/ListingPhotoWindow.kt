@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.ListingPhotos
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -153,18 +154,23 @@ class ListingPhotoWindow(
         CoroutineScope(Dispatchers.IO).launch {
             val result = async { listingPhotoRepository.deleteListingPhoto(uri) }.await()
 
+            Log.i("DELETE", "Result of deleting the photo from Room: " + result.toString())
             if (result == 1) {
                 selectedListing?.apply {
+                    Log.i("DELETE", "In selectedListing.apply{}")
+                    Log.i("DELETE", "Is the listing main uri the photo to delete: " + (this.listingMainPhotoUri == uri).toString())
                     if (this.listingMainPhotoUri == uri) {
                         listingMainPhotoUri = null
                     }
                     val updateResult = async { listingRepository.updateListing(this@apply) }.await()
+                    Log.i("DELETE", "Result of updating the lisitng: " + updateResult.toString())
                     listener?.onPhotoDelete(uri, this.id, updateResult == 1)
 
                 }
             } else {
                 val file = File(uri.path ?: "")
                 val fileDeleteResult = file.delete()
+                Log.i("DELETE", "Result of deleting file: " + fileDeleteResult.toString())
                 listener?.onPhotoDelete(uri, selectedListing?.id ?: 0, fileDeleteResult)
             }
         }
