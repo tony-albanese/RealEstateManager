@@ -130,6 +130,8 @@ open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, 
             getPhotoFromGallery()
         }
 
+        //Set up the listeners for adding a listing description.
+        setListingDescriptionListeners()
     }
 
     //region Methods that are for the UI that can be overridden in child classes.
@@ -323,6 +325,7 @@ open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, 
     override fun onPhotoSelection(photo: ListingPhoto, isHomeImage: Boolean, isNewPhoto: Boolean) {
         if (isNewPhoto) {
             listingPhotoViewModel.saveListingPhoto(photo)
+            Toast.makeText(this, "New photo saved", Toast.LENGTH_LONG).show()
         } else {
             CoroutineScope(Dispatchers.IO).launch {
                 val result = listingPhotoViewModel.updateListingPhoto(photo)
