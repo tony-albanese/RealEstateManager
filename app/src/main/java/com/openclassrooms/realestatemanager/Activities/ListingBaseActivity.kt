@@ -22,7 +22,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.Activities.ListingMapActivities.AllListingsMapActivity
 import com.openclassrooms.realestatemanager.DisplayListings.ListingAdapter
-import com.openclassrooms.realestatemanager.ListingPhotos.GlobalVariableApplication
+import com.openclassrooms.realestatemanager.ListingPhotos.*
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.Utilities.HelperMethods
 import com.openclassrooms.realestatemanager.database_files.AppDatabase
@@ -32,6 +32,7 @@ import com.openclassrooms.realestatemanager.databinding.ListingsActivityLayoutBi
 import kotlinx.android.synthetic.main.listing_decription_editor_layout.*
 import kotlinx.android.synthetic.main.listings_activity_layout.*
 import kotlinx.android.synthetic.main.listings_information_layout.*
+import java.io.File
 import java.util.*
 
 class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
@@ -50,6 +51,13 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
     lateinit var adapter: ListingAdapter
     var unpublishedListings = listOf<Listing>()
 
+    //Objects needed for photo functionality
+    lateinit var photoUtilities: ListingPhotoUtilities
+    lateinit var listingPhotoViewModel: ListingPhotoViewModel
+    var photoRecyclerView: RecyclerView? = null
+    lateinit var photoAdapter: ListingPhotoAdapter
+    var photos: ArrayList<ListingPhoto> = ArrayList<ListingPhoto>()
+    var imageFile: File? = null
 
     //Misc data about state
     var landscapeMode: Boolean = false
