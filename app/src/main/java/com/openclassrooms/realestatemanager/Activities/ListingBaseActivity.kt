@@ -132,11 +132,15 @@ open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, 
 
     }
 
-    //region initialize the binding.
+    //region Methods that are for the UI that can be overridden in child classes.
     open fun setLayoutBinding() {
         val binding: ListingsActivityLayoutBinding = DataBindingUtil.setContentView(this, R.layout.listings_activity_layout)
         binding.lifecycleOwner = this
         binding.listingViewModel = listingViewModel
+    }
+
+    open fun getAnchorView(): View {
+        return findViewById(R.id.listing_activity_coordinator_layout)
     }
     //endregion
 
@@ -409,7 +413,7 @@ open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, 
             (REQUEST_IMAGE_CAPTURE == requestCode && resultCode == RESULT_OK) -> {
                 if (imageFile?.exists() ?: false) {
                     val uri = Uri.fromFile(imageFile)
-                    val photoWindow = ListingPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), uri, listingViewModel.selectedListing.value)
+                    val photoWindow = ListingPhotoWindow(this, getAnchorView(), uri, listingViewModel.selectedListing.value)
                     photoWindow.listener = this
                     photoWindow.show()
                 }
@@ -417,7 +421,7 @@ open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, 
 
             (REQUEST_IMAGE_FROM_GALLERY == requestCode && resultCode == Activity.RESULT_OK) -> {
                 data?.data?.apply {
-                    val photoWindow = ListingPhotoWindow(this@ListingBaseActivity, findViewById(R.id.listing_activity_coordinator_layout), this, listingViewModel.selectedListing.value)
+                    val photoWindow = ListingPhotoWindow(this@ListingBaseActivity, getAnchorView(), this, listingViewModel.selectedListing.value)
                     photoWindow.listener = this@ListingBaseActivity
                     photoWindow.show()
                 }
