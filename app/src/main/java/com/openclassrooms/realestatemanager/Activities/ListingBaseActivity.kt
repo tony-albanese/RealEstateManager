@@ -203,19 +203,19 @@ open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, 
     //region Listing Description Functionality
     //This method sets up the listener interfaces for the listing description functionality.
     fun setListingDescriptionListeners() {
-        val descriptionTextView = findViewById<TextView>(R.id.tv_description_body)
-        val confirmImageButton = findViewById<ImageButton>(R.id.ib_confirm_description)
-        val cancelImageButton = findViewById<ImageButton>(R.id.ib_cancel_description)
-        val editText = findViewById<EditText>(R.id.et_listing_description)
+        val descriptionTextView: TextView? = findViewById<TextView>(R.id.tv_description_body)
+        val confirmImageButton: ImageButton? = findViewById<ImageButton>(R.id.ib_confirm_description)
+        val cancelImageButton: ImageButton? = findViewById<ImageButton>(R.id.ib_cancel_description)
+        val editText: EditText? = findViewById<EditText>(R.id.et_listing_description)
 
-        descriptionTextView.setOnLongClickListener(this)
+        descriptionTextView?.setOnLongClickListener(this)
 
-        confirmImageButton.setOnClickListener {
-            listingViewModel.updateListingDescription(editText.text.toString(), updateCallback)
+        confirmImageButton?.setOnClickListener {
+            listingViewModel.updateListingDescription(editText?.text.toString(), updateCallback)
             listing_description_editor_layout?.visibility = View.GONE
         }
 
-        cancelImageButton.setOnClickListener {
+        cancelImageButton?.setOnClickListener {
             listing_description_editor_layout?.visibility = View.GONE
         }
 
@@ -234,7 +234,7 @@ open class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, 
     //This is the callback to let the user know updating the listing description was successful.
     val updateCallback: (Int) -> Unit = {
         val snackbar = Snackbar.make(
-                findViewById(R.id.listing_activity_coordinator_layout),
+                getAnchorView(),
                 R.string.update_ok_message, BaseTransientBottomBar.LENGTH_LONG)
 
         when (it) {
