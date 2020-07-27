@@ -35,7 +35,7 @@ import kotlinx.android.synthetic.main.listings_information_layout.*
 import java.io.File
 import java.util.*
 
-class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
+class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener, ListingPhotoAdapter.ImageClickCallback {
 
     companion object {
         var database: AppDatabase? = null
@@ -246,9 +246,6 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
     //endregion
 
     //region Listing Photos functionality.
-    private fun setListingPhotoObservers() {
-
-    }
 
     private fun setupImageRecyclerView() {
         photoRecyclerView?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -261,6 +258,21 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
             photoAdapter.photoList = photos
             photoAdapter.notifyDataSetChanged()
         })
+    }
+
+    //Callbacks for when the user taps on the images.
+    override fun onPhotoLongPress(selectedPhoto: ListingPhoto) {
+        //TODO: Only set this if the current user owns the listing.
+        selectedPhoto.photoUri?.let {
+            val photoWindow = ListingPhotoWindow(this@ListingBaseActivity, findViewById(R.id.listing_activity_coordinator_layout), it, listingViewModel.selectedListing.value, selectedPhoto)
+            photoWindow.listener = this@ListingBaseActivity
+            photoWindow.show()
+        }
+    }
+
+    override fun onPhotoTap(selectedPhoto: ListingPhoto) {
+        val photoWindow = DisplayPhotoWindow(this, findViewById(R.id.listing_activity_coordinator_layout), selectedPhoto.photoUri)
+        photoWindow.show()
     }
 
     //endregion
