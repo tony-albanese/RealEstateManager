@@ -98,6 +98,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
 
     }
 
+    //region Display a listing functionality
     //This is the callback that will run when the user clicks on a listing.
     val listingAdapterItemViewClickCallback: (Listing) -> Unit = {
         listingViewModel.setCurrentListing(it)
@@ -136,6 +137,8 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
 
     }
 
+    //endregion
+    
     //region Listing Description Functionality
     //This method sets up the listener interfaces for the listing description functionality.
     fun setListingDescriptionListeners() {
@@ -183,7 +186,7 @@ class ListingBaseActivity : AppCompatActivity(), View.OnLongClickListener {
 
     }
     //endregion
-    
+
     private fun setListingPhotoObservers() {
 
     }
