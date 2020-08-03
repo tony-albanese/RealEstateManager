@@ -7,8 +7,8 @@ class LoginDataSource(val loginDao: LoginDao) {
 
     fun registerUser(registrationRequest: RegistrationRequest?) {
         val uuid = UUID.randomUUID()
-        val agent = registrationRequest?.passwordHint?.let { Agent(0, uuid, registrationRequest.firstName, registrationRequest.lastName, registrationRequest.password, it) }
-        
+        val agent = Agent(0, uuid, registrationRequest?.firstName, registrationRequest?.lastName, registrationRequest?.email, registrationRequest?.password, registrationRequest?.passwordHint
+                ?: "")
     }
 
 }
