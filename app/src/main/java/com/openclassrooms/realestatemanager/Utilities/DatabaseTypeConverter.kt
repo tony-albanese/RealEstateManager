@@ -5,6 +5,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.openclassrooms.realestatemanager.Login.EmailString
 import java.util.*
 
 class DatabaseTypeConverter {
@@ -47,5 +48,15 @@ class DatabaseTypeConverter {
     @TypeConverter
     fun stringToUuid(uuidString: String): UUID {
         return UUID.fromString(uuidString)
+    }
+
+    @TypeConverter
+    fun emailToString(email: EmailString.Email): String {
+        return email.address
+    }
+
+    @TypeConverter
+    fun stringToEmailObject(email: String): EmailString.Email? {
+        return EmailString(email)
     }
 }
