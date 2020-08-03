@@ -1,14 +1,23 @@
 package com.openclassrooms.realestatemanager.Login
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 class LoginRepository(
-        val loginDao: LoginDao
+        val loginDataSource: LoginDataSource
 ) {
 
-    suspend fun registerAgent(agent: Agent) {
-        loginDao.registerAgent(agent)
+    fun register(request: RegistrationRequest) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val id = loginDataSource.registerUser(request)
+            handleRegisrationResponse(id)
+        }
+
     }
 
-    suspend fun getAgentByEmail(email: String): Agent {
-        return loginDao.getAgentByEmail(email)
+    private fun handleRegisrationResponse(roomResult: Long) {
+
     }
+
 }
