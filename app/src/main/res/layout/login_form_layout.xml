@@ -27,7 +27,6 @@
             style="@style/viewParent"
             android:layout_gravity="end"
             android:layout_marginTop="10dp"
-            android:onClick="viewForgotPAssword"
             android:text="Forgot Password?"
             android:textColor="@color/primaryTextColor"
             android:textSize="@dimen/newsMoreTextSize" />
@@ -38,6 +37,7 @@
             android:text="Login" />
 
         <TextView
+            android:id="@+id/tv_sign_up"
             style="@style/parent"
             android:layout_marginTop="@dimen/loginViewsMargin"
             android:onClick="viewRegisterClicked"
