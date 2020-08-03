@@ -1,4 +1,7 @@
 package com.openclassrooms.realestatemanager.Login
 
-class LoginRequest {
+data class LoginRequest(
+        val userEmail: String,
+        val password: String
+) {
 }
