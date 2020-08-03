@@ -5,6 +5,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mapbox.mapboxsdk.geometry.LatLng
+import java.util.*
 
 class DatabaseTypeConverter {
     @TypeConverter
@@ -36,5 +37,15 @@ class DatabaseTypeConverter {
     @TypeConverter
     fun stringToUri(uriString: String): Uri? {
         return Uri.parse(uriString)
+    }
+
+    @TypeConverter
+    fun uuidToString(uuid: UUID): String {
+        return uuid.toString()
+    }
+
+    @TypeConverter
+    fun stringToUuid(uuidString: String): UUID {
+        return UUID.fromString(uuidString)
     }
 }
