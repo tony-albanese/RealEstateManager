@@ -54,6 +54,7 @@
 
         <TextView
             style="@style/headerTextPrimary"
+            android:id="@+id/tv_register"
             android:layout_marginTop="@dimen/loginViewsMargin"
             android:text="@string/register" />
 
