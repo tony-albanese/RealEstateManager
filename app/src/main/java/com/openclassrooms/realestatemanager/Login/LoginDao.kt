@@ -1,4 +1,7 @@
 package com.openclassrooms.realestatemanager.Login
 
-class LoginDao {
+import androidx.room.Dao
+
+@Dao
+interface LoginDao {
 }
