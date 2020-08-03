@@ -15,4 +15,10 @@
         android:name="com.openclassrooms.realestatemanager.Login.RegistrationFragment"
         android:label="RegistrationFragment"
         tools:layout="@layout/layout_registration" />
+
+    <activity
+        android:id="@+id/listingBaseActivity_dest"
+        android:name="com.openclassrooms.realestatemanager.Activities.ListingBaseActivity"
+        android:label="ListingBaseActivity"
+        tools:layout="@layout/listings_activity_layout" />
 </navigation>
