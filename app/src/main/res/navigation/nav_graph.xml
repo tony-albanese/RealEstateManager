@@ -10,4 +10,9 @@
         android:name="com.openclassrooms.realestatemanager.Login.LoginFragment"
         android:label="Login"
         tools:layout="@layout/login_layout" />
+    <fragment
+        android:id="@+id/registrationFragment_dest"
+        android:name="com.openclassrooms.realestatemanager.Login.RegistrationFragment"
+        android:label="RegistrationFragment"
+        tools:layout="@layout/layout_registration" />
 </navigation>
